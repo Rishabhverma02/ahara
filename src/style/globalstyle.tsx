@@ -13,8 +13,7 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    background-color: #ecd5ae;
-    /* background-color: #f3e2c5; */
+    background-color: #EACEA7;
     font-family: inherit;
   }
 
@@ -61,7 +60,7 @@ export const GlobalStyle = createGlobalStyle`
 
   ::-webkit-scrollbar-thumb {
     background-color: rgba(0, 0, 0, 0.3);
-    border: 2px solid white;
+    border: 2px solid #786752a0;
     border-radius: 10px;
   }
 
