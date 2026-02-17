@@ -2,12 +2,11 @@
 
 import { ThemeProvider } from "styled-components";
 import { GlobalStyle } from "./globalstyle";
-import { theme } from "../theme";
-
+import { lightTheme } from "../theme/theme";
 
 export function ThemeProviders({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={lightTheme}>
       <GlobalStyle />
       {children}
     </ThemeProvider>

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import Logo from "@/src/assets/images/logos/Ahara01.png";
+import Logo from "@/src/assets/images/logos/Ahara02.png";
 import {
   HeaderWrapper,
   HeaderInner,

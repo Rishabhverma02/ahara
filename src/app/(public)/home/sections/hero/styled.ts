@@ -3,7 +3,7 @@ import styled from "styled-components";
 /* Page-level hero */
 export const HeroWrapper = styled.section`
   width: 100%;
-  // min-height: 100vh
+  background: #EACEA7;
   display: flex;
   align-items: center;
   justify-content: center;

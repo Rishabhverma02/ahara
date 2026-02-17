@@ -1,3 +1,5 @@
+import { COLOR } from "./Color";
+
 export interface AppTheme {
-  COLOR: typeof import('./Color').COLOR;
+  COLOR: typeof COLOR;
 }

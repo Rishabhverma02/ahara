@@ -13,7 +13,6 @@ export const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-    background-color: #EACEA7;
     font-family: inherit;
   }
 
