@@ -1,30 +1,61 @@
-import { IconCard } from "@/src/components";
-import test from "@/src/assets/images/aharcutimg (1).png"
-import React from "react";
+"use client";
+
+import React from 'react';
+import { 
+  WhyAharaWrapper, 
+  WhyAharaContainer, 
+  SectionTitle, 
+  FeatureGrid, 
+  FeatureItem, 
+  IconCircle, 
+  FeatureHeading, 
+  FeatureDesc 
+} from './styled';
+import { HiOutlineHeart, HiOutlineSparkles, HiOutlineShieldCheck, HiOutlineSun, HiOutlineCheckBadge } from 'react-icons/hi2';
 
 export const WhyWeExist = () => {
-  return (
-    <>
-      <main
-        style={{
-          width: "100vw",
-          height: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "10px",
-        }}
-      >
-        <div>WhyWeExist</div>
+  const features = [
+    {
+      icon: <HiOutlineHeart />,
+      title: "Clean Label",
+      desc: "No hidden chemicals or artificial preservatives. Just pure goodness."
+    },
+    {
+      icon: <HiOutlineSparkles />,
+      title: "Ancient Wisdom",
+      desc: "Rooted in time-tested Ayurvedic principles for modern health."
+    },
+    {
+      icon: <HiOutlineShieldCheck />,
+      title: "High Quality",
+      desc: "Sourced from the best farms with rigorous quality standards."
+    },
+    {
+      icon: <HiOutlineSun />,
+      title: "Holistic Health",
+      desc: "Designed to nourish both your body and your mind."
+    },
+    {
+      icon: <HiOutlineCheckBadge />,
+      title: "Trustworthy",
+      desc: "Transparent sourcing and honest communication always."
+    }
+  ];
 
-        <IconCard
-          image={test}
-          title="Porsche 911"
-          subtitle="GT3 RS"
-          description="Timeless, iconic and unapologetically analog — this Porsche 911 embodies the soul of Stuttgart’s finest era."
-          tags={["Ice grey", "3.2s", "Manual"]}
-        />
-      </main>
-    </>
+  return (
+    <WhyAharaWrapper>
+      <WhyAharaContainer>
+        <SectionTitle>Why AHAARA</SectionTitle>
+        <FeatureGrid>
+          {features.map((item, index) => (
+            <FeatureItem key={index}>
+              <IconCircle>{item.icon}</IconCircle>
+              <FeatureHeading>{item.title}</FeatureHeading>
+              <FeatureDesc>{item.desc}</FeatureDesc>
+            </FeatureItem>
+          ))}
+        </FeatureGrid>
+      </WhyAharaContainer>
+    </WhyAharaWrapper>
   );
 };

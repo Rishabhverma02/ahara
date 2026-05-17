@@ -2,14 +2,17 @@
 
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import Logo from "@/src/assets/images/logos/Ahara02.png";
+import Logo from "@/src/assets/images/Logo.png";
 import {
   HeaderWrapper,
   HeaderInner,
   LogoWrapper,
-  NavWrapper,
+  NavWrapper, 
   NavItem,
-  SignInButton,
+  ActionsWrapper,
+  DesktopActions,
+  ActionIcon,
+  CartBadge,
   DrawerOverlay,
   Drawer,
   CloseButton,
@@ -19,15 +22,15 @@ import {
 
 import { NavItemTypes } from "./types";
 import { usePathname } from "next/navigation";
-import { HiMenuAlt3, HiX } from "react-icons/hi";
+import { HiMenuAlt3, HiX, HiOutlineSearch, HiOutlineHeart, HiOutlineUser, HiOutlineShoppingBag } from "react-icons/hi";
 
 const navItems: NavItemTypes[] = [
-  { label: "Home", link: "home" },
-  { label: "Expertise", link: "expertise" },
-  { label: "About", link: "about" },
-  { label: "Skills", link: "skills" },
-  { label: "Projects", link: "projects" },
-  { label: "Contact", link: "contact" },
+  { label: "Home", link: "/" },
+  { label: "Shop", link: "/shop" },
+  { label: "Recipes", link: "/recipes" }, 
+  { label: "Journal", link: "/journal" },
+  { label: "About", link: "/about" },
+  { label: "FAQ", link: "/faq" },
 ];
 
 export const Header = () => {
@@ -69,17 +72,35 @@ export const Header = () => {
 
           {/* Center: Navigation */}
           <NavWrapper>
-            <NavItem $active>Home</NavItem>
-            <NavItem>Products</NavItem>
-            <NavItem>About</NavItem>
-            <NavItem>Contact</NavItem>
+            {navItems.map((item) => (
+              <NavItem key={item.label} $active={item.label === "Home"}>
+                {item.label}
+              </NavItem>
+            ))}
           </NavWrapper>
 
-          {/* Right: Sign In */}
-          <SignInButton>Sign In</SignInButton>
-          <HamburgerButton onClick={openDrawer} aria-label="Open Menu">
-            <HiMenuAlt3 />
-          </HamburgerButton>
+          {/* Right: Actions */}
+          <ActionsWrapper>
+            <DesktopActions>
+              <ActionIcon aria-label="Search">
+                <HiOutlineSearch />
+              </ActionIcon>
+              <ActionIcon aria-label="Wishlist">
+                <HiOutlineHeart />
+              </ActionIcon>
+              <ActionIcon aria-label="Cart">
+                <HiOutlineShoppingBag />
+                <CartBadge>0</CartBadge>
+              </ActionIcon>
+              <ActionIcon aria-label="User Profile">
+                <HiOutlineUser />
+              </ActionIcon>
+            </DesktopActions>
+            
+            <HamburgerButton onClick={openDrawer} aria-label="Open Menu">
+              <HiMenuAlt3 />
+            </HamburgerButton>
+          </ActionsWrapper>
         </HeaderInner>
       </HeaderWrapper>
 

@@ -92,26 +92,57 @@ export const NavItem = styled.button<{ $active?: boolean }>`
 `;
 
 /* Sign in button */
-export const SignInButton = styled.button`
-  padding: 10px 22px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  color: #7E7C2A;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
+export const ActionsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
 
-  &:hover {
-    background: rgba(255, 255, 255, 0.6);
+  @media (max-width: 1080.98px) {
+    gap: 12px;
   }
+`;
 
-    @media (max-width: 1080.98px) {
+export const DesktopActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 768px) {
     display: none;
   }
+`;
+
+export const ActionIcon = styled.button`
+  background: none;
+  border: none;
+  font-size: 22px;
+  cursor: pointer;
+  color: #7E7C2A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+`;
+
+export const CartBadge = styled.span`
+  position: absolute;
+  top: -5px;
+  right: -8px;
+  background: #7E7C2A;
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const DrawerOverlay = styled.div`

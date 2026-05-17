@@ -1,10 +1,27 @@
-import { Hero, WhyWeExist } from "./sections";
+import {
+  AncientIngredients,
+  BestSellers,
+  Community,
+  FeaturedSection,
+  Hero,
+  Journal,
+  Testimonials,
+  TrustBar,
+  WhyWeExist,
+} from "./sections";
 
 export default function Home() {
   return (
     <>
-    <Hero/>
-    <WhyWeExist/>
+      <Hero />
+      <TrustBar />
+      <BestSellers />
+      <AncientIngredients />
+      <WhyWeExist />
+      <FeaturedSection />
+      <Testimonials />
+      <Journal />
+      <Community />
     </>
   );
 }
