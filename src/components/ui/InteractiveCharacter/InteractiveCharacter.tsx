@@ -154,6 +154,7 @@ export const InteractiveCharacter: React.FC = () => {
           .to(char, {
             x: -300, // Move to center-right
             y: 650,  // Move lower
+            // scale: 0.7, // Reduce scale to 0.7 bcz it looks big compared to others
             duration: 2,
             ease: "sine.inOut",
           })
@@ -164,6 +165,7 @@ export const InteractiveCharacter: React.FC = () => {
           .set(pThree, { autoAlpha: 1 })
           .to(char, {
             y: 640,
+            // scale: 1, // Restore original scale
             duration: 0.5,
             ease: "sine.inOut",
           })

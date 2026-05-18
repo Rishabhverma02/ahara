@@ -1,9 +1,10 @@
 import styled from "styled-components";
+import heroBg from "@/src/assets/images/section-images/all-in-one.png";
 
 export const FeaturedWrapper = styled.section`
   width: 100%;
   padding: 120px 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('https://images.unsplash.com/photo-1512149177596-f817c7ef5d4c?auto=format&fit=crop&q=80');
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroBg.src});
   background-size: cover;
   background-position: center;
   background-attachment: fixed;

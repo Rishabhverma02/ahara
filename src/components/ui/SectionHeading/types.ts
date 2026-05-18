@@ -1,5 +1,5 @@
 export interface SectionHeadingProps {
-  title: string;
+  title?: string;
   desc?: string;
   subHeading?: string;
   align?: Alignment;

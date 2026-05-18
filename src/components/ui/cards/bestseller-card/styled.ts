@@ -13,24 +13,34 @@ export const fadeInUp = keyframes`
 
 export const CardWrapper = styled.div<{ $animate?: boolean }>`
   background: white;
-  border-radius: 32px;
-  padding: 16px;
+  border-radius: 18px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-  box-shadow: 0 10px 40px rgba(0,0,0,0.04);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
   cursor: pointer;
 
   opacity: 0;
-  ${({ $animate }) => $animate && css`
-    animation: ${fadeInUp} 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
-    &:nth-child(1) { animation-delay: 0.15s; }
-    &:nth-child(2) { animation-delay: 0.3s; }
-    &:nth-child(3) { animation-delay: 0.45s; }
-    &:nth-child(4) { animation-delay: 0.6s; }
-  `}
+      &:nth-child(1) {
+        animation-delay: 0.15s;
+      }
+      &:nth-child(2) {
+        animation-delay: 0.3s;
+      }
+      &:nth-child(3) {
+        animation-delay: 0.45s;
+      }
+      &:nth-child(4) {
+        animation-delay: 0.6s;
+      }
+    `}
 
   &:hover {
     transform: translateY(-12px) scale(1.02);
@@ -40,10 +50,10 @@ export const CardWrapper = styled.div<{ $animate?: boolean }>`
 
 export const ImageContainer = styled.div<{ $bgColor: string }>`
   width: 100%;
-  aspect-ratio: 4/4.5;
-  border-radius: 24px;
+  aspect-ratio: 4/4;
+  border-radius: 6px;
   position: relative;
-  background: ${props => props.$bgColor};
+  background: ${(props) => props.$bgColor};
   overflow: hidden;
   transition: background-color 0.3s ease;
 `;
@@ -77,7 +87,7 @@ export const PriceTag = styled.div`
   color: #1a1a1a;
   z-index: 10;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  
+
   &::before {
     content: "";
     position: absolute;
@@ -87,7 +97,7 @@ export const PriceTag = styled.div`
     height: 24px;
     background: radial-gradient(circle at 0 100%, transparent 24px, white 25px);
   }
-  
+
   &::after {
     content: "";
     position: absolute;
@@ -113,7 +123,7 @@ export const ProductHeader = styled.div`
 `;
 
 export const ProductName = styled.h3`
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   color: #7e7c2a;
   margin: 0;
@@ -138,15 +148,15 @@ export const OrderLink = styled.div`
   transition: all 0.3s ease;
 
   ${CardWrapper}:hover & {
-    color: #7E7C2A;
-    border-color: #7E7C2A;
+    color: #7e7c2a;
+    border-color: #7e7c2a;
   }
 `;
 
 export const OrderArrow = styled.span`
   display: inline-block;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  
+
   ${CardWrapper}:hover & {
     transform: translate(3px, -3px);
   }
@@ -156,11 +166,12 @@ export const TagsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  padding: 10px 0px;
 `;
 
-export const Tag = styled.span<{ $bgColor: string, $textColor: string }>`
-  background: ${props => props.$bgColor};
-  color: ${props => props.$textColor};
+export const Tag = styled.span<{ $bgColor: string; $textColor: string }>`
+  background: ${(props) => props.$bgColor};
+  color: ${(props) => props.$textColor};
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 11px;
@@ -169,6 +180,6 @@ export const Tag = styled.span<{ $bgColor: string, $textColor: string }>`
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   }
 `;

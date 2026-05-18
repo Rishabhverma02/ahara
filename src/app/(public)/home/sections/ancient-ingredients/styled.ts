@@ -3,21 +3,26 @@ import styled from "styled-components";
 export const AncientIngredientsWrapper = styled.section`
   width: 100%;
   padding: 100px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: #fdfaf5;
 `;
 
 export const AncientIngredientsContainer = styled.div`
-  width: 92%;
-  max-width: 1400px;
-  margin: 0 auto;
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 38px;
 `;
 
 export const SectionTitle = styled.h2`
   font-size: 36px;
   font-weight: 800;
-  color: #2D2D2D;
+  color: #2d2d2d;
   text-align: center;
-  margin-bottom: 60px;
 `;
 
 export const IngredientGrid = styled.div`
@@ -58,7 +63,7 @@ export const IngredientContent = styled.div`
 export const IngredientName = styled.h3`
   font-size: 24px;
   font-weight: 700;
-  color: #2D2D2D;
+  color: #2d2d2d;
   margin: 0;
 `;
 
@@ -71,14 +76,14 @@ export const IngredientDescription = styled.p`
 export const ExploreLink = styled.a`
   font-size: 16px;
   font-weight: 700;
-  color: #7E7C2A;
+  color: #7e7c2a;
   text-decoration: none;
   display: flex;
   align-items: center;
   gap: 5px;
 
   &:after {
-    content: '→';
+    content: "→";
     transition: transform 0.2s;
   }
 

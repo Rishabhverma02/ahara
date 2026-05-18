@@ -3,30 +3,28 @@ import styled from "styled-components";
 export const WhyAharaWrapper = styled.section`
   width: 100%;
   padding: 100px 0;
-  background: white;
+  background: #7e7d2a13;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const WhyAharaContainer = styled.div`
-  width: 92%;
-  max-width: 1400px;
-  margin: 0 auto;
-  text-align: center;
-`;
-
-export const SectionTitle = styled.h2`
-  font-size: 36px;
-  font-weight: 800;
-  color: #2D2D2D;
-  margin-bottom: 60px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 30px;
 `;
 
 export const FeatureGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 30px;
 
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 640px) {
@@ -49,12 +47,12 @@ export const IconCircle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #7E7C2A;
+  color: #7e7c2a;
   font-size: 32px;
   transition: all 0.3s ease;
 
   &:hover {
-    background: #7E7C2A;
+    background: #7e7c2a;
     color: white;
     transform: scale(1.1);
   }
@@ -63,7 +61,7 @@ export const IconCircle = styled.div`
 export const FeatureHeading = styled.h4`
   font-size: 18px;
   font-weight: 700;
-  color: #2D2D2D;
+  color: #2d2d2d;
   margin: 0;
 `;
 
@@ -71,4 +69,5 @@ export const FeatureDesc = styled.p`
   font-size: 14px;
   color: #666;
   line-height: 1.5;
+  text-align: center;
 `;
