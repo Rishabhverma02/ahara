@@ -1,5 +1,6 @@
 import {
   AncientIngredients,
+  AssistantIntro,
   BestSellers,
   Community,
   FeaturedSection,
@@ -23,7 +24,9 @@ export default function Home() {
       <FeaturedSection />
       <Testimonials />
       <Journal />
+      <AssistantIntro />
       <Community />
     </>
   );
 }
+

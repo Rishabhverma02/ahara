@@ -21,7 +21,7 @@ export const WhyAharaContainer = styled.div`
 export const FeatureGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 30px;
+  gap: 40px;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
@@ -36,7 +36,8 @@ export const FeatureItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 5px;
 `;
 
 export const IconCircle = styled.div`
@@ -48,8 +49,12 @@ export const IconCircle = styled.div`
   justify-content: center;
   align-items: center;
   color: #7e7c2a;
-  font-size: 32px;
   transition: all 0.3s ease;
+  box-shadow: 1px 2px 3px 1px #00000026;
+
+  svg {
+    font-size: 28px;
+  }
 
   &:hover {
     background: #7e7c2a;
@@ -59,10 +64,10 @@ export const IconCircle = styled.div`
 `;
 
 export const FeatureHeading = styled.h4`
+  margin-top: 12px;
   font-size: 18px;
   font-weight: 700;
-  color: #2d2d2d;
-  margin: 0;
+  color: #5a591eff;
 `;
 
 export const FeatureDesc = styled.p`

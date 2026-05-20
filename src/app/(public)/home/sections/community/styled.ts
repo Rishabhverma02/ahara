@@ -54,7 +54,7 @@ export const Input = styled.input`
 
 export const SubmitButton = styled.button`
   padding: 18px 40px;
-  background: #2D2D2D;
+  background: #7E7C2A;
   color: white;
   border: none;
   border-radius: 50px;

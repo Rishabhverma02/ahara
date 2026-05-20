@@ -9,35 +9,34 @@ import {
   FeatureHeading,
   FeatureDesc,
 } from "./styled";
-import {
-  HiOutlineHeart,
-  HiOutlineSparkles,
-  HiOutlineShieldCheck,
-  HiOutlineSun,
-} from "react-icons/hi2";
+
 import { SectionHeading } from "@/src/components";
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import Diversity1TwoToneIcon from '@mui/icons-material/Diversity1TwoTone';
+import EmojiFoodBeverageTwoToneIcon from '@mui/icons-material/EmojiFoodBeverageTwoTone';
+import AutoAwesomeTwoToneIcon from '@mui/icons-material/AutoAwesomeTwoTone';
 
 export const WhyWeExist = () => {
   const features = [
     {
-      icon: <HiOutlineHeart />,
+      icon: <FavoriteTwoToneIcon />,
       title: "Clean Label",
-      desc: "No hidden chemicals or artificial preservatives. Just pure goodness.",
+      desc: "100% pure & additive-free.",
     },
     {
-      icon: <HiOutlineSparkles />,
+      icon: <Diversity1TwoToneIcon />,
       title: "Ancient Wisdom",
-      desc: "Rooted in time-tested Ayurvedic principles for modern health.",
+      desc: "Time-tested Ayurvedic principles.",
     },
     {
-      icon: <HiOutlineShieldCheck />,
+      icon: <AutoAwesomeTwoToneIcon />,
       title: "High Quality",
-      desc: "Sourced from the best farms with rigorous quality standards.",
+      desc: "Sourced from premier farms.",
     },
     {
-      icon: <HiOutlineSun />,
+      icon: <EmojiFoodBeverageTwoToneIcon/>,
       title: "Holistic Health",
-      desc: "Designed to nourish both your body and your mind.",
+      desc: "Nourishing body and mind.",
     },
   ];
 

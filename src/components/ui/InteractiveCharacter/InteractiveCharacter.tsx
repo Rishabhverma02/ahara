@@ -73,10 +73,12 @@ export const InteractiveCharacter: React.FC = () => {
         // Rope is offscreen. Character starts in Rope-Climbing Pose (ch1) holding the rope.
         gsap.set(rope, { y: 0 });
         gsap.set(char, { y: 0, x: 0, rotation: 0, scale: 1 });
-        
+
         // Stack-toggle: Only show ch1, hide the rest
         gsap.set(p1, { autoAlpha: 1 });
-        gsap.set([pPara, pLSide, pRSide, pThree, pThreeOpp, pBack], { autoAlpha: 0 });
+        gsap.set([pPara, pLSide, pRSide, pThree, pThreeOpp, pBack], {
+          autoAlpha: 0,
+        });
 
         // 2. HERO -> TRUST BAR (Scroll 0% to 15%):
         // Rope drops from the top right, and the character slides down holding the rope.
@@ -89,7 +91,7 @@ export const InteractiveCharacter: React.FC = () => {
               duration: 1.5,
               ease: "power2.out",
             },
-            0
+            0,
           )
           // Swing elasticity when reaching the bottom of the rope
           .to(char, { rotation: -3, duration: 0.4, ease: "power1.inOut" })
@@ -107,13 +109,13 @@ export const InteractiveCharacter: React.FC = () => {
             char,
             {
               x: -120, // Drift left
-              y: 580,  // Slide lower
+              y: 580, // Slide lower
               rotation: -8, // Tilt parachute left
               scale: 1.1, // Float slightly closer
               duration: 1.5,
               ease: "sine.inOut",
             },
-            "<"
+            "<",
           )
           // Parachute bounce (riding air currents)
           .to(char, { y: 550, rotation: 6, duration: 0.8, ease: "sine.inOut" })
@@ -123,7 +125,7 @@ export const InteractiveCharacter: React.FC = () => {
           // Glide further left across the page with parachute!
           .to(char, {
             x: -1200, // Glide all the way to the far-left corner/end with the parachute
-            y: 750,  // Lift up slightly
+            y: 750, // Lift up slightly
             rotation: 8,
             duration: 2.2,
             ease: "sine.inOut",
@@ -137,14 +139,20 @@ export const InteractiveCharacter: React.FC = () => {
           .set(pThreeOpp, { autoAlpha: 1 })
           .to(char, {
             x: -1400, // Settle at the far-left corner/end
-            y: 420,  // Stand altitude
+            y: 720, // Stand altitude
             rotation: 0,
             scale: 1,
             duration: 1.2,
             ease: "power2.out",
           })
           // Soft idle bobble (breathing) while standing
-          .to(char, { y: 425, duration: 0.6, yoyo: true, repeat: 1, ease: "sine.inOut" })
+          .to(char, {
+            y: 425,
+            duration: 0.6,
+            yoyo: true,
+            repeat: 1,
+            ease: "sine.inOut",
+          })
 
           // 6. WHY WE EXIST -> JOURNAL (Scroll 75% to 88%):
           // Move from far-left back to center (moving to the right).
@@ -153,7 +161,7 @@ export const InteractiveCharacter: React.FC = () => {
           .set(pRSide, { autoAlpha: 1 })
           .to(char, {
             x: -300, // Move to center-right
-            y: 650,  // Move lower
+            y: 650, // Move lower
             // scale: 0.7, // Reduce scale to 0.7 bcz it looks big compared to others
             duration: 2,
             ease: "sine.inOut",
@@ -198,7 +206,9 @@ export const InteractiveCharacter: React.FC = () => {
 
         // Use Three-Fourths standing pose for mobile
         gsap.set(pThree, { autoAlpha: 1 });
-        gsap.set([p1, pPara, pLSide, pRSide, pThreeOpp, pBack], { autoAlpha: 0 });
+        gsap.set([p1, pPara, pLSide, pRSide, pThreeOpp, pBack], {
+          autoAlpha: 0,
+        });
 
         // Loop a gentle floating bobble so it feels alive
         gsap.to(char, {
@@ -214,7 +224,7 @@ export const InteractiveCharacter: React.FC = () => {
         mm.revert();
       };
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   return (

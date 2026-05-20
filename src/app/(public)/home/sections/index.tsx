@@ -6,4 +6,5 @@ export * from "./ancient-ingredients";
 export * from "./featured";
 export * from "./testimonials";
 export * from "./journal";
+export * from "./climate-helper";
 export * from "./community";

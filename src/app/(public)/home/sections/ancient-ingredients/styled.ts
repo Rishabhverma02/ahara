@@ -63,7 +63,7 @@ export const IngredientContent = styled.div`
 export const IngredientName = styled.h3`
   font-size: 24px;
   font-weight: 700;
-  color: #2d2d2d;
+  color: #2d2d2dbc;
   margin: 0;
 `;
 
