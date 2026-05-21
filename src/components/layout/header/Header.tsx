@@ -7,7 +7,7 @@ import {
   HeaderWrapper,
   HeaderInner,
   LogoWrapper,
-  NavWrapper, 
+  NavWrapper,
   NavItem,
   ActionsWrapper,
   DesktopActions,
@@ -22,12 +22,19 @@ import {
 
 import { NavItemTypes } from "./types";
 import { usePathname } from "next/navigation";
-import { HiMenuAlt3, HiX, HiOutlineSearch, HiOutlineHeart, HiOutlineUser, HiOutlineShoppingBag } from "react-icons/hi";
+import {
+  HiMenuAlt3,
+  HiX,
+  HiOutlineSearch,
+  HiOutlineHeart,
+  HiOutlineUser,
+  HiOutlineShoppingBag,
+} from "react-icons/hi";
 
 const navItems: NavItemTypes[] = [
   { label: "Home", link: "/" },
   { label: "Shop", link: "/shop" },
-  { label: "Recipes", link: "/recipes" }, 
+  { label: "Recipes", link: "/recipes" },
   { label: "Journal", link: "/journal" },
   { label: "About", link: "/about" },
   { label: "FAQ", link: "/faq" },
@@ -65,12 +72,10 @@ export const Header = () => {
     <>
       <HeaderWrapper animate={animate}>
         <HeaderInner>
-          {/* Left: Logo */}
           <LogoWrapper>
             <Image src={Logo} alt="Ahara Logo" width={160} priority />
           </LogoWrapper>
 
-          {/* Center: Navigation */}
           <NavWrapper>
             {navItems.map((item) => (
               <NavItem key={item.label} $active={item.label === "Home"}>
@@ -79,7 +84,6 @@ export const Header = () => {
             ))}
           </NavWrapper>
 
-          {/* Right: Actions */}
           <ActionsWrapper>
             <DesktopActions>
               <ActionIcon aria-label="Search">
@@ -96,7 +100,7 @@ export const Header = () => {
                 <HiOutlineUser />
               </ActionIcon>
             </DesktopActions>
-            
+
             <HamburgerButton onClick={openDrawer} aria-label="Open Menu">
               <HiMenuAlt3 />
             </HamburgerButton>

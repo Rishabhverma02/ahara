@@ -1,22 +1,17 @@
 "use client";
 
+import React from "react";
 import {
   AncientIngredientsWrapper,
   AncientIngredientsContainer,
   IngredientGrid,
-  IngredientCard,
-  IngredientImage,
-  IngredientContent,
-  IngredientName,
-  IngredientDescription,
-  ExploreLink,
 } from "./styled";
 
 import Makhana from "@/src/assets/images/section-images/foxnuts.webp";
 import Sattu from "@/src/assets/images/section-images/Sattu.png";
 import Moringa from "@/src/assets/images/section-images/moringa.webp";
 
-import { SectionHeading } from "@/src/components";
+import { SectionHeading, IngredientCard } from "@/src/components";
 
 const ingredients = [
   {
@@ -24,25 +19,59 @@ const ingredients = [
     description:
       "The 'King of Ayurvedic Herbs', known for its ability to reduce stress and boost energy levels naturally.",
     image: Makhana,
+    articleUrl: "https://www.healthline.com/nutrition/makhana-benefits",
   },
   {
     name: "Sattu",
     description:
       "Golden spice with powerful anti-inflammatory properties, used for centuries in traditional Indian medicine.",
     image: Sattu,
+    articleUrl: "https://www.healthians.com/blog/sattu-benefits",
   },
   {
     name: "Moringa",
     description:
       "A nutrient-dense superfood packed with vitamins, minerals, and antioxidants for overall vitality.",
     image: Moringa,
+    articleUrl: "https://www.gardenia.net/plant/moringa-oleifera-moringa-drumstick-tree",
   },
 ];
 
 export const AncientIngredients = () => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const currentElement = sectionRef.current;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (currentElement) {
+            observer.unobserve(currentElement);
+          }
+        }
+      },
+      {
+        threshold: 0.1,
+      }
+    );
+
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, []);
+
   return (
     <AncientIngredientsWrapper>
-      <AncientIngredientsContainer>
+      <AncientIngredientsContainer ref={sectionRef}>
         <SectionHeading
           title="Ancient Ingredients"
           subHeading="Nature's Bounty"
@@ -51,27 +80,19 @@ export const AncientIngredients = () => {
         />
         <IngredientGrid>
           {ingredients.map((item, index) => (
-            <IngredientCard key={index}>
-              <IngredientImage
-                style={{
-                  backgroundImage: `url(${item.image.src})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              />
-              <IngredientContent>
-                <IngredientName>{item.name}</IngredientName>
-                <IngredientDescription>
-                  {item.description}
-                </IngredientDescription>
-                <ExploreLink href={`/ingredients/${item.name.toLowerCase()}`}>
-                  Explore
-                </ExploreLink>
-              </IngredientContent>
-            </IngredientCard>
+            <IngredientCard
+              key={index}
+              title={item.name}
+              description={item.description}
+              image={item.image}
+              exploreUrl={item.articleUrl}
+              $animate={isVisible}
+              $delay={index * 150}
+            />
           ))}
         </IngredientGrid>
       </AncientIngredientsContainer>
     </AncientIngredientsWrapper>
   );
 };
+

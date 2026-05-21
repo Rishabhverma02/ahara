@@ -20,25 +20,25 @@ import {
   ReadMoreLink,
 } from "./styled";
 import { SectionHeading } from "@/src/components";
+import journal_1 from "@/src/assets/images/section-images/Moringa2.webp";
+import journal_2 from "@/src/assets/images/section-images//makahannn.webp";
 
 const posts = [
   {
-    title: "5 Ancient Superfoods to Boost Your Immunity",
-    date: "May 10, 2024",
+    title: "Ancient Superfoods to Boost Your Immunity",
+    date: "Jan 20, 2023",
     readTime: "6 min read",
     category: "Nutrition",
     featured: true,
-    image:
-      "https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=900&auto=format&fit=crop",
+    image: journal_1.src,
   },
   {
     title: "The Art of Mindful Snacking: Tips from Experts",
     date: "May 05, 2024",
-    readTime: "4 min read",
+    readTime: "5 min read",
     category: "Wellness",
     featured: false,
-    image:
-      "https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?q=80&w=700&auto=format&fit=crop",
+    image: journal_2.src,
   },
   {
     title: "Why Traditional Indian Wisdom is the Future of Wellness",
@@ -68,7 +68,6 @@ export const Journal = () => {
         </SectionHeader>
 
         <BlogGrid>
-          {/* Featured large card */}
           <FeaturedCard>
             <BlogImageWrapper>
               <BlogImage
@@ -87,14 +86,16 @@ export const Journal = () => {
                   <span>{featured.readTime}</span>
                 </BlogMeta>
                 <BlogTitle>{featured.title}</BlogTitle>
-                <ReadMoreLink href="/journal/post-slug" className="read-more-btn">
+                <ReadMoreLink
+                  href={"https://pmc.ncbi.nlm.nih.gov/articles/PMC9916933/"}
+                  className="read-more-btn"
+                >
                   Read Article
                 </ReadMoreLink>
               </BlogContent>
             </BlogImageWrapper>
           </FeaturedCard>
 
-          {/* Two stacked secondary cards */}
           {secondary.map((post, index) => (
             <SecondaryCard key={index}>
               <BlogImageWrapper>
@@ -114,7 +115,10 @@ export const Journal = () => {
                     <span>{post.readTime}</span>
                   </BlogMeta>
                   <BlogTitle>{post.title}</BlogTitle>
-                  <ReadMoreLink href="/journal/post-slug" className="read-more-btn">
+                  <ReadMoreLink
+                    href="https://www.apollo247.com/blog/article/makhana-benefits-traditional-superfood-and-a-healthy-snacking-alternative"
+                    className="read-more-btn"
+                  >
                     Read Article
                   </ReadMoreLink>
                 </BlogContent>

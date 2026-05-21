@@ -64,7 +64,7 @@ export const SubmitButton = styled.button`
   transition: all 0.3s ease;
 
   &:hover {
-    background: #000;
+    background: #676623ff;
     transform: translateY(-2px);
   }
 `;

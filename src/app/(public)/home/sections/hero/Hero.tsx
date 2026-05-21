@@ -29,45 +29,107 @@ import {
   HiOutlineSparkles,
   HiOutlineFire,
 } from "react-icons/hi2";
-import { 
-  GiOakLeaf, 
-  GiMapleLeaf, 
-  GiLeafSkeleton, 
+import {
+  GiOakLeaf,
+  GiMapleLeaf,
+  GiLeafSkeleton,
   GiFallingLeaf,
-  GiVineFlower 
+  GiVineFlower,
 } from "react-icons/gi";
 
 export const Hero = () => {
   return (
     <HeroWrapper>
-      {/* Background Decorative Leaves */}
-      <DecorativeLeaf $top="5%" $left="2%" $size="120px" $color="#7E7C2A" $opacity={0.15} $animType={1} $duration="25s">
+      <DecorativeLeaf
+        $top="5%"
+        $left="2%"
+        $size="120px"
+        $color="#7E7C2A"
+        $opacity={0.15}
+        $animType={1}
+        $duration="25s"
+      >
         <GiOakLeaf />
       </DecorativeLeaf>
-      <DecorativeLeaf $top="15%" $right="5%" $size="180px" $color="#a3a14d" $opacity={0.12} $animType={2} $duration="30s">
+      <DecorativeLeaf
+        $top="15%"
+        $right="5%"
+        $size="180px"
+        $color="#a3a14d"
+        $opacity={0.12}
+        $animType={2}
+        $duration="30s"
+      >
         <GiMapleLeaf />
       </DecorativeLeaf>
-      <DecorativeLeaf $bottom="10%" $left="8%" $size="150px" $color="#5d5b1f" $opacity={0.18} $animType={3} $duration="22s">
+      <DecorativeLeaf
+        $bottom="10%"
+        $left="8%"
+        $size="150px"
+        $color="#5d5b1f"
+        $opacity={0.18}
+        $animType={3}
+        $duration="22s"
+      >
         <GiLeafSkeleton />
       </DecorativeLeaf>
-      <DecorativeLeaf $bottom="20%" $right="15%" $size="100px" $color="#7E7C2A" $opacity={0.14} $animType={1} $duration="28s">
+      <DecorativeLeaf
+        $bottom="20%"
+        $right="15%"
+        $size="100px"
+        $color="#7E7C2A"
+        $opacity={0.14}
+        $animType={1}
+        $duration="28s"
+      >
         <GiLeafSkeleton />
       </DecorativeLeaf>
-      <DecorativeLeaf $top="40%" $left="45%" $size="80px" $color="#7E7C2A" $opacity={0.1} $animType={2} $duration="35s">
+      <DecorativeLeaf
+        $top="40%"
+        $left="45%"
+        $size="80px"
+        $color="#7E7C2A"
+        $opacity={0.1}
+        $animType={2}
+        $duration="35s"
+      >
         <GiFallingLeaf />
       </DecorativeLeaf>
-      <DecorativeLeaf $top="60%" $right="2%" $size="200px" $color="#a3a14d" $opacity={0.08} $animType={3} $duration="40s">
+      <DecorativeLeaf
+        $top="60%"
+        $right="2%"
+        $size="200px"
+        $color="#a3a14d"
+        $opacity={0.08}
+        $animType={3}
+        $duration="40s"
+      >
         <GiVineFlower />
       </DecorativeLeaf>
-      <DecorativeLeaf $bottom="40%" $left="-5%" $size="160px" $color="#7E7C2A" $opacity={0.12} $animType={1} $duration="24s">
+      <DecorativeLeaf
+        $bottom="40%"
+        $left="-5%"
+        $size="160px"
+        $color="#7E7C2A"
+        $opacity={0.12}
+        $animType={1}
+        $duration="24s"
+      >
         <GiOakLeaf />
       </DecorativeLeaf>
-      <DecorativeLeaf $top="10%" $left="40%" $size="60px" $color="#5d5b1f" $opacity={0.1} $animType={2} $duration="32s">
+      <DecorativeLeaf
+        $top="10%"
+        $left="40%"
+        $size="60px"
+        $color="#5d5b1f"
+        $opacity={0.1}
+        $animType={2}
+        $duration="32s"
+      >
         <GiLeafSkeleton />
       </DecorativeLeaf>
 
       <HeroGrid>
-        {/* Left: Content */}
         <HeroContent>
           <HeroTitle>
             <span className="line">
@@ -93,7 +155,6 @@ export const Hero = () => {
           </HeroButtonGroup>
         </HeroContent>
 
-        {/* Right: Image */}
         <HeroImageWrapper>
           <FloatingBadge $top="10%" $left="-5%" $delay="0.2s">
             <HiOutlineCheckBadge /> 100% Organic
@@ -105,12 +166,10 @@ export const Hero = () => {
             <HiOutlineFire /> High Protein
           </FloatingBadge>
 
-          {/* Main Product Jar */}
           <FloatingImage $width="300px" $zIndex={5} $delay="0s">
             <Image src={makhanaJar} alt="Makhana Jar" priority />
           </FloatingImage>
 
-          {/* Scattered Ingredients/Products */}
           <FloatingImage
             $width="180px"
             $top="15%"

@@ -24,7 +24,6 @@ export const Footer = () => {
   return (
     <FooterWrapper>
       <FooterContainer>
-        {/* Column 1: About Us */}
         <FooterColumn>
           <FooterTitle>About Us</FooterTitle>
           <FooterText>
@@ -32,8 +31,7 @@ export const Footer = () => {
           </FooterText>
         </FooterColumn>
 
-        {/* Column 2: Quick Links */}
-        <FooterColumn>
+         <FooterColumn>
           <FooterTitle>Quick Links</FooterTitle>
           <FooterLink href="/shop">Shop All</FooterLink>
           <FooterLink href="/recipes">Recipes</FooterLink>
@@ -42,8 +40,7 @@ export const Footer = () => {
           <FooterLink href="/faq">FAQ</FooterLink>
         </FooterColumn>
 
-        {/* Column 3: Policies */}
-        <FooterColumn>
+         <FooterColumn>
           <FooterTitle>Policies</FooterTitle>
           <FooterLink href="/privacy">Privacy Policy</FooterLink>
           <FooterLink href="/refund">Refund Policy</FooterLink>
@@ -51,8 +48,7 @@ export const Footer = () => {
           <FooterLink href="/shipping">Shipping Policy</FooterLink>
         </FooterColumn>
 
-        {/* Column 4: Newsletter */}
-        <FooterColumn>
+           <FooterColumn>
           <FooterTitle>Newsletter</FooterTitle>
           <FooterText>Join our community for recipes, health tips and exclusive offers.</FooterText>
           <NewsletterWrapper>

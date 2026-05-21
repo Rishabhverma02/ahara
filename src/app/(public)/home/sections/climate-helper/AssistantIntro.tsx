@@ -68,7 +68,6 @@ const stats = [
 export const AssistantIntro = () => {
   return (
     <AssistantWrapper>
-      {/* Ambient glowing orbs */}
       <Orb
         $w="600px"
         $h="600px"
@@ -97,25 +96,22 @@ export const AssistantIntro = () => {
         $delay="1.5s"
       />
 
-      {/* ── 1. Headline band ── */}
       <HeadlineBand>
         <EyebrowPill>✦ Meet Your Wellness Guide</EyebrowPill>
         <MainHeading>
-          Hey, I&apos;m&nbsp;<em>Rasa!</em>
+          Hey, I&apos;m&nbsp;<em>Kairo!</em>
           <br />
           Your Ahara wellness&nbsp;assistant
         </MainHeading>
         <SubDesc>
-          Ancient wisdom meets modern AI — Rasa helps you find the right
+          Ancient wisdom meets modern AI — Kairo helps you find the right
           superfood, decode ingredients, and live cleaner every day.
         </SubDesc>
       </HeadlineBand>
 
-      {/* ── 2. Character stage with floating cards ── */}
       <Stage>
         <GroundGlow />
 
-        {/* TOP-LEFT: chat question */}
         <ChatFloat $delay="0.3s">
           <GlassPanel>
             <GlassPanelRow>
@@ -127,7 +123,6 @@ export const AssistantIntro = () => {
           </GlassPanel>
         </ChatFloat>
 
-        {/* TOP-RIGHT: social proof stat */}
         <StatFloat $delay="0.5s">
           <StatBadge>
             <StatIcon>🧠</StatIcon>
@@ -138,7 +133,6 @@ export const AssistantIntro = () => {
           </StatBadge>
         </StatFloat>
 
-        {/* BOTTOM-LEFT: quick tip badge */}
         <FloatingCard
           $delay="1.0s"
           style={{
@@ -160,7 +154,6 @@ export const AssistantIntro = () => {
           </StatBadge>
         </FloatingCard>
 
-        {/* BOTTOM-RIGHT: AI response + typing */}
         <ResponseFloat $delay="0.8s">
           <ResponseBubble>
             <ResponseText>
@@ -175,18 +168,15 @@ export const AssistantIntro = () => {
           </TypingBubble>
         </ResponseFloat>
 
-        {/* Character */}
         <CharacterImg
           src={Character.src}
-          alt="Rasa – Ahara AI wellness assistant"
+          alt="Kairo – Ahara AI wellness assistant"
         />
       </Stage>
 
-      {/* ── 3. Bottom strip ── */}
       <BottomStrip>
         <Divider />
 
-        {/* Big stats row */}
         <StatsRow>
           {stats.map((s, i) => (
             <React.Fragment key={i}>
@@ -199,20 +189,17 @@ export const AssistantIntro = () => {
           ))}
         </StatsRow>
 
-        {/* Scrolling ticker */}
         <TickerWrapper>
           <TickerTrack>
-            {/* duplicated for seamless loop */}
             {[...tickerItems, ...tickerItems].map((item, i) => (
               <TickerItem key={i}>{item}</TickerItem>
             ))}
           </TickerTrack>
         </TickerWrapper>
 
-        {/* CTA */}
         <CTAGroup>
-          <PrimaryBtn href="#chat">Chat with Rasa →</PrimaryBtn>
-          <GhostBtn href="/about">Learn more about Rasa</GhostBtn>
+          <PrimaryBtn href="#chat">Chat with Kairo →</PrimaryBtn>
+          <GhostBtn href="/about">Learn more about Kairo</GhostBtn>
         </CTAGroup>
       </BottomStrip>
     </AssistantWrapper>

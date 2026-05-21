@@ -231,16 +231,17 @@ export const AuthorRole = styled.span`
 
 export const AuthorAvatar = styled.img`
   width: 90px;
-  height: 70px;
+  height: 90px;
   border-radius: 50%;
-  object-fit: cover;
+
   background: #eee;
   border: 1px solid #f0e6d2;
 `;
 
 export const SmallAvatar = styled(AuthorAvatar)`
-  width: 36px;
-  height: 36px;
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 `;
 
 // Overlapping Avatar Card

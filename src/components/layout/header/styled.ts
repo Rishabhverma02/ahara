@@ -29,7 +29,7 @@ export const HeaderWrapper = styled.header.withConfig({
   ${({ animate }) =>
     animate
       ? css`
-          background: #fcdfb631;
+          background: #fbfbfba8;
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);

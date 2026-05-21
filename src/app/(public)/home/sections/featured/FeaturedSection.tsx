@@ -1,6 +1,5 @@
 "use client";
 
-import React from 'react';
 import { FeaturedWrapper, FeaturedContent, FeaturedTitle, FeaturedButton } from './styled';
 
 export const FeaturedSection = () => {

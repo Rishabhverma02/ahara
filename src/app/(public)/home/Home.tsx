@@ -10,12 +10,12 @@ import {
   TrustBar,
   WhyWeExist,
 } from "./sections";
-import { InteractiveCharacter } from "@/src/components";
+// import { InteractiveCharacter } from "@/src/components";
 
 export default function Home() {
   return (
     <>
-      <InteractiveCharacter />
+      {/* <InteractiveCharacter /> */}
       <Hero />
       <TrustBar />
       <BestSellers />
