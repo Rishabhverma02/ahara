@@ -1,19 +1,42 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import { text16 } from "@/src/theme/Typography";
+
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const CommunityWrapper = styled.section`
   width: 100%;
   padding: 100px 0;
   background: #fdfaf5;
   text-align: center;
+
+  @media (max-width: 768px) {
+    padding: 60px 0;
+  }
 `;
 
-export const CommunityContainer = styled.div`
+export const CommunityContainer = styled.div<{ $animate?: boolean }>`
   width: 92%;
   max-width: 800px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 30px;
+
+  opacity: 0;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `}
 `;
 
 export const CommunityTitle = styled.h2`
@@ -36,6 +59,7 @@ export const FormWrapper = styled.div`
 
   @media (max-width: 640px) {
     flex-direction: column;
+    gap: 12px;
   }
 `;
 
@@ -44,7 +68,7 @@ export const Input = styled.input`
   padding: 18px 25px;
   border-radius: 50px;
   border: 1px solid #ddd;
-  font-size: 16px;
+  ${text16};
   outline: none;
 
   &:focus {
@@ -59,7 +83,7 @@ export const SubmitButton = styled.button`
   border: none;
   border-radius: 50px;
   font-weight: 700;
-  font-size: 16px;
+  ${text16};
   cursor: pointer;
   transition: all 0.3s ease;
 

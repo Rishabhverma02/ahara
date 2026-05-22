@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import Logo from "@/src/assets/images/Logo.png";
 import {
@@ -18,6 +19,17 @@ import {
   CloseButton,
   DrawerContent,
   HamburgerButton,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerNav,
+  DrawerNavItem,
+  DrawerSearchWrapper,
+  DrawerSearchInput,
+  DrawerSearchIcon,
+  DrawerActions,
+  DrawerActionLink,
+  DrawerFooter,
+  MobileCartButton,
 } from "./styled";
 
 import { NavItemTypes } from "./types";
@@ -34,8 +46,7 @@ import {
 const navItems: NavItemTypes[] = [
   { label: "Home", link: "/" },
   { label: "Shop", link: "/shop" },
-  { label: "Recipes", link: "/recipes" },
-  { label: "Journal", link: "/journal" },
+  { label: "Ingredients", link: "/ingredients" },
   { label: "About", link: "/about" },
   { label: "FAQ", link: "/faq" },
 ];
@@ -73,12 +84,18 @@ export const Header = () => {
       <HeaderWrapper animate={animate}>
         <HeaderInner>
           <LogoWrapper>
-            <Image src={Logo} alt="Ahara Logo" width={160} priority />
+            <Link href="/">
+              <Image src={Logo} alt="Ahara Logo" width={160} priority />
+            </Link>
           </LogoWrapper>
 
           <NavWrapper>
             {navItems.map((item) => (
-              <NavItem key={item.label} $active={item.label === "Home"}>
+              <NavItem
+                key={item.label}
+                href={item.link}
+                $active={pathname === item.link || (item.link !== "/" && pathname?.startsWith(item.link))}
+              >
                 {item.label}
               </NavItem>
             ))}
@@ -101,6 +118,11 @@ export const Header = () => {
               </ActionIcon>
             </DesktopActions>
 
+            <MobileCartButton aria-label="Cart">
+              <HiOutlineShoppingBag />
+              <CartBadge>0</CartBadge>
+            </MobileCartButton>
+
             <HamburgerButton onClick={openDrawer} aria-label="Open Menu">
               <HiMenuAlt3 />
             </HamburgerButton>
@@ -111,10 +133,51 @@ export const Header = () => {
       {isOpen && (
         <DrawerOverlay onClick={closeDrawer}>
           <Drawer onClick={(e) => e.stopPropagation()}>
-            <CloseButton onClick={closeDrawer} aria-label="Close Menu">
-              <HiX />
-            </CloseButton>
-            <DrawerContent>This is sidebar</DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>MENU</DrawerTitle>
+              <CloseButton onClick={closeDrawer} aria-label="Close Menu">
+                <HiX />
+              </CloseButton>
+            </DrawerHeader>
+
+            <DrawerContent>
+              <DrawerSearchWrapper>
+                <DrawerSearchIcon>
+                  <HiOutlineSearch />
+                </DrawerSearchIcon>
+                <DrawerSearchInput type="text" placeholder="Search ingredients..." />
+              </DrawerSearchWrapper>
+ 
+              <DrawerNav>
+                {navItems.map((item) => (
+                  <DrawerNavItem
+                    key={item.label}
+                    href={item.link}
+                    $active={pathname === item.link || (item.link !== "/" && pathname?.startsWith(item.link))}
+                    onClick={closeDrawer}
+                  >
+                    {item.label}
+                  </DrawerNavItem>
+                ))}
+              </DrawerNav>
+
+              <DrawerActions>
+                <DrawerActionLink href="/wishlist" onClick={closeDrawer}>
+                  <HiOutlineHeart />
+                  <span>Wishlist</span>
+                </DrawerActionLink>
+                <DrawerActionLink href="/cart" onClick={closeDrawer}>
+                  <HiOutlineShoppingBag />
+                  <span>Cart (0)</span>
+                </DrawerActionLink>
+                <DrawerActionLink href="/profile" onClick={closeDrawer}>
+                  <HiOutlineUser />
+                  <span>Profile / Account</span>
+                </DrawerActionLink>
+              </DrawerActions>
+
+              <DrawerFooter>© {new Date().getFullYear()} Ahara. All rights reserved.</DrawerFooter>
+            </DrawerContent>
           </Drawer>
         </DrawerOverlay>
       )}

@@ -1,4 +1,16 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import { text14 } from "@/src/theme/Typography";
+
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const TestimonialsWrapper = styled.section`
   width: 100%;
@@ -9,6 +21,10 @@ export const TestimonialsWrapper = styled.section`
   align-items: center;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 60px 0;
+  }
 `;
 
 export const DecLeafTopLeft = styled.div`
@@ -24,6 +40,7 @@ export const DecLeafTopLeft = styled.div`
   @media (max-width: 768px) {
     width: 200px;
     height: 200px;
+    left: -50px;
   }
 `;
 
@@ -43,7 +60,7 @@ export const DecLeafBottomRight = styled.div`
   }
 `;
 
-export const TestimonialsContainer = styled.div`
+export const TestimonialsContainer = styled.div<{ $animate?: boolean }>`
   width: 90%;
   max-width: 1200px;
   display: flex;
@@ -51,6 +68,17 @@ export const TestimonialsContainer = styled.div`
   align-items: center;
   flex-direction: column;
   gap: 50px;
+
+  opacity: 0;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `}
+
+  @media (max-width: 768px) {
+    gap: 30px;
+  }
 `;
 
 export const TestimonialGrid = styled.div`
@@ -66,8 +94,26 @@ export const TestimonialGrid = styled.div`
     column-count: 2;
   }
 
-  @media (max-width: 640px) {
-    column-count: 1;
+  @media (max-width: 768px) {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    padding: 10px 0;
+    margin: 0;
+    column-count: auto;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    & > * {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+    }
   }
 `;
 
@@ -93,11 +139,17 @@ export const BaseCard = styled.div`
 
   &.style-a {
     padding: 30px;
+    @media (max-width: 768px) {
+      padding: 20px;
+    }
   }
 
   &.style-b {
     padding: 50px 30px 30px;
     margin-top: 34px;
+    @media (max-width: 768px) {
+      padding: 40px 20px 20px;
+    }
   }
 
   &.style-c {
@@ -129,6 +181,9 @@ export const BaseCard = styled.div`
 
   &.style-h {
     padding: 30px;
+    @media (max-width: 768px) {
+      padding: 20px;
+    }
   }
 `;
 
@@ -159,6 +214,10 @@ export const SpeechBubbleCard = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 `;
 
 // Specific Card type styling & Subcomponents
@@ -182,7 +241,7 @@ export const QuoteIconBottomRight = styled(QuoteIcon)`
 `;
 
 export const QuoteText = styled.p`
-  font-size: 14px;
+  ${text14};
   color: #4a4a4a;
   line-height: 1.6;
   position: relative;
@@ -219,7 +278,7 @@ export const AuthorDetailsCentered = styled(AuthorDetails)`
 `;
 
 export const AuthorName = styled.span`
-  font-size: 14px;
+  ${text14};
   font-weight: 700;
   color: #2d2d2d;
 `;
@@ -276,6 +335,10 @@ export const CardHeadingCentered = styled.h4`
   font-weight: 700;
   color: #2d2d2d;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 // Tall card layout
@@ -286,12 +349,20 @@ export const TallCardImage = styled.img`
   border-top-left-radius: 19px;
   border-top-right-radius: 19px;
   background: #eee;
+
+  @media (max-width: 768px) {
+    height: 180px;
+  }
 `;
 
 export const CardContentSection = styled.div`
   padding: 25px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 `;
 
 export const SignatureText = styled.span`
@@ -300,6 +371,10 @@ export const SignatureText = styled.span`
   color: #7e7c2a;
   text-align: right;
   margin-top: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
 `;
 
 // Split Horizontal Layout
@@ -325,6 +400,10 @@ export const SplitContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
 
   @media (max-width: 480px) {
     width: 100%;
@@ -412,4 +491,43 @@ export const CenteredAvatarContainer = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 5px;
+`;
+
+export const SlideWrapper = styled.div`
+  display: contents;
+
+  @media (max-width: 768px) {
+    display: block;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    & > * {
+      margin-bottom: 10px !important;
+    }
+  }
+`;
+
+export const DotsContainer = styled.div`
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+export const Dot = styled.button<{ $active: boolean }>`
+  width: ${({ $active }) => $active ? "20px" : "8px"};
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+  background: ${({ $active }) => $active ? "#7E7C2A" : "#DDC7A1"};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
 `;

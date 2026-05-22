@@ -11,9 +11,35 @@ import {
 import { SectionHeading } from "@/src/components";
 
 export const Community = () => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const currentElement = sectionRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (currentElement) {
+            observer.unobserve(currentElement);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, []);
+
   return (
     <CommunityWrapper>
-      <CommunityContainer>
+      <CommunityContainer ref={sectionRef} $animate={isVisible}>
         <SectionHeading 
           title="Join Our Community" 
           subHeading="Stay Connected"

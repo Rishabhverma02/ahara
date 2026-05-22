@@ -1,4 +1,16 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+import { text14 } from "@/src/theme/Typography";
+
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const JournalWrapper = styled.section`
   width: 100%;
@@ -6,12 +18,23 @@ export const JournalWrapper = styled.section`
   background: #7e7d2a13;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 60px 0;
+  }
 `;
 
-export const JournalContainer = styled.div`
+export const JournalContainer = styled.div<{ $animate?: boolean }>`
   width: 92%;
   max-width: 1400px;
   margin: 0 auto;
+
+  opacity: 0;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `}
 `;
 
 export const SectionHeader = styled.div`
@@ -22,7 +45,8 @@ export const SectionHeader = styled.div`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 20px;
   }
 `;
@@ -38,7 +62,7 @@ export const ViewAllLink = styled.a`
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
+  ${text14};
   font-weight: 700;
   color: #7e7c2a;
   text-decoration: none;

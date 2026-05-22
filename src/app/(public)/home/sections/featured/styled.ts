@@ -1,5 +1,17 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
 import heroBg from "@/src/assets/images/section-images/all-in-one.png";
+import { text16 } from "@/src/theme/Typography";
+
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const FeaturedWrapper = styled.section`
   width: 100%;
@@ -13,21 +25,33 @@ export const FeaturedWrapper = styled.section`
   align-items: center;
   text-align: center;
   color: white;
+
+  @media (max-width: 1024px) {
+    background-attachment: scroll;
+    padding: 80px 0;
+  }
 `;
 
-export const FeaturedContent = styled.div`
+export const FeaturedContent = styled.div<{ $animate?: boolean }>`
   max-width: 800px;
   padding: 0 20px;
+
+  opacity: 0;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `}
 `;
 
 export const FeaturedTitle = styled.h2`
-  font-size: 48px;
+  font-size: clamp(32px, 5vw, 48px);
   font-weight: 800;
   margin-bottom: 30px;
   line-height: 1.2;
 
   @media (max-width: 768px) {
-    font-size: 32px;
+    margin-bottom: 20px;
   }
 `;
 
@@ -37,13 +61,18 @@ export const FeaturedButton = styled.button`
   color: #7E7C2A;
   border: none;
   border-radius: 50px;
+  ${text16};
   font-weight: 700;
-  font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 280px;
   }
 `;

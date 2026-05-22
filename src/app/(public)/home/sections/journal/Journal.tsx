@@ -54,9 +54,35 @@ const posts = [
 const [featured, ...secondary] = posts;
 
 export const Journal = () => {
+  const [isVisible, setIsVisible] = React.useState(false);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const currentElement = sectionRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (currentElement) {
+            observer.unobserve(currentElement);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, []);
+
   return (
     <JournalWrapper>
-      <JournalContainer>
+      <JournalContainer ref={sectionRef} $animate={isVisible}>
         <SectionHeader>
           <SectionHeading
             title="The Journal"

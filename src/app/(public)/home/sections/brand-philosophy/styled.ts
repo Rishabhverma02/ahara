@@ -1,4 +1,15 @@
-import styled from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
 
 export const WhyAharaWrapper = styled.section`
   width: 100%;
@@ -7,15 +18,26 @@ export const WhyAharaWrapper = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 768px) {
+    padding: 60px 0;
+  }
 `;
 
-export const WhyAharaContainer = styled.div`
+export const WhyAharaContainer = styled.div<{ $animate?: boolean }>`
   width: 90%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 30px;
+
+  opacity: 0;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `}
 `;
 
 export const FeatureGrid = styled.div`

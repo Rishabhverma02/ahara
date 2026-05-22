@@ -20,6 +20,12 @@ export const SectionHeadingContainer = styled.span<StyledProps>`
   text-align: ${({ $align }) => $align};
   gap: ${SPACING.L};
 
+  @media (max-width: 768px) {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+  }
 `;
 
 export const SectionHeadingTitle = styled.h2`
@@ -63,6 +69,13 @@ export const SectionSubtitleContainer = styled.div<StyledProps>`
     `
     &::after { display: none; }
   `}
+
+  @media (max-width: 768px) {
+    &::before,
+    &::after {
+      display: block !important;
+    }
+  }
 `;
 
 export const SectionSubtitle = styled.span`

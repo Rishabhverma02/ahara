@@ -1,6 +1,5 @@
 import styled, { keyframes } from "styled-components";
 
-/* ── Animations ─────────────────────────────────────────── */
 const float = keyframes`
   0%, 100% { transform: translateY(0px); }
   50%       { transform: translateY(-16px); }
@@ -32,7 +31,6 @@ const tickerScroll = keyframes`
   to   { transform: translateX(-50%); }
 `;
 
-/* ── Section ──────────────────────────────────────────────── */
 export const AssistantWrapper = styled.section`
   width: 100%;
   background: #0d1005;
@@ -43,6 +41,11 @@ export const AssistantWrapper = styled.section`
   padding: 100px 0px;
   gap: 100px;
   align-items: center;
+
+  @media (max-width: 768px) {
+    padding: 80px 0px;
+    gap: 20px;
+  }
 `;
 
 export const Orb = styled.div<{
@@ -71,7 +74,6 @@ export const Orb = styled.div<{
   z-index: 0;
 `;
 
-/* ── Top: Headline band ──────────────────────────────────── */
 export const HeadlineBand = styled.div`
   width: 100%;
   display: flex;
@@ -131,7 +133,6 @@ export const SubDesc = styled.p`
   margin: 0;
 `;
 
-/* ── Middle: Character stage ─────────────────────────────── */
 export const Stage = styled.div`
   position: relative;
   width: 80%;
@@ -141,12 +142,10 @@ export const Stage = styled.div`
   z-index: 2;
 
   @media (max-width: 768px) {
-    height: 460px;
-    margin-top: 40px;
+    height: 400px;
   }
 `;
 
-/* ground glow under feet */
 export const GroundGlow = styled.div`
   position: absolute;
   bottom: 20px;
@@ -178,15 +177,17 @@ export const CharacterImg = styled.img`
   }
 `;
 
-/* ── Floating cards around character ─────────────────────── */
 export const FloatingCard = styled.div<{ $delay?: string }>`
   position: absolute;
   z-index: 5;
   animation: ${bubbleIn} 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)
     ${(p) => p.$delay ?? "0s"} both;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
-/* chat bubble floating top-left */
 export const ChatFloat = styled(FloatingCard)`
   top: 50px;
   left: max(24px, calc(50% - 480px));
@@ -196,7 +197,6 @@ export const ChatFloat = styled(FloatingCard)`
   }
 `;
 
-/* stat badge floating top-right */
 export const StatFloat = styled(FloatingCard)`
   top: 50px;
   right: max(24px, calc(50% - 480px));
@@ -206,7 +206,6 @@ export const StatFloat = styled(FloatingCard)`
   }
 `;
 
-/* response bubble floating bottom-right */
 export const ResponseFloat = styled(FloatingCard)`
   bottom: 80px;
   right: max(24px, calc(50% - 480px));
@@ -288,7 +287,6 @@ export const TypingDot = styled.span<{ $delay: string }>`
   animation: ${pulse} 1.2s ease-in-out ${(p) => p.$delay} infinite;
 `;
 
-/* stat badge */
 export const StatBadge = styled.div`
   display: flex;
   align-items: center;
@@ -326,7 +324,6 @@ export const StatLabel = styled.span`
   letter-spacing: 0.3px;
 `;
 
-/* ── Bottom: Stats row + Ticker + CTA ─────────────────── */
 export const BottomStrip = styled.div`
   width: 100%;
   display: flex;
@@ -349,7 +346,6 @@ export const Divider = styled.div`
   );
 `;
 
-/* ── Stats number row ────────────────────────────────── */
 export const StatsRow = styled.div`
   display: flex;
   align-items: center;
@@ -357,6 +353,27 @@ export const StatsRow = styled.div`
   gap: 0;
   width: 88%;
   max-width: 860px;
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  @media (max-width: 640px) {
+    flex-direction: row;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    gap: 0;
+    scroll-behavior: smooth;
+    justify-content: flex-start;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 `;
 
 export const StatCell = styled.div`
@@ -366,6 +383,12 @@ export const StatCell = styled.div`
   gap: 4px;
   flex: 1;
   padding: 0 20px;
+
+  @media (max-width: 640px) {
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    box-sizing: border-box;
+  }
 `;
 
 export const StatCellNumber = styled.span`
@@ -392,9 +415,12 @@ export const StatCellDivider = styled.div`
   height: 44px;
   background: rgba(255, 255, 255, 0.08);
   flex-shrink: 0;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
 `;
 
-/* ── Ticker strip ────────────────────────────────────── */
 export const TickerWrapper = styled.div`
   width: 100%;
   overflow: hidden;
@@ -460,6 +486,13 @@ export const CTAGroup = styled.div`
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    width: 100%;
+    padding: 0 20px;
+    gap: 12px;
+  }
 `;
 
 export const PrimaryBtn = styled.a`
@@ -481,6 +514,11 @@ export const PrimaryBtn = styled.a`
     transform: translateY(-2px);
     box-shadow: 0 18px 50px rgba(110, 158, 48, 0.55);
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 export const GhostBtn = styled.a`
@@ -501,4 +539,32 @@ export const GhostBtn = styled.a`
     border-color: rgba(168, 194, 110, 0.25);
     background: rgba(168, 194, 110, 0.05);
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: center;
+  }
+`;
+
+export const StatsDotsContainer = styled.div`
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+
+  @media (max-width: 640px) {
+    display: flex;
+  }
+`;
+
+export const StatsDot = styled.button<{ $active: boolean }>`
+  width: ${({ $active }) => $active ? "16px" : "6px"};
+  height: 6px;
+  border-radius: 3px;
+  border: none;
+  background: ${({ $active }) => $active ? "#c8e66a" : "rgba(200, 230, 106, 0.3)"};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
 `;

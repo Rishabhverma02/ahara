@@ -36,6 +36,9 @@ import {
   CenteredAvatarContainer,
   DecLeafTopLeft,
   DecLeafBottomRight,
+  SlideWrapper,
+  DotsContainer,
+  Dot
 } from "./styled";
 import { HiStar } from "react-icons/hi";
 import { SectionHeading } from "@/src/components";
@@ -123,6 +126,68 @@ const testimonials = [
 ];
 
 export const Testimonials = () => {
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const gridRef = React.useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = React.useState(false);
+  const sectionRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    const currentElement = sectionRef.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          if (currentElement) {
+            observer.unobserve(currentElement);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (currentElement) {
+      observer.observe(currentElement);
+    }
+    return () => {
+      if (currentElement) {
+        observer.unobserve(currentElement);
+      }
+    };
+  }, []);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleAutoSwipe = () => {
+      if (window.innerWidth > 768) return;
+
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % testimonials.length;
+        if (gridRef.current) {
+          const cardWidth = gridRef.current.clientWidth;
+          gridRef.current.scrollTo({
+            left: nextIndex * cardWidth,
+            behavior: "smooth",
+          });
+        }
+        return nextIndex;
+      });
+    };
+
+    const interval = setInterval(handleAutoSwipe, 3500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleScroll = () => {
+    if (gridRef.current) {
+      const cardWidth = gridRef.current.clientWidth;
+      if (cardWidth > 0) {
+        const newIndex = Math.round(gridRef.current.scrollLeft / cardWidth);
+        setActiveIndex(newIndex);
+      }
+    }
+  };
+
   return (
     <TestimonialsWrapper>
       <DecLeafTopLeft
@@ -141,195 +206,230 @@ export const Testimonials = () => {
           backgroundRepeat: "no-repeat",
         }}
       />
-      <TestimonialsContainer>
+      <TestimonialsContainer ref={sectionRef} $animate={isVisible}>
         <SectionHeading
           title="Customer Stories"
           subHeading="Loved by You"
           desc="Real experiences from people who have embraced the Ahara lifestyle."
           align="center"
         />
-        <TestimonialGrid>
+        <TestimonialGrid ref={gridRef} onScroll={handleScroll}>
           {testimonials.map((t, index) => {
             if (t.type === "quote-avatar-row") {
               return (
-                <BaseCard key={index} className="style-a">
-                  <QuoteIconTopLeft>“</QuoteIconTopLeft>
-                  <QuoteText style={{ paddingTop: "25px" }}>
-                    {t.quote}
-                  </QuoteText>
-                  <AuthorRow>
-                    <AuthorDetails>
-                      <AuthorName>{t.name}</AuthorName>
-                      <AuthorRole>{t.role}</AuthorRole>
-                    </AuthorDetails>
-                    <AuthorAvatar src={t.avatar} alt={t.name} />
-                  </AuthorRow>
-                </BaseCard>
+                <SlideWrapper key={index}>
+                  <BaseCard className="style-a">
+                    <QuoteIconTopLeft>“</QuoteIconTopLeft>
+                    <QuoteText style={{ paddingTop: "25px" }}>
+                      {t.quote}
+                    </QuoteText>
+                    <AuthorRow>
+                      <AuthorDetails>
+                        <AuthorName>{t.name}</AuthorName>
+                        <AuthorRole>{t.role}</AuthorRole>
+                      </AuthorDetails>
+                      <AuthorAvatar src={t.avatar} alt={t.name} />
+                    </AuthorRow>
+                  </BaseCard>
+                </SlideWrapper>
               );
             }
 
             if (t.type === "overlapping-avatar") {
               return (
-                <BaseCard key={index} className="style-b">
-                  <OverlappingAvatar src={t.avatar} alt={t.name} />
-                  {t.rating && (
-                    <StarRatingCentered>
-                      {[...Array(t.rating)].map((_, i) => (
-                        <HiStar key={i} />
-                      ))}
-                    </StarRatingCentered>
-                  )}
-                  {t.title && (
-                    <CardHeadingCentered>{t.title}</CardHeadingCentered>
-                  )}
-                  <QuoteTextCentered>{t.quote}</QuoteTextCentered>
-                  <AuthorDetailsCentered>
-                    <AuthorName>{t.name}</AuthorName>
-                    <AuthorRole>{t.role}</AuthorRole>
-                  </AuthorDetailsCentered>
-                  <QuoteIconBottomRight>”</QuoteIconBottomRight>
-                </BaseCard>
-              );
-            }
-
-            if (t.type === "tall-portrait") {
-              return (
-                <BaseCard key={index} className="style-c">
-                  <TallCardImage src={t.avatar} alt="Wellness Testimonial" />
-                  <CardContentSection>
-                    <QuoteText style={{ marginBottom: "5px" }}>
-                      {t.quote}
-                    </QuoteText>
-                    {t.signature && (
-                      <SignatureText>{t.signature}</SignatureText>
-                    )}
-                  </CardContentSection>
-                </BaseCard>
-              );
-            }
-
-            if (t.type === "horizontal-split") {
-              return (
-                <BaseCard key={index} className="style-d">
-                  <SplitImage src={t.avatar} alt={t.name} />
-                  <SplitContent>
-                    <QuoteIconTopLeft style={{ top: "15px", left: "15px" }}>
-                      “
-                    </QuoteIconTopLeft>
-                    <QuoteText
-                      style={{ paddingTop: "20px", marginBottom: "15px" }}
-                    >
-                      {t.quote}
-                    </QuoteText>
-                    <AuthorDetails>
-                      <AuthorName>{t.name}</AuthorName>
-                      <AuthorRole>{t.role}</AuthorRole>
-                    </AuthorDetails>
-                  </SplitContent>
-                </BaseCard>
-              );
-            }
-
-            if (t.type === "group-speech-bubble") {
-              return (
-                <SpeechBubbleWrapper key={index} className="style-e">
-                  <SpeechBubbleCard>
-                    {t.title && (
-                      <CardHeadingCentered>{t.title}</CardHeadingCentered>
-                    )}
-                    <QuoteTextCentered>{t.quote}</QuoteTextCentered>
-                    <AuthorDetailsCentered style={{ marginTop: "10px" }}>
-                      <AuthorName>{t.name}</AuthorName>
-                    </AuthorDetailsCentered>
-                    <BubblePointerCentred />
-                  </SpeechBubbleCard>
-                  <AvatarGroupRow>
-                    {t.avatars?.map((img, i) => (
-                      <GroupAvatar
-                        key={i}
-                        src={img}
-                        $active={i === 1}
-                        alt="Avatar"
-                      />
-                    ))}
-                  </AvatarGroupRow>
-                </SpeechBubbleWrapper>
-              );
-            }
-
-            if (t.type === "bottom-speech-bubble") {
-              return (
-                <SpeechBubbleWrapper key={index}>
-                  <SpeechBubbleCard>
-                    <CenteredAvatarContainer>
-                      <AuthorAvatar
-                        src={t.avatar}
-                        alt={t.name}
-                        style={{
-                          width: "50px",
-                          height: "50px",
-                          border: "2px solid #7e7c2a",
-                        }}
-                      />
-                    </CenteredAvatarContainer>
+                <SlideWrapper key={index}>
+                  <BaseCard className="style-b">
+                    <OverlappingAvatar src={t.avatar} alt={t.name} />
                     {t.rating && (
-                      <StarRatingCentered style={{ marginTop: "10px" }}>
+                      <StarRatingCentered>
                         {[...Array(t.rating)].map((_, i) => (
                           <HiStar key={i} />
                         ))}
                       </StarRatingCentered>
                     )}
-                    <QuoteTextCenteredItalic
-                      style={{ marginTop: "10px", marginBottom: "5px" }}
-                    >
-                      &ldquo;{t.quote}&rdquo;
-                    </QuoteTextCenteredItalic>
-                    {t.signature && (
-                      <SignatureText>{t.signature}</SignatureText>
+                    {t.title && (
+                      <CardHeadingCentered>{t.title}</CardHeadingCentered>
                     )}
-                    <BubblePointerLeft />
-                  </SpeechBubbleCard>
-                </SpeechBubbleWrapper>
+                    <QuoteTextCentered>{t.quote}</QuoteTextCentered>
+                    <AuthorDetailsCentered>
+                      <AuthorName>{t.name}</AuthorName>
+                      <AuthorRole>{t.role}</AuthorRole>
+                    </AuthorDetailsCentered>
+                    <QuoteIconBottomRight>”</QuoteIconBottomRight>
+                  </BaseCard>
+                </SlideWrapper>
+              );
+            }
+
+            if (t.type === "tall-portrait") {
+              return (
+                <SlideWrapper key={index}>
+                  <BaseCard className="style-c">
+                    <TallCardImage src={t.avatar} alt="Wellness Testimonial" />
+                    <CardContentSection>
+                      <QuoteText style={{ marginBottom: "5px" }}>
+                        {t.quote}
+                      </QuoteText>
+                      {t.signature && (
+                        <SignatureText>{t.signature}</SignatureText>
+                      )}
+                    </CardContentSection>
+                  </BaseCard>
+                </SlideWrapper>
+              );
+            }
+
+            if (t.type === "horizontal-split") {
+              return (
+                <SlideWrapper key={index}>
+                  <BaseCard className="style-d">
+                    <SplitImage src={t.avatar} alt={t.name} />
+                    <SplitContent>
+                      <QuoteIconTopLeft style={{ top: "15px", left: "15px" }}>
+                        “
+                      </QuoteIconTopLeft>
+                      <QuoteText
+                        style={{ paddingTop: "20px", marginBottom: "15px" }}
+                      >
+                        {t.quote}
+                      </QuoteText>
+                      <AuthorDetails>
+                        <AuthorName>{t.name}</AuthorName>
+                        <AuthorRole>{t.role}</AuthorRole>
+                      </AuthorDetails>
+                    </SplitContent>
+                  </BaseCard>
+                </SlideWrapper>
+              );
+            }
+
+            if (t.type === "group-speech-bubble") {
+              return (
+                <SlideWrapper key={index}>
+                  <SpeechBubbleWrapper className="style-e">
+                    <SpeechBubbleCard>
+                      {t.title && (
+                        <CardHeadingCentered>{t.title}</CardHeadingCentered>
+                      )}
+                      <QuoteTextCentered>{t.quote}</QuoteTextCentered>
+                      <AuthorDetailsCentered style={{ marginTop: "10px" }}>
+                        <AuthorName>{t.name}</AuthorName>
+                      </AuthorDetailsCentered>
+                      <BubblePointerCentred />
+                    </SpeechBubbleCard>
+                    <AvatarGroupRow>
+                      {t.avatars?.map((img, i) => (
+                        <GroupAvatar
+                          key={i}
+                          src={img}
+                          $active={i === 1}
+                          alt="Avatar"
+                        />
+                      ))}
+                    </AvatarGroupRow>
+                  </SpeechBubbleWrapper>
+                </SlideWrapper>
+              );
+            }
+
+            if (t.type === "bottom-speech-bubble") {
+              return (
+                <SlideWrapper key={index}>
+                  <SpeechBubbleWrapper>
+                    <SpeechBubbleCard>
+                      <CenteredAvatarContainer>
+                        <AuthorAvatar
+                          src={t.avatar}
+                          alt={t.name}
+                          style={{
+                            width: "50px",
+                            height: "50px",
+                            border: "2px solid #7e7c2a",
+                          }}
+                        />
+                      </CenteredAvatarContainer>
+                      {t.rating && (
+                        <StarRatingCentered style={{ marginTop: "10px" }}>
+                          {[...Array(t.rating)].map((_, i) => (
+                            <HiStar key={i} />
+                          ))}
+                        </StarRatingCentered>
+                      )}
+                      <QuoteTextCenteredItalic
+                        style={{ marginTop: "10px", marginBottom: "5px" }}
+                      >
+                        &ldquo;{t.quote}&rdquo;
+                      </QuoteTextCenteredItalic>
+                      {t.signature && (
+                        <SignatureText>{t.signature}</SignatureText>
+                      )}
+                      <BubblePointerLeft />
+                    </SpeechBubbleCard>
+                  </SpeechBubbleWrapper>
+                </SlideWrapper>
               );
             }
 
             if (t.type === "split-clean") {
               return (
-                <BaseCard key={index} className="style-g">
-                  <LargeCircleAvatar src={t.avatar} alt={t.name} />
-                  <QuoteText
-                    style={{ padding: "0 10px 15px", marginTop: "10px" }}
-                  >
-                    &ldquo;{t.quote}&rdquo;
-                  </QuoteText>
-                  <div className="author-row-g">
-                    <AuthorDetails>
-                      <AuthorName>{t.name}</AuthorName>
-                      <AuthorRole>{t.role}</AuthorRole>
-                    </AuthorDetails>
-                  </div>
-                </BaseCard>
+                <SlideWrapper key={index}>
+                  <BaseCard className="style-g">
+                    <LargeCircleAvatar src={t.avatar} alt={t.name} />
+                    <QuoteText
+                      style={{ padding: "0 10px 15px", marginTop: "10px" }}
+                    >
+                      &ldquo;{t.quote}&rdquo;
+                    </QuoteText>
+                    <div className="author-row-g">
+                      <AuthorDetails>
+                        <AuthorName>{t.name}</AuthorName>
+                        <AuthorRole>{t.role}</AuthorRole>
+                      </AuthorDetails>
+                    </div>
+                  </BaseCard>
+                </SlideWrapper>
               );
             }
 
             if (t.type === "classic-clean") {
               return (
-                <BaseCard key={index} className="style-h">
-                  <QuoteText>{t.quote}</QuoteText>
-                  <AuthorRow>
-                    <AuthorDetails>
-                      <AuthorName>{t.name}</AuthorName>
-                      <AuthorRole>{t.role}</AuthorRole>
-                    </AuthorDetails>
-                    <SmallAvatar src={t.avatar} alt={t.name} />
-                  </AuthorRow>
-                </BaseCard>
+                <SlideWrapper key={index}>
+                  <BaseCard className="style-h">
+                    <QuoteText>{t.quote}</QuoteText>
+                    <AuthorRow>
+                      <AuthorDetails>
+                        <AuthorName>{t.name}</AuthorName>
+                        <AuthorRole>{t.role}</AuthorRole>
+                      </AuthorDetails>
+                      <SmallAvatar src={t.avatar} alt={t.name} />
+                    </AuthorRow>
+                  </BaseCard>
+                </SlideWrapper>
               );
             }
 
             return null;
           })}
         </TestimonialGrid>
+
+        <DotsContainer>
+          {testimonials.map((_, index) => (
+            <Dot
+              key={index}
+              $active={index === activeIndex}
+              onClick={() => {
+                if (gridRef.current) {
+                  const cardWidth = gridRef.current.clientWidth;
+                  gridRef.current.scrollTo({
+                    left: index * cardWidth,
+                    behavior: "smooth",
+                  });
+                  setActiveIndex(index);
+                }
+              }}
+            />
+          ))}
+        </DotsContainer>
       </TestimonialsContainer>
     </TestimonialsWrapper>
   );

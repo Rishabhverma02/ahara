@@ -41,6 +41,8 @@ import {
   CTAGroup,
   PrimaryBtn,
   GhostBtn,
+  StatsDotsContainer,
+  StatsDot,
 } from "./styled";
 
 import Character from "@/src/assets/images/section-images/Intro.png";
@@ -66,6 +68,43 @@ const stats = [
 ];
 
 export const AssistantIntro = () => {
+  const [activeStatsIndex, setActiveStatsIndex] = React.useState(0);
+  const statsGridRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleAutoSwipe = () => {
+      if (window.innerWidth > 480) return;
+
+      setActiveStatsIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % stats.length;
+        if (statsGridRef.current) {
+          const cardWidth = statsGridRef.current.clientWidth;
+          statsGridRef.current.scrollTo({
+            left: nextIndex * cardWidth,
+            behavior: "smooth",
+          });
+        }
+        return nextIndex;
+      });
+    };
+
+    const interval = setInterval(handleAutoSwipe, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleStatsScroll = () => {
+    if (statsGridRef.current) {
+      const cardWidth = statsGridRef.current.clientWidth;
+      if (cardWidth > 0) {
+        const newIndex = Math.round(statsGridRef.current.scrollLeft / cardWidth);
+        setActiveStatsIndex(newIndex);
+      }
+    }
+  };
+
   return (
     <AssistantWrapper>
       <Orb
@@ -82,18 +121,9 @@ export const AssistantIntro = () => {
         $h="500px"
         $bottom="-100px"
         $right="-100px"
-        $color="rgba(168, 194, 110, 0.10)"
-        $blur="90px"
-        $delay="3s"
-      />
-      <Orb
-        $w="300px"
-        $h="300px"
-        $top="30%"
-        $left="50%"
-        $color="rgba(212, 240, 106, 0.05)"
-        $blur="70px"
-        $delay="1.5s"
+        $color="rgba(200, 230, 106, 0.08)"
+        $blur="120px"
+        $delay="2s"
       />
 
       <HeadlineBand>
@@ -112,12 +142,12 @@ export const AssistantIntro = () => {
       <Stage>
         <GroundGlow />
 
-        <ChatFloat $delay="0.3s">
+        <ChatFloat $delay="0s">
           <GlassPanel>
             <GlassPanelRow>
-              <ChatAvatar>🌾</ChatAvatar>
+              <ChatAvatar>🧘</ChatAvatar>
               <ChatQuestion>
-                What are the benefits of Makhana for digestion?
+                I want a grain that is low GI and eco-friendly.
               </ChatQuestion>
             </GlassPanelRow>
           </GlassPanel>
@@ -125,7 +155,7 @@ export const AssistantIntro = () => {
 
         <StatFloat $delay="0.5s">
           <StatBadge>
-            <StatIcon>🧠</StatIcon>
+            <StatIcon>🌾</StatIcon>
             <StatInfo>
               <StatNumber>10k+</StatNumber>
               <StatLabel>Wellness queries answered</StatLabel>
@@ -177,7 +207,7 @@ export const AssistantIntro = () => {
       <BottomStrip>
         <Divider />
 
-        <StatsRow>
+        <StatsRow ref={statsGridRef} onScroll={handleStatsScroll}>
           {stats.map((s, i) => (
             <React.Fragment key={i}>
               <StatCell>
@@ -188,6 +218,25 @@ export const AssistantIntro = () => {
             </React.Fragment>
           ))}
         </StatsRow>
+
+        <StatsDotsContainer>
+          {stats.map((_, index) => (
+            <StatsDot 
+              key={index} 
+              $active={index === activeStatsIndex} 
+              onClick={() => {
+                if (statsGridRef.current) {
+                  const cardWidth = statsGridRef.current.clientWidth;
+                  statsGridRef.current.scrollTo({
+                    left: index * cardWidth,
+                    behavior: "smooth",
+                  });
+                  setActiveStatsIndex(index);
+                }
+              }}
+            />
+          ))}
+        </StatsDotsContainer>
 
         <TickerWrapper>
           <TickerTrack>

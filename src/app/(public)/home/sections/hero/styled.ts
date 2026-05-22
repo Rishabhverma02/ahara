@@ -1,4 +1,5 @@
 import styled, { keyframes } from "styled-components";
+import { text14, text16 } from "@/src/theme/Typography";
 
 const float = keyframes`
   0% { transform: translateY(0px); }
@@ -25,6 +26,28 @@ const float3 = keyframes`
   100% { transform: translate(0, 0) scale(1); }
 `;
 
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
 export const HeroWrapper = styled.section`
   width: 100%;
   height: 100vh;
@@ -35,6 +58,13 @@ export const HeroWrapper = styled.section`
   justify-content: center;
   overflow: hidden;
   position: relative;
+
+  @media (max-width: 1024px) {
+    height: auto;
+    min-height: 100vh;
+    padding-top: 120px;
+    padding-bottom: 60px;
+  }
 `;
 
 export const HeroGrid = styled.div`
@@ -45,6 +75,13 @@ export const HeroGrid = styled.div`
   align-items: center;
   padding: 80px 5%;
   padding-top: 10%;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
 `;
 
 export const HeroContent = styled.div`
@@ -52,6 +89,13 @@ export const HeroContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
+  
+  animation: ${fadeInLeft} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @media (max-width: 1024px) {
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 export const HeroTitle = styled.h1`
@@ -88,16 +132,25 @@ export const HeroTitle = styled.h1`
     font-weight: 300;
   }
 
+  @media (max-width: 1024px) {
+    align-items: center;
+    .line {
+      justify-content: center;
+    }
+  }
+
   @media (max-width: 768px) {
+    font-size: clamp(36px, 10vw, 56px);
     .line {
       flex-direction: column;
       gap: 0;
+      white-space: normal;
     }
   }
 `;
 
 export const HeroDescription = styled.p`
-  font-size: 16px;
+  ${text16};
   line-height: 1.8;
   color: #4b3d32;
   max-width: 560px;
@@ -110,6 +163,8 @@ export const HeroButtonGroup = styled.div`
 
   @media (max-width: 480px) {
     flex-direction: column;
+    width: 100%;
+    align-items: center;
   }
 `;
 
@@ -119,7 +174,7 @@ export const HeroButton = styled.button`
   border: none;
   background: #7E7C2A;
   color: #ffffff;
-  font-size: 16px;
+  ${text16};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -130,6 +185,12 @@ export const HeroButton = styled.button`
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(126, 124, 42, 0.5);
   }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
 `;
 
 export const HeroSecondaryButton = styled.button`
@@ -138,7 +199,7 @@ export const HeroSecondaryButton = styled.button`
   border: 2px solid #7E7C2A;
   background: transparent;
   color: #7E7C2A;
-  font-size: 16px;
+  ${text16};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -146,6 +207,12 @@ export const HeroSecondaryButton = styled.button`
   &:hover {
     background: rgba(126, 124, 42, 0.05);
     transform: translateY(-2px);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
   }
 `;
 
@@ -156,9 +223,17 @@ export const HeroImageWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  
+  animation: ${fadeInRight} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 
   @media (max-width: 1024px) {
-    height: 400px;
+    height: 480px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    height: 380px;
   }
 `;
 
@@ -200,6 +275,18 @@ export const FloatingImage = styled.div<{
       filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
     }
   }
+
+  @media (max-width: 1024px) {
+    width: ${({ $width }) => $width ? `calc(${$width} * 0.75)` : '150px'};
+    left: ${({ $left }) => $left && ($left.startsWith('-') ? '0%' : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith('-') ? '0%' : $right)};
+  }
+
+  @media (max-width: 768px) {
+    width: ${({ $width }) => $width ? `calc(${$width} * 0.55)` : '110px'};
+    left: ${({ $left }) => $left && ($left.startsWith('-') ? '10px' : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith('-') ? '10px' : $right)};
+  }
 `;
 
 export const FloatingBadge = styled.div<{ $top?: string; $left?: string; $right?: string; $bottom?: string; $delay?: string }>`
@@ -216,10 +303,10 @@ export const FloatingBadge = styled.div<{ $top?: string; $left?: string; $right?
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 14px;
+  ${text14};
   font-weight: 700;
   color: #3a2f25;
-  z-index: 2;
+  z-index: 6;
   animation: ${float} 5s ease-in-out infinite;
   animation-delay: ${({ $delay }) => $delay || '0s'};
 
@@ -231,6 +318,20 @@ export const FloatingBadge = styled.div<{ $top?: string; $left?: string; $right?
   &:hover {
     transform: scale(1.1);
     background: #fff;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 8px 14px;
+    font-size: 12px;
+    left: ${({ $left }) => $left && ($left.startsWith('-') ? '0%' : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith('-') ? '0%' : $right)};
+  }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 11px;
+    left: ${({ $left }) => $left && ($left.startsWith('-') ? '5px' : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith('-') ? '5px' : $right)};
   }
 `;
 
@@ -267,5 +368,11 @@ export const DecorativeLeaf = styled.div<{
   svg {
     width: 100%;
     height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    width: ${({ $size }) => $size ? `calc(${$size} * 0.5)` : '50px'};
+    height: ${({ $size }) => $size ? `calc(${$size} * 0.5)` : '50px'};
+    opacity: ${({ $opacity }) => $opacity ? $opacity * 0.5 : 0.05};
   }
 `;

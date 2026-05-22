@@ -1,6 +1,5 @@
 import styled, { keyframes, css } from "styled-components";
 
-// Animation Keyframes
 export const fadeInUp = keyframes`
   from {
     opacity: 0;
@@ -50,6 +49,7 @@ export const BestSellersContainer = styled.div`
 
   @media (max-width: 768px) {
     padding: 40px 0;
+    gap: 30px;
   }
 `;
 
@@ -75,7 +75,8 @@ export const SectionHeader = styled.div<{ $animate: boolean }>`
 
   @media (max-width: 768px) {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     gap: 24px;
   }
 `;
@@ -99,6 +100,10 @@ export const ShopAllLink = styled.a`
     transform: translateY(-3px) scale(1.05);
     box-shadow: 0 10px 20px rgba(126, 124, 42, 0.35);
   }
+
+  @media (max-width: 480px) {
+   display: none  ;
+  }
 `;
 
 export const ProductGrid = styled.div`
@@ -115,9 +120,60 @@ export const ProductGrid = styled.div`
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 768px) {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 20px;
+    padding: 10px 20px;
+    margin: 0 -20px;
+    scroll-behavior: smooth;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    & > * {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+    }
   }
+`;
+
+export const SlideWrapper = styled.div`
+  display: contents;
+
+  @media (max-width: 768px) {
+    display: block;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+`;
+
+export const DotsContainer = styled.div`
+  display: none;
+  justify-content: center;
+  gap: 8px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+export const Dot = styled.button<{ $active: boolean }>`
+  width: ${({ $active }) => $active ? "20px" : "8px"};
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+  background: ${({ $active }) => $active ? "#7E7C2A" : "#DDC7A1"};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
 `;
 
 
