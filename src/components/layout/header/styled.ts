@@ -30,7 +30,7 @@ export const HeaderWrapper = styled.header.withConfig({
   ${({ animate }) =>
     animate
       ? css`
-          background: #fbfbfba8;
+          background: #fbfbfb23;
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -61,10 +61,11 @@ export const NavWrapper = styled.nav`
   gap: 12px;
   padding: 8px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.55);
+  background: #ffffff;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #9e9c2f51;
 
   @media (max-width: 1080.98px) {
     display: none;
@@ -75,8 +76,8 @@ export const NavItem = styled(Link)<{ $active?: boolean }>`
   text-decoration: none;
   border: none;
   background: ${({ $active }) =>
-    $active ? "rgba(126, 125, 42, 0.13)" : "transparent"};
-  color: #7e7c2a;
+    $active ? "#9e9c2f4c" : "transparent"};
+  color: #9e9c2fff;
   padding: 10px 18px;
   border-radius: 4px;
   font-size: 14px;
@@ -86,9 +87,11 @@ export const NavItem = styled(Link)<{ $active?: boolean }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid ${({$active})=>$active? "#9e9c2f49": "#fff"};
 
   &:hover {
-    background: rgba(126, 125, 42, 0.13);
+    background: #9e9c2f4c;
+    border:1px solid #9e9c2f49;
   }
 `;
 

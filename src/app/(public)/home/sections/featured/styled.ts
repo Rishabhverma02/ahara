@@ -16,7 +16,8 @@ export const fadeInUp = keyframes`
 export const FeaturedWrapper = styled.section`
   width: 100%;
   padding: 120px 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroBg.src});
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${heroBg.src});
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -33,8 +34,12 @@ export const FeaturedWrapper = styled.section`
 `;
 
 export const FeaturedContent = styled.div<{ $animate?: boolean }>`
-  max-width: 800px;
-  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 60%;
+  align-items: center;
+  justify-content: center;
 
   opacity: 0;
   ${({ $animate }) =>
@@ -47,7 +52,6 @@ export const FeaturedContent = styled.div<{ $animate?: boolean }>`
 export const FeaturedTitle = styled.h2`
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 800;
-  margin-bottom: 30px;
   line-height: 1.2;
 
   @media (max-width: 768px) {
@@ -58,7 +62,7 @@ export const FeaturedTitle = styled.h2`
 export const FeaturedButton = styled.button`
   padding: 16px 40px;
   background: white;
-  color: #7E7C2A;
+  color: #7e7c2a;
   border: none;
   border-radius: 50px;
   ${text16};

@@ -1,13 +1,15 @@
-import Providers from './providers';
+import { Footer, Header } from "@/src/components";
 
 export default function PublicLayout({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-    return (
-        <Providers>
-            <main>{children}</main>
-        </Providers>
-    );
+  return (
+    <>
+      <Header />
+      <main>{children}</main>
+      <Footer />
+    </>
+  );
 }

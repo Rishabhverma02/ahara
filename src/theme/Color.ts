@@ -14,7 +14,7 @@ export const COLOR = {
 
   text: {
     primary: "#2A241E",
-    secondary: "#3A2F25",
+    secondary: "#310f01",
     placeholder: "#6F8B5B",
     disabled: "#A7A55A",
     input: "#3A2F25",

@@ -55,7 +55,6 @@ export const CommunitySubtitle = styled.p`
 export const FormWrapper = styled.div`
   display: flex;
   gap: 15px;
-  margin-top: 20px;
 
   @media (max-width: 640px) {
     flex-direction: column;

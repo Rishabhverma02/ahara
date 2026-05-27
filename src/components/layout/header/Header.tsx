@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Logo from "@/src/assets/images/Logo.png";
 import {
   HeaderWrapper,
@@ -32,6 +32,8 @@ import {
   MobileCartButton,
 } from "./styled";
 
+import { useCart } from "@/src/hooks/useCart";
+import { useWishlist } from "@/src/hooks/useWishlist";
 import { NavItemTypes } from "./types";
 import { usePathname } from "next/navigation";
 import {
@@ -55,6 +57,9 @@ export const Header = () => {
   const [animate, setAnimate] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { cartCount } = useCart();
+  const { wishlistIds } = useWishlist();
+  const wishlistCount = wishlistIds.length;
 
   const openDrawer = () => setIsOpen(true);
   const closeDrawer = () => setIsOpen(false);
@@ -106,22 +111,31 @@ export const Header = () => {
               <ActionIcon aria-label="Search">
                 <HiOutlineSearch />
               </ActionIcon>
-              <ActionIcon aria-label="Wishlist">
-                <HiOutlineHeart />
-              </ActionIcon>
-              <ActionIcon aria-label="Cart">
-                <HiOutlineShoppingBag />
-                <CartBadge>0</CartBadge>
-              </ActionIcon>
+              <Link href="/wishlist" style={{ textDecoration: "none" }}>
+                <ActionIcon as="div" aria-label="Wishlist">
+                  <HiOutlineHeart />
+                  {wishlistCount > 0 && (
+                    <CartBadge style={{ background: "#c0392b" }}>{wishlistCount}</CartBadge>
+                  )}
+                </ActionIcon>
+              </Link>
+              <Link href="/cart" style={{ textDecoration: "none" }}>
+                <ActionIcon as="div" aria-label="Cart">
+                  <HiOutlineShoppingBag />
+                  <CartBadge>{cartCount}</CartBadge>
+                </ActionIcon>
+              </Link>
               <ActionIcon aria-label="User Profile">
                 <HiOutlineUser />
               </ActionIcon>
             </DesktopActions>
 
-            <MobileCartButton aria-label="Cart">
-              <HiOutlineShoppingBag />
-              <CartBadge>0</CartBadge>
-            </MobileCartButton>
+            <Link href="/cart" style={{ textDecoration: "none" }}>
+              <MobileCartButton as="div" aria-label="Cart">
+                <HiOutlineShoppingBag />
+                <CartBadge>{cartCount}</CartBadge>
+              </MobileCartButton>
+            </Link>
 
             <HamburgerButton onClick={openDrawer} aria-label="Open Menu">
               <HiMenuAlt3 />
@@ -164,17 +178,18 @@ export const Header = () => {
               <DrawerActions>
                 <DrawerActionLink href="/wishlist" onClick={closeDrawer}>
                   <HiOutlineHeart />
-                  <span>Wishlist</span>
+                  <span>Wishlist ({wishlistCount})</span>
                 </DrawerActionLink>
                 <DrawerActionLink href="/cart" onClick={closeDrawer}>
                   <HiOutlineShoppingBag />
-                  <span>Cart (0)</span>
+                  <span>Cart ({cartCount})</span>
                 </DrawerActionLink>
                 <DrawerActionLink href="/profile" onClick={closeDrawer}>
                   <HiOutlineUser />
                   <span>Profile / Account</span>
                 </DrawerActionLink>
               </DrawerActions>
+
 
               <DrawerFooter>© {new Date().getFullYear()} Ahara. All rights reserved.</DrawerFooter>
             </DrawerContent>
