@@ -74,7 +74,7 @@ export const ContentWrapper = styled.div`
 export const Title = styled.h3`
   font-size: 24px;
   font-weight: 700;
-  color: #2d2d2d;
+  color: #5f320fff;
   margin: 0;
   transition: color 0.3s ease;
 

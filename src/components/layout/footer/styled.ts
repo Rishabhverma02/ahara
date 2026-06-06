@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const FooterWrapper = styled.footer`
   width: 100%;
-  background: #7E7C2A;
+  background: #7e7c2a;
   padding: 80px 0 40px;
   color: #fff;
   border-top: none;
@@ -88,7 +88,7 @@ export const NewsletterInput = styled.input`
 export const NewsletterButton = styled.button`
   padding: 12px 24px;
   background: #fff;
-  color: #7E7C2A;
+  color: #7e7c2a;
   border: none;
   border-radius: 8px;
   font-weight: 700;

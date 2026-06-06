@@ -84,7 +84,7 @@ export const PriceTag = styled.div`
   border-bottom-left-radius: 24px;
   font-size: 20px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: #5f320fff;
   z-index: 10;
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
@@ -138,14 +138,15 @@ export const ProductName = styled.h3`
 export const OrderLink = styled.div`
   font-size: 13px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: #5f320fff;
   display: flex;
   align-items: center;
   gap: 4px;
-  border-bottom: 1px solid #1a1a1a;
+  border-bottom: 1px solid #5f320fff;
   padding-bottom: 2px;
   cursor: pointer;
   transition: all 0.3s ease;
+   
 
   ${CardWrapper}:hover & {
     color: #7e7c2a;
@@ -183,3 +184,62 @@ export const Tag = styled.span<{ $bgColor: string; $textColor: string }>`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   }
 `;
+
+export const WishlistButton = styled.button<{ $active: boolean }>`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(126, 124, 42, 0.15);
+  background: ${({ $active }) =>
+    $active ? "#ffffff" : "rgba(255, 255, 255, 0.85)"};
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: ${({ $active }) => ($active ? "#c0392b" : "#7e7c2a")};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(42, 36, 30, 0.05);
+
+  &:hover {
+    transform: scale(1.1);
+    background: #ffffff;
+    color: #c0392b;
+    box-shadow: 0 6px 16px rgba(192, 57, 43, 0.15);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+
+  svg {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  ${({ $active }) =>
+    $active &&
+    `
+      svg {
+        animation: heartBeat 0.4s ease-out;
+      }
+    `}
+
+  @keyframes heartBeat {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+`;
+

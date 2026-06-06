@@ -14,6 +14,8 @@ export function useCart() {
   const removeItem = useCartStore((state) => state.removeItem);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const clearCart = useCartStore((state) => state.clearCart);
+  const appliedPromo = useCartStore((state) => state.appliedPromo);
+  const setAppliedPromo = useCartStore((state) => state.setAppliedPromo);
 
   const cartCount = isHydrated
     ? items.reduce((acc, item) => acc + item.quantity, 0)
@@ -34,5 +36,7 @@ export function useCart() {
     cartCount,
     cartTotal,
     isHydrated,
+    appliedPromo: isHydrated ? appliedPromo : null,
+    setAppliedPromo,
   };
 }

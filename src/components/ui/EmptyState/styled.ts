@@ -34,8 +34,8 @@ export const EmptyStateWrapper = styled.div`
   border-radius: 36px;
   padding: 70px 40px;
   text-align: center;
-  box-shadow: 
-    0 20px 40px rgba(126, 124, 42, 0.04), 
+  box-shadow:
+    0 20px 40px rgba(126, 124, 42, 0.04),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
   display: flex;
   flex-direction: column;
@@ -53,7 +53,7 @@ export const FloatingTag = styled.div<{ $delay?: string }>`
   position: absolute;
   background: rgba(255, 255, 255, 0.9);
   border: 1.5px solid rgba(126, 124, 42, 0.15);
-  color: #3a2f25;
+  color: #5f320fff;
   font-size: 13px;
   font-weight: 700;
   padding: 8px 16px;
@@ -148,7 +148,7 @@ export const EmptyTextGroup = styled.div`
   h2 {
     font-size: 28px;
     font-weight: 800;
-    color: #2a241e;
+    color: #5f320fff;
     margin: 0;
     letter-spacing: -0.6px;
     line-height: 1.2;
@@ -166,7 +166,7 @@ export const EmptyTextGroup = styled.div`
 
 export const ShopNowBtn = styled(Link)`
   padding: 16px 40px;
-  background: linear-gradient(135deg, #2a241e 0%, #1a1613 100%);
+  background: linear-gradient(135deg, #5f320fff 0%, #48260bff 100%);
   color: #ffffff;
   text-decoration: none;
   font-size: 13px;
@@ -192,13 +192,13 @@ export const ShopNowBtn = styled(Link)`
     z-index: 1;
   }
 
-  span, svg {
+  span,
+  svg {
     position: relative;
     z-index: 2;
   }
 
   &:hover {
-    transform: translateY(-4px);
     box-shadow: 0 15px 35px rgba(126, 124, 42, 0.3);
 
     &::before {
@@ -207,6 +207,7 @@ export const ShopNowBtn = styled(Link)`
   }
 
   &:active {
-    transform: translateY(-1px);
+    transform: scale(0.96);
+    box-shadow: 0 5px 15px rgba(42, 36, 30, 0.15);
   }
 `;

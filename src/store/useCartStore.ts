@@ -15,16 +15,19 @@ export interface CartItem {
 
 interface CartState {
   items: CartItem[];
+  appliedPromo: string | null;
   addItem: (item: Omit<CartItem, "id">) => void;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  setAppliedPromo: (promo: string | null) => void;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set) => ({
       items: [],
+      appliedPromo: null,
       addItem: (newItem) =>
         set((state) => {
           const itemKey = `${newItem.productId}-${newItem.size}`;
@@ -59,7 +62,8 @@ export const useCartStore = create<CartState>()(
               item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
             ),
         })),
-      clearCart: () => set({ items: [] }),
+      clearCart: () => set({ items: [], appliedPromo: null }),
+      setAppliedPromo: (promo) => set({ appliedPromo: promo }),
     }),
     {
       name: "ahara-cart-storage",

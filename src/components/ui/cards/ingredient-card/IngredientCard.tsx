@@ -20,14 +20,14 @@ export interface IngredientCardProps {
   $delay?: number;
 }
 
-export const IngredientCard: React.FC<IngredientCardProps> = ({
+export const IngredientCard = ({
   title,
   description,
   image,
   exploreUrl,
   $animate = false,
   $delay
-}) => {
+}:IngredientCardProps) => {
   const imageUrl = typeof image === 'string' ? image : image.src;
   const isExternal = exploreUrl.startsWith('http://') || exploreUrl.startsWith('https://');
 

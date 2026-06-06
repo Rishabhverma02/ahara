@@ -64,7 +64,7 @@ export const Badge = styled.span<{ $type: string }>`
   ${({ $type }) =>
     $type === "Bestseller" &&
     `
-      background: #3a2f25;
+      background: #5f320fff;
       color: #ecf3d4;
     `}
   ${({ $type }) =>
@@ -91,7 +91,7 @@ export const CardBody = styled.div`
 export const Title = styled.h3`
   font-size: 15px;
   font-weight: 700;
-  color: #2a241e;
+  color: #43230aff;
   margin-bottom: 4px;
   line-height: 1.4;
   letter-spacing: -0.2px;
@@ -159,7 +159,7 @@ export const PriceRow = styled.div`
 export const Price = styled.span`
   font-size: 16px;
   font-weight: 800;
-  color: #3a2f25;
+  color: #5f320fff;
 `;
 
 export const OriginalPrice = styled.span`

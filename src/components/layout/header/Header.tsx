@@ -84,6 +84,104 @@ export const Header = () => {
     setIsOpen(false);
   }
 
+  if (pathname === "/checkout") {
+    return (
+      <HeaderWrapper
+        animate={animate}
+        style={{
+          borderBottom: "1px solid rgba(126, 124, 42, 0.08)",
+          background: "rgba(255, 255, 255, 0.88)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+          boxShadow: "0 10px 30px -10px rgba(126, 124, 42, 0.08)",
+        }}
+      >
+        {/* Inject dynamic CSS for pulse and arrow slide animations */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @keyframes secure-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(73, 106, 53, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(73, 106, 53, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(73, 106, 53, 0); }
+          }
+          @keyframes arrow-slide {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-4px); }
+          }
+          .back-link {
+            transition: all 0.2s ease;
+          }
+          .back-link:hover .back-arrow {
+            animation: arrow-slide 0.8s infinite ease-in-out;
+          }
+        `}} />
+
+        <HeaderInner style={{ justifyContent: "space-between", height: "80px" }}>
+          <LogoWrapper style={{ transition: "transform 0.3s ease" }} onMouseOver={(e) => e.currentTarget.style.transform = "scale(1.03)"} onMouseOut={(e) => e.currentTarget.style.transform = "scale(1)"}>
+            <Link href="/">
+              <Image src={Logo} alt="Ahara Logo" width={130} priority />
+            </Link>
+          </LogoWrapper>
+          
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <Link
+              href="/cart"
+              className="back-link"
+              style={{
+                fontSize: "13px",
+                fontWeight: "700",
+                color: "#8a8775",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = "#7e7c2a")}
+              onMouseOut={(e) => (e.currentTarget.style.color = "#8a8775")}
+            >
+              <span className="back-arrow" style={{ display: "inline-block" }}>←</span>
+              <span>Back to Cart</span>
+            </Link>
+            
+            <span style={{ color: "rgba(126, 124, 42, 0.15)", fontSize: "14px" }}>|</span>
+
+            <div
+              style={{
+                background: "linear-gradient(135deg, #57a8243b 0%, #57a8241d 100%)",
+                border: "1.5px solid #57a8243d",
+                padding: "6px 14px",
+                borderRadius: "50px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "11px",
+                fontWeight: "800",
+                letterSpacing: "0.5px",
+                color: "#56a824ff",
+                textTransform: "uppercase",
+                boxShadow: "0 2px 8px rgba(73, 106, 53, 0.05)",
+              }}
+            >
+              <span 
+                style={{ 
+                  display: "inline-flex", 
+                  width: "6px", 
+                  height: "6px", 
+                  borderRadius: "50%", 
+                  background: "#56a824ff", 
+                  animation: "secure-pulse 1.8s infinite ease-in-out" 
+                }}
+              ></span>
+              <span>Secure Checkout</span>
+            </div>
+          </div>
+        </HeaderInner>
+      </HeaderWrapper>
+    );
+  }
+
   return (
     <>
       <HeaderWrapper animate={animate}>

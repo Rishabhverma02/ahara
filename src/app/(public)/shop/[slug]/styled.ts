@@ -143,7 +143,7 @@ export const ProductHeaderGroup = styled.div`
 export const ProductName = styled.h1`
   font-size: 40px;
   font-weight: 800;
-  color: #2a241e;
+  color: #48260bff;
   line-height: 1.15;
   letter-spacing: -1.2px;
   margin: 0;
@@ -186,7 +186,7 @@ export const PriceBlock = styled.div`
 export const BigPrice = styled.span`
   font-size: 36px;
   font-weight: 800;
-  color: #2a241e;
+  color: #48260bff;
   letter-spacing: -0.5px;
 `;
 
@@ -234,7 +234,7 @@ export const SizeChip = styled.button<{ $active?: boolean }>`
   font-family: inherit;
   border: 1.5px solid ${({ $active }) => ($active ? "#7e7c2a" : "rgba(126, 124, 42, 0.15)")};
   background: ${({ $active }) => ($active ? "#7e7c2a" : "#ffffff")};
-  color: ${({ $active }) => ($active ? "#ffffff" : "#3a2f25")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "#5f320fff")};
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
 
   &:hover {
@@ -266,7 +266,7 @@ export const QtyBtn = styled.button`
   border: none;
   background: transparent;
   font-size: 16px;
-  color: #3a2f25;
+  color: #5f320fff;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -282,7 +282,7 @@ export const QtyValue = styled.span`
   text-align: center;
   font-size: 14px;
   font-weight: 700;
-  color: #2a241e;
+  color: #5f320fff;
 `;
 
 export const AddToCartBtn = styled.button`
@@ -313,10 +313,10 @@ export const BuyNowBtn = styled.button`
   flex: 1;
   min-width: 140px;
   height: 52px;
-  border: 2px solid #2a241e;
+  border: 2px solid #5f320fff;
   border-radius: 100px;
   background: transparent;
-  color: #2a241e;
+  color: #5f320fff;
   font-size: 13px;
   font-weight: 800;
   cursor: pointer;
@@ -326,7 +326,7 @@ export const BuyNowBtn = styled.button`
   text-transform: uppercase;
 
   &:hover {
-    background: #2a241e;
+    background: #5f320fff;
     color: #ffffff;
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(42, 36, 30, 0.08);
@@ -388,7 +388,7 @@ export const CleanLabelItem = styled.div`
 export const CleanLabelText = styled.span`
   font-size: 11px;
   font-weight: 700;
-  color: #3a2f25;
+  color: #5f320fff;
 `;
 
 export const TabsSection = styled.section`
@@ -417,13 +417,13 @@ export const TabButton = styled.button<{ $active?: boolean }>`
   border: none;
   background: transparent;
   cursor: pointer;
-  color: ${({ $active }) => ($active ? "#2a241e" : "#c5c1b0")};
+  color: ${({ $active }) => ($active ? "#5f320fff" : "#c5c1b0")};
   border-bottom: 3px solid ${({ $active }) => ($active ? "#7e7c2a" : "transparent")};
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
   font-family: inherit;
 
-  &:hover { color: #2a241e; }
+  &:hover { color: #5f320fff; }
 `;
 
 export const TabContent = styled.div`
@@ -462,7 +462,7 @@ export const StoryText = styled.div`
   h3 {
     font-size: 24px;
     font-weight: 800;
-    color: #2a241e;
+    color: #5f320fff;
     margin: 0;
     letter-spacing: -0.5px;
   }
@@ -497,7 +497,7 @@ export const NutritionTable = styled.table`
 
     &:first-child {
       font-weight: 700;
-      color: #3a2f25;
+      color: #5f320fff;
     }
 
     &:last-child {

@@ -35,7 +35,7 @@ export const ActiveFiltersRow = styled.div`
   padding: 12px 20px;
   background: #fbfbf9;
   border: 1px solid rgba(126, 124, 42, 0.08);
-  border-radius: 16px;
+  border-radius: 10px;
   min-height: 48px;
   animation: ${fadeIn} 0.4s ease;
   box-shadow: 0 4px 15px rgba(42, 36, 30, 0.01);
@@ -55,7 +55,7 @@ export const FilterChip = styled.button`
   align-items: center;
   gap: 8px;
   background: #ffffff;
-  color: #3a2f25;
+  color: #5f320fff;
   border: 1px solid rgba(126, 124, 42, 0.15);
   border-radius: 100px;
   padding: 6px 14px;
@@ -121,7 +121,7 @@ export const ContentLayout = styled.div`
 export const SidebarWrapper = styled.aside`
   background: #fbfbf9; /* Soft organic off-white/cream background */
   border: 1px solid rgba(126, 124, 42, 0.08);
-  border-radius: 24px;
+  border-radius: 10px;
   padding: 32px 28px;
   position: sticky;
   top: 120px;
@@ -159,7 +159,7 @@ export const SidebarScrollArea = styled.div`
 export const SidebarTitle = styled.h2`
   font-size: 15px;
   font-weight: 800;
-  color: #2a241e;
+  color: #5f320fff;
   margin-bottom: 24px;
   padding-bottom: 14px;
   border-bottom: 1px solid rgba(126, 124, 42, 0.08);
@@ -234,7 +234,7 @@ export const CheckboxLabel = styled.label`
   user-select: none;
   background: #ffffff;
   border: 1px solid rgba(126, 124, 42, 0.1);
-  color: #3a2f25;
+  color: #5f320fff;
 
   /* Hide default checkbox */
   input[type="checkbox"] {
@@ -317,6 +317,9 @@ export const PriceValues = styled.div`
 `;
 
 export const MainArea = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
   animation: ${fadeIn} 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 `;
 
@@ -324,7 +327,6 @@ export const ResultsBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 28px;
   flex-wrap: wrap;
   gap: 16px;
 `;
@@ -340,7 +342,7 @@ export const SortSelect = styled.select`
   border: 1px solid rgba(126, 124, 42, 0.15);
   border-radius: 10px;
   background: #ffffff;
-  color: #3a2f25;
+  color: #5f320fff;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -586,7 +588,6 @@ export const PaginationWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 56px;
 `;
 
 export const PageBtn = styled.button<{ $active?: boolean; $arrow?: boolean }>`
@@ -609,16 +610,14 @@ export const PageBtn = styled.button<{ $active?: boolean; $arrow?: boolean }>`
   box-shadow: 0 2px 6px rgba(42, 36, 30, 0.01);
 
   &:hover:not(:disabled) {
-    border-color: #7e7c2a;
+    border-color: #7e7d2a2b;
     background: ${({ $active }) =>
       $active ? "#7e7c2a" : "rgba(126, 124, 42, 0.05)"};
     color: ${({ $active }) => ($active ? "#ffffff" : "#7e7c2a")};
-    transform: translateY(-2px);
   }
 
   &:disabled {
     opacity: 0.3;
-    cursor: not-allowed;
   }
 `;
 
@@ -633,7 +632,7 @@ export const MobileFilterToggle = styled.button`
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 700;
-  color: #3a2f25;
+  color: #5f320fff;
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: inherit;

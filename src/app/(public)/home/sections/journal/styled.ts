@@ -92,7 +92,7 @@ export const BlogGrid = styled.div`
 
 export const BlogCard = styled.article`
   position: relative;
-  border-radius: 24px;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   display: flex;

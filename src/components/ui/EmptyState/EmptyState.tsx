@@ -2,6 +2,7 @@
 
 import React from "react";
 import AutoAwesomeTwoToneIcon from '@mui/icons-material/AutoAwesomeTwoTone';
+import { useRouter } from "next/navigation";
 import {
   EmptyStateWrapper,
   FloatingTag,
@@ -24,6 +25,7 @@ export interface EmptyStateProps {
   description: string;
   btnText: string;
   btnHref?: string;
+  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
   floatingTags?: FloatingTagItem[];
 }
 
@@ -40,8 +42,31 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   description,
   btnText,
   btnHref = "/shop",
+  onClick,
   floatingTags = defaultTags,
 }) => {
+  const router = useRouter();
+
+  const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+
+    try {
+      const audio = new Audio("/audio/click.mp3");
+      audio.play().catch((err) => console.log("Audio playback was blocked or failed:", err));
+    } catch (err) {
+      console.log("Failed to initialize audio:", err);
+    }
+
+    if (onClick) {
+      onClick(e);
+    }
+
+    // Delay navigation slightly so the click sound is heard immediately on click
+    setTimeout(() => {
+      router.push(btnHref);
+    }, 165);
+  };
+
   return (
     <EmptyStateWrapper>
       {floatingTags.map((tag, idx) => (
@@ -63,7 +88,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
         <p>{description}</p>
       </EmptyTextGroup>
 
-      <ShopNowBtn href={btnHref}>
+      <ShopNowBtn href={btnHref} onClick={handleButtonClick}>
         <span>{btnText}</span>
         <AutoAwesomeTwoToneIcon sx={{ fontSize: 16 }} />
       </ShopNowBtn>

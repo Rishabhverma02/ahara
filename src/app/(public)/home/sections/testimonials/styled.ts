@@ -280,7 +280,7 @@ export const AuthorDetailsCentered = styled(AuthorDetails)`
 export const AuthorName = styled.span`
   ${text14};
   font-weight: 700;
-  color: #2d2d2d;
+  color: #5f320fff;
 `;
 
 export const AuthorRole = styled.span`
@@ -333,7 +333,7 @@ export const StarRatingCentered = styled(StarRating)`
 export const CardHeadingCentered = styled.h4`
   font-size: 16px;
   font-weight: 700;
-  color: #2d2d2d;
+  color: #5f320fff;
   text-align: center;
 
   @media (max-width: 768px) {

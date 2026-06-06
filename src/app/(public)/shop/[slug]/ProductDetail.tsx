@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/src/hooks/useCart";
 import type { Product } from "../data/products";
 import { PRODUCT_DETAILS } from "../data/product-details";
+import { createPortal } from "react-dom";
 import {
   DetailPageWrapper,
   Breadcrumb,
@@ -55,6 +56,7 @@ import {
 
 import GppGoodTwoToneIcon from '@mui/icons-material/GppGoodTwoTone';
 import LocalShippingTwoToneIcon from '@mui/icons-material/LocalShippingTwoTone';
+import Snackbar from "@mui/material/Snackbar";
 
 type Tab = "story" | "taste" | "consume" | "nutrition" | "reviews";
 
@@ -82,10 +84,17 @@ export default function ProductDetail({ product }: Props) {
   const [qty, setQty] = useState(1);
   const [activeTab, setActiveTab] = useState<Tab>("story");
   const [isAdding, setIsAdding] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
 
   const currentPrice = sizes[selectedSize].price;
 
+  const playClickSound = () => {
+    const audio = new Audio("/audio/click.mp3");
+    audio.play().catch((err) => console.log("Audio play failed:", err));
+  };
+
   const handleAddToCart = () => {
+    playClickSound();
     setIsAdding(true);
     addItem({
       productId: product.id,
@@ -96,12 +105,14 @@ export default function ProductDetail({ product }: Props) {
       size: sizes[selectedSize].label,
       image: product.image,
     });
+    setOpenAlert(true);
     setTimeout(() => {
       setIsAdding(false);
     }, 1000);
   };
 
   const handleBuyNow = () => {
+    playClickSound();
     addItem({
       productId: product.id,
       slug: product.slug,
@@ -122,7 +133,7 @@ export default function ProductDetail({ product }: Props) {
         <span>›</span>
         <Link href="/shop">Shop</Link>
         <span>›</span>
-        <span style={{ color: "#1a1714", fontWeight: 600 }}>{product.name}</span>
+        <span style={{ color: "#5f320fff", fontWeight: 600 }}>{product.name}</span>
       </Breadcrumb>
 
       <TopSection>
@@ -179,7 +190,14 @@ export default function ProductDetail({ product }: Props) {
               <SizeLabel>Size</SizeLabel>
               <SizeRow>
                 {sizes.map((s, i) => (
-                  <SizeChip key={s.label} $active={i === selectedSize} onClick={() => setSelectedSize(i)}>
+                  <SizeChip
+                    key={s.label}
+                    $active={i === selectedSize}
+                    onClick={() => {
+                      playClickSound();
+                      setSelectedSize(i);
+                    }}
+                  >
                     {s.label}
                   </SizeChip>
                 ))}
@@ -189,12 +207,26 @@ export default function ProductDetail({ product }: Props) {
 
           <ActionRow>
             <QtyBox>
-              <QtyBtn onClick={() => setQty((q) => Math.max(1, q - 1))}>−</QtyBtn>
+              <QtyBtn
+                onClick={() => {
+                  playClickSound();
+                  setQty((q) => Math.max(1, q - 1));
+                }}
+              >
+                −
+              </QtyBtn>
               <QtyValue>{qty}</QtyValue>
-              <QtyBtn onClick={() => setQty((q) => q + 1)}>+</QtyBtn>
+              <QtyBtn
+                onClick={() => {
+                  playClickSound();
+                  setQty((q) => q + 1);
+                }}
+              >
+                +
+              </QtyBtn>
             </QtyBox>
             <AddToCartBtn onClick={handleAddToCart} disabled={isAdding} style={{
-              background: isAdding ? "#7e7c2a" : "#2a241e"
+              background: isAdding ? "#7e7c2a" : "#5f320fff"
             }}>
               {isAdding ? "Added! ✓" : "Add to Cart"}
             </AddToCartBtn>
@@ -226,7 +258,14 @@ export default function ProductDetail({ product }: Props) {
       <TabsSection>
         <TabBar>
           {TABS.map((tab) => (
-            <TabButton key={tab.key} $active={activeTab === tab.key} onClick={() => setActiveTab(tab.key)}>
+            <TabButton
+              key={tab.key}
+              $active={activeTab === tab.key}
+              onClick={() => {
+                playClickSound();
+                setActiveTab(tab.key);
+              }}
+            >
               {tab.label}
             </TabButton>
           ))}
@@ -281,6 +320,71 @@ export default function ProductDetail({ product }: Props) {
           )}
         </TabContent>
       </TabsSection>
+
+      {openAlert && typeof document !== "undefined" && createPortal(
+        <Snackbar
+          open={openAlert}
+          autoHideDuration={4000}
+          onClose={() => setOpenAlert(false)}
+          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+          style={{ zIndex: 9999 }}
+        >
+          <div
+            style={{
+              background: "#fffffff5",
+              backdropFilter: "blur(12px)",
+              WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid #549a2947",
+                   borderLeft: "4px solid #549a29ff",
+              borderRadius: "8px",
+              padding: "12px 18px",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              boxShadow: "0 10px 25px rgba(58, 77, 43, 0.06)",
+              maxWidth: "420px",
+              fontFamily: "inherit",
+            }}
+          >
+            {/* Left Icon (SVG check badge) */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#549a29ff",
+                fontSize: "18px",
+                flexShrink: 0,
+              }}
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="3"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+            </div>
+
+            {/* Message Content */}
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 6px" }}>
+              <span style={{ color: "#549a29ff", fontSize: "13px", fontWeight: 700 }}>
+                Success:
+              </span>
+              <span style={{ color: "#3e6e21ff", fontSize: "13px", fontWeight: 500 }}>
+                {qty}x {product.name} ({sizes[selectedSize].label}) added to cart.
+              </span>
+            </div>
+          </div>
+        </Snackbar>,
+        document.body
+      )}
     </DetailPageWrapper>
   );
 }

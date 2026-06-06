@@ -1,12 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/src/hooks/useCart";
 import { ALL_PRODUCTS, Product } from "../shop/data/products";
 import { PageHero, EmptyState } from "@/src/components/ui";
 import cartBg from "@/src/assets/images/section-images/cart.png";
+import truckImg from "@/src/assets/images/illustration/Ahar_Truck-Left.png";
 import LocalMallTwoToneIcon from "@mui/icons-material/LocalMallTwoTone";
 
 import {
@@ -19,6 +20,9 @@ import {
   ShippingProgressText,
   ProgressBarWrapper,
   ProgressBarFill,
+  TruckProgressMarker,
+  RewardCheckpoint,
+  FireRewardPopup,
   CartItemCard,
   ItemImageWrapper,
   ItemDetails,
@@ -44,20 +48,21 @@ import {
 } from "./styled";
 import { QtyBox, QtyBtn, QtyValue } from "../shop/[slug]/styled";
 
-import {
-  Trash2,
-  Plus,
-  Minus,
-  Lock,
-  Tag,
-  ChevronLeft,
-  Sparkles,
-  Check,
-  Truck,
-} from "lucide-react";
+import { Trash2, Plus, Minus, ChevronLeft } from "lucide-react";
+import LocalOfferTwoToneIcon from "@mui/icons-material/LocalOfferTwoTone";
+import AutoAwesomeTwoToneIcon from "@mui/icons-material/AutoAwesomeTwoTone";
+import HttpsTwoToneIcon from "@mui/icons-material/HttpsTwoTone";
+import LocalShippingTwoToneIcon from "@mui/icons-material/LocalShippingTwoTone";
 import { ProductCard } from "../../../components/ui/cards/product-card/ProductCard";
+import { useRouter } from "next/navigation";
 
 export default function CartPage() {
+  const router = useRouter();
+  const playClickSound = () => {
+    const audio = new Audio("/audio/click.mp3");
+    audio.play().catch((err) => console.log("Audio play failed:", err));
+  };
+
   const {
     items,
     updateQuantity,
@@ -65,26 +70,50 @@ export default function CartPage() {
     cartCount,
     cartTotal,
     isHydrated,
+    appliedPromo,
+    setAppliedPromo,
   } = useCart();
 
+  const FREE_SHIPPING_THRESHOLD = 999;
+  const progressPercent = (cartTotal / FREE_SHIPPING_THRESHOLD) * 100;
+
+  const [animatedPercent, setAnimatedPercent] = useState(0);
+
+  useEffect(() => {
+    if (isHydrated) {
+      const timer = setTimeout(() => {
+        setAnimatedPercent(progressPercent);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isHydrated, progressPercent]);
+
   const [promoCode, setPromoCode] = useState("");
-  const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [promoError, setPromoError] = useState("");
-  const [checkoutStep, setCheckoutStep] = useState(0); // 0 = cart, 1 = simulated checkout success
+  const [rewardCopied, setRewardCopied] = useState(false);
+
+  const handleCollectReward = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    playClickSound();
+    navigator.clipboard.writeText("AHARA10");
+    setAppliedPromo("AHARA10");
+    setRewardCopied(true);
+    setTimeout(() => setRewardCopied(false), 2000);
+  };
 
   // Shipping details
-  const FREE_SHIPPING_THRESHOLD = 999;
   const STANDARD_SHIPPING_CHARGE = 60;
   const isFreeShipping =
     cartTotal >= FREE_SHIPPING_THRESHOLD || appliedPromo === "FREESHIP";
   const shippingCharge =
     cartTotal === 0 ? 0 : isFreeShipping ? 0 : STANDARD_SHIPPING_CHARGE;
 
-  // Derived state: calculate discount amount dynamically during render
+  // Derived state: calculate discount amount dynamically
   const discountAmount =
     appliedPromo === "AHARA10" ? Math.round(cartTotal * 0.1) : 0;
 
   const handleApplyPromo = () => {
+    playClickSound();
     setPromoError("");
     const code = promoCode.trim().toUpperCase();
 
@@ -100,11 +129,13 @@ export default function CartPage() {
   };
 
   const handleRemovePromo = () => {
+    playClickSound();
     setAppliedPromo(null);
   };
 
   const handleCheckout = () => {
-    setCheckoutStep(1); // triggers the interactive checkout simulation
+    playClickSound();
+    router.push("/checkout");
   };
 
   // Select recommended products (not already in cart)
@@ -158,72 +189,7 @@ export default function CartPage() {
     );
   }
 
-  // Simulation Success Screen
-  if (checkoutStep === 1) {
-    return (
-      <CartPageWrapper>
-        <PageHero
-          bg={cartBg.src}
-          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Cart" }]}
-          title={
-            <>
-              <span className="line">
-                <span className="w1">Order </span>
-                <span className="w2">Placed</span>
-              </span>
-              <span className="line">
-                <span className="w3">Successfully!</span>
-              </span>
-            </>
-          }
-          subtitle="Thank you for choosing Ahara!"
-        />
-        <PageContainer>
-          <Container style={{ maxWidth: "600px", alignItems: "center" }}>
-            <EmptyState
-              icon={<Check size={44} style={{ color: "#2e7d32" }} />}
-              badgeText="Order Confirmed • Yay! 🎉"
-              title="Order Placed Successfully!"
-              description="Thank you for choosing Ahara. We are preparing your clean label treats. A confirmation email and tracking link will be sent shortly."
-              btnText="Continue Shopping"
-              floatingTags={[
-                {
-                  text: "🚚 Fast Shipping",
-                  delay: "0s",
-                  style: {
-                    top: "12%",
-                    left: "-30px",
-                    "--rot": "-8deg",
-                  } as React.CSSProperties,
-                },
-                {
-                  text: "🌱 Clean Label",
-                  delay: "1.5s",
-                  style: {
-                    bottom: "28%",
-                    right: "-35px",
-                    "--rot": "6deg",
-                  } as React.CSSProperties,
-                },
-                {
-                  text: "✨ Packed with Care",
-                  delay: "0.7s",
-                  style: {
-                    top: "45%",
-                    right: "-45px",
-                    "--rot": "-5deg",
-                  } as React.CSSProperties,
-                },
-              ]}
-            />
-          </Container>
-        </PageContainer>
-      </CartPageWrapper>
-    );
-  }
-
   const finalTotal = cartTotal + shippingCharge - discountAmount;
-  const progressPercent = (cartTotal / FREE_SHIPPING_THRESHOLD) * 100;
 
   return (
     <CartPageWrapper>
@@ -283,21 +249,35 @@ export default function CartPage() {
                   {/* Shipping milestone progress */}
                   <ShippingProgressContainer>
                     <ShippingProgressText>
-                      <Truck size={18} style={{ color: "#7e7c2a" }} />
+                      <LocalShippingTwoToneIcon
+                        style={{ color: "#7e7c2a", fontSize: "16px" }}
+                      />
                       {isFreeShipping ? (
                         <span>
-                          Congrats! You have unlocked Free Delivery! 🎉
+                          Congrats! You have unlocked{" "}
+                          <strong>Free Delivery</strong>! 🎉
                         </span>
                       ) : (
                         <>
                           Add{" "}
                           <span>₹{FREE_SHIPPING_THRESHOLD - cartTotal}</span>{" "}
-                          more to unlock <span>Free Shipping</span>
+                          more to unlock <strong>Free Shipping</strong>
                         </>
                       )}
                     </ShippingProgressText>
                     <ProgressBarWrapper>
-                      <ProgressBarFill $percent={progressPercent} />
+                      <ProgressBarFill $percent={animatedPercent} />
+                      <RewardCheckpoint $percent={animatedPercent} />
+                      <TruckProgressMarker $percent={animatedPercent}>
+                        {animatedPercent >= 50 && (
+                          <FireRewardPopup onClick={handleCollectReward}>
+                            {rewardCopied
+                              ? "🔥 Copied!"
+                              : "🔥 Unlock 10% Off: AHARA10"}
+                          </FireRewardPopup>
+                        )}
+                        <Image src={truckImg} alt="Shipping Truck" fill />
+                      </TruckProgressMarker>
                     </ProgressBarWrapper>
                   </ShippingProgressContainer>
 
@@ -325,23 +305,30 @@ export default function CartPage() {
                             style={{ transform: "scale(0.95)", margin: 0 }}
                           >
                             <QtyBtn
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity - 1)
-                              }
+                              onClick={() => {
+                                playClickSound();
+                                updateQuantity(item.id, item.quantity - 1);
+                              }}
                             >
                               <Minus size={14} />
                             </QtyBtn>
                             <QtyValue>{item.quantity}</QtyValue>
                             <QtyBtn
-                              onClick={() =>
-                                updateQuantity(item.id, item.quantity + 1)
-                              }
+                              onClick={() => {
+                                playClickSound();
+                                updateQuantity(item.id, item.quantity + 1);
+                              }}
                             >
                               <Plus size={14} />
                             </QtyBtn>
                           </QtyBox>
 
-                          <RemoveButton onClick={() => removeItem(item.id)}>
+                          <RemoveButton
+                            onClick={() => {
+                              playClickSound();
+                              removeItem(item.id);
+                            }}
+                          >
                             <Trash2 size={14} />
                             <span>Remove</span>
                           </RemoveButton>
@@ -448,7 +435,10 @@ export default function CartPage() {
                         gap: "4px",
                       }}
                     >
-                      <Tag size={12} /> Have a Promo Code?
+                      <LocalOfferTwoToneIcon
+                        style={{ color: "#7e7c2a", fontSize: "14px" }}
+                      />{" "}
+                      Have a Promo Code?
                     </label>
                     {appliedPromo ? (
                       <div
@@ -458,12 +448,15 @@ export default function CartPage() {
                           justifyContent: "space-between",
                           background: "#f0f4ed",
                           border: "1px solid rgba(73, 106, 53, 0.2)",
-                          borderRadius: "100px",
+                          borderRadius: "10px",
                           padding: "8px 16px",
                         }}
                       >
                         <PromoSuccessText style={{ margin: 0 }}>
-                          <Sparkles size={14} /> Applied: {appliedPromo}
+                          <AutoAwesomeTwoToneIcon
+                            style={{ color: "#7e7c2a", fontSize: "14px" }}
+                          />{" "}
+                          Applied: {appliedPromo}
                         </PromoSuccessText>
                         <button
                           onClick={handleRemovePromo}
@@ -523,7 +516,10 @@ export default function CartPage() {
                     </CheckoutButton>
 
                     <SecureCheckoutText>
-                      <Lock size={12} /> Secure 256-bit SSL Checkout
+                      <HttpsTwoToneIcon
+                        style={{ color: "#7e7c2a", fontSize: "14px" }}
+                      />{" "}
+                      Secure 256-bit SSL Checkout
                     </SecureCheckoutText>
                   </div>
                 </OrderSummaryCard>
