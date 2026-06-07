@@ -977,6 +977,8 @@ export const TrustBadgeWrapper = styled.div`
   border-top: 1px solid #fdfaf5;
 `;
 
+import { ShoppingBag } from "lucide-react";
+
 export const TrustBadge = styled.div`
   display: flex;
   align-items: center;
@@ -988,7 +990,31 @@ export const TrustBadge = styled.div`
   letter-spacing: 0.5px;
 
   svg {
-    color: #496a35;
-    font-size: 16px;
+    color: #7E7C2A;
+    font-size: 26px;
   }
 `;
+
+export const CheckoutLoadingState = styled.div`
+  text-align: center;
+  padding: 100px 0;
+  color: #7e7c2a;
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+export const EmptyContainer = styled(Container)`
+  max-width: 600px;
+  align-items: center;
+  padding: 100px 0;
+`;
+
+export const ShoppingBagIcon = styled(ShoppingBag)`
+  color: #7e7c2a;
+`;
+
+export const ConfirmationContainer = styled(Container)`
+  max-width: 680px;
+  align-items: center;
+`;
+

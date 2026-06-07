@@ -514,3 +514,18 @@ export const SuggestionsGrid = styled.div`
     grid-template-columns: 1fr;
   }
 `;
+
+export const LoadingState = styled.div`
+  text-align: center;
+  padding: 100px 0;
+  color: #7e7c2a;
+  font-size: 18px;
+  font-weight: 600;
+`;
+
+export const CartMainColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+`;
+
