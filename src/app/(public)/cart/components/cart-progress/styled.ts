@@ -64,8 +64,7 @@ export const RewardCheckpoint = styled.div<{ $percent: number }>`
   background: ${({ $percent }) => ($percent >= 50 ? "var(--olive)" : "var(--paper)")};
   border: 2px solid var(--surface);
   box-shadow: 0 0 0 2px
-    ${({ $percent }) =>
-      $percent >= 50 ? "rgb(var(--olive-rgb) / 0.4)" : "rgba(232, 230, 223, 0.4)"};
+    ${({ $percent }) => ($percent >= 50 ? "rgb(var(--olive-rgb) / 0.4)" : "rgba(232, 230, 223, 0.4)")};
   z-index: 5;
   transition: all 0.5s ease;
 
@@ -137,8 +136,7 @@ export const TruckProgressMarker = styled.div<{ $percent: number }>`
   position: absolute;
   top: -68px;
   left: ${({ $percent }) => Math.min(100, $percent)}%;
-  transform: ${({ $percent }) =>
-    `translate(${-85 * (Math.min(100, $percent) / 100)}%, 0)`};
+  transform: ${({ $percent }) => `translate(${-85 * (Math.min(100, $percent) / 100)}%, 0)`};
   width: 130px;
   height: 80px;
   transition:

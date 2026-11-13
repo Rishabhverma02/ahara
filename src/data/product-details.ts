@@ -28,11 +28,7 @@ const COOKIE_SIZES: ProductSize[] = [
   { label: "250g", price: 499 },
 ];
 
-const CLEAN_LABEL: string[] = [
-  "No Preservatives",
-  "No Artificial Color",
-  "No Refined Junk",
-];
+const CLEAN_LABEL: string[] = ["No Preservatives", "No Artificial Color", "No Refined Junk"];
 
 const MAKHANA_NUTRITION: NutritionRow[] = [
   { label: "Energy", value: "420 kcal" },
@@ -74,8 +70,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "We slow-roast each batch with real aged cheddar and a blend of Italian herbs — no artificial flavouring, ever.",
       ],
     },
-    tasteTexture: "Crunchy and airy with a savoury cheese kick and subtle herbal notes. Light enough for guilt-free snacking, satisfying enough to replace chips.",
-    howToConsume: "Enjoy straight from the pack as an anytime snack. Perfect with evening tea, as a movie-night munchie, or crushed over salads for extra crunch.",
+    tasteTexture:
+      "Crunchy and airy with a savoury cheese kick and subtle herbal notes. Light enough for guilt-free snacking, satisfying enough to replace chips.",
+    howToConsume:
+      "Enjoy straight from the pack as an anytime snack. Perfect with evening tea, as a movie-night munchie, or crushed over salads for extra crunch.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   2: {
@@ -89,8 +87,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "The chocolate is tempered at low temperatures to preserve its antioxidant content and rich flavour profile.",
       ],
     },
-    tasteTexture: "Rich, bittersweet chocolate shell over a light, crunchy makhana core. A guilt-free dessert alternative.",
-    howToConsume: "Best enjoyed chilled for a crunchy-chocolate experience. Makes a perfect after-dinner treat or desk snack.",
+    tasteTexture:
+      "Rich, bittersweet chocolate shell over a light, crunchy makhana core. A guilt-free dessert alternative.",
+    howToConsume:
+      "Best enjoyed chilled for a crunchy-chocolate experience. Makes a perfect after-dinner treat or desk snack.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   3: {
@@ -104,8 +104,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "We use only true cinnamon (not cassia) for its delicate, warm sweetness and anti-inflammatory properties.",
       ],
     },
-    tasteTexture: "Warm, aromatic cinnamon wraps around each crunchy makhana. Naturally sweet without added sugar.",
-    howToConsume: "Perfect warm-weather snack with masala chai. Also wonderful crumbled over morning oats or yogurt bowls.",
+    tasteTexture:
+      "Warm, aromatic cinnamon wraps around each crunchy makhana. Naturally sweet without added sugar.",
+    howToConsume:
+      "Perfect warm-weather snack with masala chai. Also wonderful crumbled over morning oats or yogurt bowls.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   4: {
@@ -119,8 +121,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "Each fox nut is slow-roasted to perfection, locking in flavour without frying — zero oil used.",
       ],
     },
-    tasteTexture: "A familiar, crowd-pleasing flavour. Creamy, savoury, with a gentle onion bite. Addictively crunchy.",
-    howToConsume: "An ideal party snack, lunchbox filler, or anytime craving crusher. Pairs beautifully with a cold drink.",
+    tasteTexture:
+      "A familiar, crowd-pleasing flavour. Creamy, savoury, with a gentle onion bite. Addictively crunchy.",
+    howToConsume:
+      "An ideal party snack, lunchbox filler, or anytime craving crusher. Pairs beautifully with a cold drink.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   5: {
@@ -134,8 +138,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "Finished with Himalayan pink rock salt for the perfect sweet-salty-sour balance.",
       ],
     },
-    tasteTexture: "Zesty, tangy, and refreshingly light. The lime flavour is vibrant without being overpowering.",
-    howToConsume: "Best enjoyed on a hot day. Throw them in your gym bag or keep a jar at your desk for a pick-me-up.",
+    tasteTexture:
+      "Zesty, tangy, and refreshingly light. The lime flavour is vibrant without being overpowering.",
+    howToConsume:
+      "Best enjoyed on a hot day. Throw them in your gym bag or keep a jar at your desk for a pick-me-up.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   6: {
@@ -150,7 +156,8 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
       ],
     },
     tasteTexture: "Clean, naturally nutty, and perfectly crunchy. The purest expression of makhana.",
-    howToConsume: "Snack on them plain, toss into trail mixes, or use as a base for your own seasonings at home.",
+    howToConsume:
+      "Snack on them plain, toss into trail mixes, or use as a base for your own seasonings at home.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   7: {
@@ -165,7 +172,8 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
       ],
     },
     tasteTexture: "Subtle, clean, and elegantly salty. The pink salt adds a gentle mineral depth.",
-    howToConsume: "A minimalist's snack. Perfect for calorie-conscious snacking, fasting days, or as a soup topping.",
+    howToConsume:
+      "A minimalist's snack. Perfect for calorie-conscious snacking, fasting days, or as a soup topping.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   8: {
@@ -179,8 +187,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "We balance the heat with a hint of amchur (dried mango powder) for complexity.",
       ],
     },
-    tasteTexture: "Bold, spicy, and deeply flavourful. The heat builds gradually — exciting but not overwhelming.",
-    howToConsume: "Pair with a cold beverage for the ultimate spicy snack experience. Great for chaat lovers.",
+    tasteTexture:
+      "Bold, spicy, and deeply flavourful. The heat builds gradually — exciting but not overwhelming.",
+    howToConsume:
+      "Pair with a cold beverage for the ultimate spicy snack experience. Great for chaat lovers.",
     nutritionFacts: MAKHANA_NUTRITION,
   },
   9: {
@@ -194,8 +204,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "Our sattu is stone-ground in small batches to preserve its natural nutrients and earthy flavour.",
       ],
     },
-    tasteTexture: "Earthy, nutty, and deeply satisfying. Mixes into a smooth, slightly grainy shake with natural sweetness.",
-    howToConsume: "Mix 2 scoops in 200ml cold water or milk. Shake well. Best consumed as a pre/post-workout drink or morning energiser.",
+    tasteTexture:
+      "Earthy, nutty, and deeply satisfying. Mixes into a smooth, slightly grainy shake with natural sweetness.",
+    howToConsume:
+      "Mix 2 scoops in 200ml cold water or milk. Shake well. Best consumed as a pre/post-workout drink or morning energiser.",
     nutritionFacts: SATTU_NUTRITION,
   },
   10: {
@@ -210,7 +222,8 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
       ],
     },
     tasteTexture: "Rich, chocolatey, and creamy. Tastes like a dessert but packs 20g protein per serve.",
-    howToConsume: "Blend with cold milk and a banana for the ultimate chocolate shake. Also delicious mixed into overnight oats.",
+    howToConsume:
+      "Blend with cold milk and a banana for the ultimate chocolate shake. Also delicious mixed into overnight oats.",
     nutritionFacts: SATTU_NUTRITION,
   },
   11: {
@@ -224,8 +237,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "Same ancient sattu base, enhanced with modern sports nutrition science.",
       ],
     },
-    tasteTexture: "Smoother and richer than our original. The ashwagandha adds an earthy depth to the chocolate.",
-    howToConsume: "Mix 2 scoops with 250ml cold milk. Ideal post-workout. Can also be used in protein pancake batter.",
+    tasteTexture:
+      "Smoother and richer than our original. The ashwagandha adds an earthy depth to the chocolate.",
+    howToConsume:
+      "Mix 2 scoops with 250ml cold milk. Ideal post-workout. Can also be used in protein pancake batter.",
     nutritionFacts: SATTU_NUTRITION,
   },
   12: {
@@ -255,7 +270,8 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
       ],
     },
     tasteTexture: "Aromatic, floral, and subtly spiced. A sophisticated, Mughal-inspired flavour experience.",
-    howToConsume: "Mix with chilled milk for an authentic thandai experience. Wonderful as an evening drink or festival special.",
+    howToConsume:
+      "Mix with chilled milk for an authentic thandai experience. Wonderful as an evening drink or festival special.",
     nutritionFacts: SATTU_NUTRITION,
   },
   14: {
@@ -270,7 +286,8 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
       ],
     },
     tasteTexture: "Crumbly, nutty, with a warm jaggery sweetness. Hearty and satisfying with every bite.",
-    howToConsume: "Enjoy with morning tea or as an after-school snack. Pairs wonderfully with a glass of warm milk.",
+    howToConsume:
+      "Enjoy with morning tea or as an after-school snack. Pairs wonderfully with a glass of warm milk.",
     nutritionFacts: COOKIE_NUTRITION,
   },
   15: {
@@ -317,7 +334,8 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "Our moringa bites combine dried moringa leaf powder with dates, nuts, and a touch of honey. No added sugar.",
       ],
     },
-    tasteTexture: "Earthy, slightly bitter moringa balanced by natural date sweetness. Dense, chewy, and filling.",
+    tasteTexture:
+      "Earthy, slightly bitter moringa balanced by natural date sweetness. Dense, chewy, and filling.",
     howToConsume: "One or two bites make a perfect pre-workout energy boost or mid-afternoon pick-me-up.",
     nutritionFacts: [
       { label: "Energy", value: "380 kcal" },
@@ -342,8 +360,10 @@ export const PRODUCT_DETAILS: Record<number, ProductDetail> = {
         "Every ingredient is individually sourced and combined by hand in small batches.",
       ],
     },
-    tasteTexture: "A celebration of textures — crunchy makhana, chewy moringa bites, and toasted seeds. Every handful is different.",
-    howToConsume: "Keep a jar at your desk, in the car, or in your gym bag. The perfect grab-and-go superfood snack.",
+    tasteTexture:
+      "A celebration of textures — crunchy makhana, chewy moringa bites, and toasted seeds. Every handful is different.",
+    howToConsume:
+      "Keep a jar at your desk, in the car, or in your gym bag. The perfect grab-and-go superfood snack.",
     nutritionFacts: [
       { label: "Energy", value: "410 kcal" },
       { label: "Protein", value: "16g" },

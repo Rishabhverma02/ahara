@@ -56,8 +56,7 @@ function useCartPageState() {
   };
 
   const isFreeShipping = qualifiesForFreeShipping(cartTotal, appliedPromo);
-  const shippingCharge =
-    cartTotal === 0 ? 0 : isFreeShipping ? 0 : STANDARD_SHIPPING_CHARGE;
+  const shippingCharge = cartTotal === 0 ? 0 : isFreeShipping ? 0 : STANDARD_SHIPPING_CHARGE;
 
   const discountAmount = promoDiscount(cartTotal, appliedPromo);
 
@@ -88,9 +87,7 @@ function useCartPageState() {
   // Select recommended products (not already in cart)
   const getRecommendedProducts = (): Product[] => {
     const cartProductIds = items.map((item) => item.productId);
-    const available = getAllProducts().filter(
-      (prod) => !cartProductIds.includes(prod.id),
-    );
+    const available = getAllProducts().filter((prod) => !cartProductIds.includes(prod.id));
     // Shuffle and pick 4
     return available.slice(0, 4);
   };
@@ -133,11 +130,7 @@ const CartPageContext = createContext<CartPageHookType | null>(null);
 
 export const CartPageProvider = ({ children }: { children: React.ReactNode }) => {
   const state = useCartPageState();
-  return (
-    <CartPageContext.Provider value={state}>
-      {children}
-    </CartPageContext.Provider>
-  );
+  return <CartPageContext.Provider value={state}>{children}</CartPageContext.Provider>;
 };
 
 export const useCartPage = () => {

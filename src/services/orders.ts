@@ -46,7 +46,14 @@ export function priceOrder(req: OrderRequest) {
     const unitPrice =
       l.size === "Standard" || !sizes ? product.price : sizes.find((s) => s.label === l.size)?.price;
     if (unitPrice === undefined) throw new OrderError(`Unknown size "${l.size}" for ${product.name}`);
-    return { productId: product.id, name: product.name, size: l.size, unitPrice, quantity: l.quantity, lineTotal: unitPrice * l.quantity };
+    return {
+      productId: product.id,
+      name: product.name,
+      size: l.size,
+      unitPrice,
+      quantity: l.quantity,
+      lineTotal: unitPrice * l.quantity,
+    };
   });
 
   const promo = parsePromo(req.promo);

@@ -53,7 +53,8 @@ export function useShopQuery() {
       if ("categories" in patch) set("category", patch.categories?.join(",") || null);
       if ("goals" in patch) set("goal", patch.goals?.join(",") || null);
       if ("ingredients" in patch) set("ingredient", patch.ingredients?.join(",") || null);
-      if ("maxPrice" in patch) set("max", patch.maxPrice && patch.maxPrice < MAX_PRICE ? String(patch.maxPrice) : null);
+      if ("maxPrice" in patch)
+        set("max", patch.maxPrice && patch.maxPrice < MAX_PRICE ? String(patch.maxPrice) : null);
       if ("sort" in patch) set("sort", patch.sort && patch.sort !== "best-selling" ? patch.sort : null);
       set("page", "page" in patch && patch.page && patch.page > 1 ? String(patch.page) : null);
 
@@ -64,10 +65,15 @@ export function useShopQuery() {
   );
 
   const toggle = useCallback(
-    <K extends "categories" | "goals" | "ingredients">(key: K, value: ProductQuery[K] extends (infer U)[] | undefined ? U : never) => {
+    <K extends "categories" | "goals" | "ingredients">(
+      key: K,
+      value: ProductQuery[K] extends (infer U)[] | undefined ? U : never,
+    ) => {
       const current = state[key] as string[];
       const v = value as string;
-      update({ [key]: current.includes(v) ? current.filter((x) => x !== v) : [...current, v] } as Partial<ProductQuery>);
+      update({
+        [key]: current.includes(v) ? current.filter((x) => x !== v) : [...current, v],
+      } as Partial<ProductQuery>);
     },
     [state, update],
   );

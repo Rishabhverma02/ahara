@@ -89,8 +89,7 @@ export const ToggleButton = styled.button<{ $active: boolean }>`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: ${({ $active }) =>
-    $active ? "0 8px 16px rgb(var(--olive-rgb) / 0.1)" : "none"};
+  box-shadow: ${({ $active }) => ($active ? "0 8px 16px rgb(var(--olive-rgb) / 0.1)" : "none")};
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {

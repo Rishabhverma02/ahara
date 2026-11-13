@@ -48,7 +48,9 @@ export const Step2Form = () => {
           />
         </S.Options>
       ) : (
-        <S.Note>Collect your order from Ahara Wellness HQ, Jaora — we&rsquo;ll email you when it&rsquo;s ready.</S.Note>
+        <S.Note>
+          Collect your order from Ahara Wellness HQ, Jaora — we&rsquo;ll email you when it&rsquo;s ready.
+        </S.Note>
       )}
 
       <DeliveryCardHeader>
@@ -86,9 +88,7 @@ export const Step2Form = () => {
         />
       </S.Options>
 
-      {submitError && (
-        <S.ErrorBox role="alert">{submitError}</S.ErrorBox>
-      )}
+      {submitError && <S.ErrorBox role="alert">{submitError}</S.ErrorBox>}
 
       <S.Actions>
         <S.Back type="button" onClick={backToDetails} disabled={submitting}>

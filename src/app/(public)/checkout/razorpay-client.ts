@@ -18,7 +18,8 @@ export function loadRazorpay(): Promise<RazorpayCtor> {
     const s = document.createElement("script");
     s.src = "https://checkout.razorpay.com/v1/checkout.js";
     s.async = true;
-    s.onload = () => (window.Razorpay ? resolve(window.Razorpay) : reject(new Error("Razorpay failed to load")));
+    s.onload = () =>
+      window.Razorpay ? resolve(window.Razorpay) : reject(new Error("Razorpay failed to load"));
     s.onerror = () => {
       loading = null;
       reject(new Error("Razorpay failed to load"));

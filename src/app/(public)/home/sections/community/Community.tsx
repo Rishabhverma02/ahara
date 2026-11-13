@@ -40,7 +40,10 @@ export const Community = () => {
           <h2>
             Recipes, rituals &amp; <em>first dibs.</em>
           </h2>
-          <p>One thoughtful email a fortnight — new flavours before they launch, seasonal recipes, and early access to Kairo.</p>
+          <p>
+            One thoughtful email a fortnight — new flavours before they launch, seasonal recipes, and early
+            access to Kairo.
+          </p>
         </Copy>
 
         {done ? (

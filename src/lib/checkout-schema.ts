@@ -6,10 +6,29 @@ import { z } from "zod";
  */
 
 export const INDIAN_STATES = [
-  "Andhra Pradesh", "Assam", "Bihar", "Chhattisgarh", "Delhi", "Goa", "Gujarat", "Haryana",
-  "Himachal Pradesh", "Jammu and Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
-  "Maharashtra", "Odisha", "Punjab", "Rajasthan", "Tamil Nadu", "Telangana", "Uttar Pradesh",
-  "Uttarakhand", "West Bengal",
+  "Andhra Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Delhi",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jammu and Kashmir",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Tamil Nadu",
+  "Telangana",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
 ] as const;
 
 const required = (label: string) => z.string().trim().min(1, `${label} is required.`);

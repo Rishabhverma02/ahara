@@ -28,7 +28,11 @@ export const EmptyState = ({
   btnHref = "/shop",
 }: EmptyStateProps) => (
   <Wrap>
-    <Mascot pose={pose} width={pose === "parachute" ? 150 : 120} motion={pose === "parachute" ? "sway" : "bob"} />
+    <Mascot
+      pose={pose}
+      width={pose === "parachute" ? 150 : 120}
+      motion={pose === "parachute" ? "sway" : "bob"}
+    />
     <Text>
       {kicker && <Kicker>{kicker}</Kicker>}
       <h2>{title}</h2>

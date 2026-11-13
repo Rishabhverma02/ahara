@@ -105,7 +105,9 @@ export const Wordmark = styled.div`
   margin: clamp(3rem, 6vw, 5rem) 0 -0.12em;
   font-family: var(--font-display);
   font-style: italic;
-  font-variation-settings: "opsz" 144, "SOFT" 100;
+  font-variation-settings:
+    "opsz" 144,
+    "SOFT" 100;
   font-size: clamp(6rem, 24vw, 22rem);
   line-height: 0.8;
   letter-spacing: -0.04em;

@@ -3,14 +3,14 @@ import { persist } from "zustand/middleware";
 import type { StaticImageData } from "next/image";
 
 export interface CartItem {
-  id: string; 
+  id: string;
   productId: number;
   slug: string;
   name: string;
   price: number;
   quantity: number;
   size: string;
-  image: StaticImageData; 
+  image: StaticImageData;
 }
 
 interface CartState {
@@ -31,18 +31,14 @@ export const useCartStore = create<CartState>()(
       addItem: (newItem) =>
         set((state) => {
           const itemKey = `${newItem.productId}-${newItem.size}`;
-          const existingItemIndex = state.items.findIndex(
-            (item) => item.id === itemKey
-          );
+          const existingItemIndex = state.items.findIndex((item) => item.id === itemKey);
 
           if (existingItemIndex > -1) {
             // Immutable update: mutating the existing object in place meant
             // anything comparing item references never saw the change.
             return {
               items: state.items.map((item, i) =>
-                i === existingItemIndex
-                  ? { ...item, quantity: item.quantity + newItem.quantity }
-                  : item,
+                i === existingItemIndex ? { ...item, quantity: item.quantity + newItem.quantity } : item,
               ),
             };
           }
@@ -63,10 +59,9 @@ export const useCartStore = create<CartState>()(
         })),
       updateQuantity: (id, quantity) =>
         set((state) => ({
-          items: state.items
-            .map((item) =>
-              item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item
-            ),
+          items: state.items.map((item) =>
+            item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item,
+          ),
         })),
       clearCart: () => set({ items: [], appliedPromo: null }),
       setAppliedPromo: (promo) => set({ appliedPromo: promo }),
@@ -80,6 +75,6 @@ export const useCartStore = create<CartState>()(
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         items: s.items.map(({ image, ...rest }) => rest),
       }),
-    }
-  )
+    },
+  ),
 );

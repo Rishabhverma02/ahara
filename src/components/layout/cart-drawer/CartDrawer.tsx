@@ -8,7 +8,24 @@ import { useDialog } from "@/src/hooks/useDialog";
 import { useUiStore } from "@/src/store/useUiStore";
 import { FREE_SHIPPING_THRESHOLD, formatINR } from "@/src/lib/pricing";
 import { ButtonLink, Mascot } from "@/src/components/ui";
-import { Overlay, Panel, Head, IconBtn, Empty, Progress, Bar, List, Row, Thumb, Info, Qty, End, Foot, Subtotal, Actions } from "./styled";
+import {
+  Overlay,
+  Panel,
+  Head,
+  IconBtn,
+  Empty,
+  Progress,
+  Bar,
+  List,
+  Row,
+  Thumb,
+  Info,
+  Qty,
+  End,
+  Foot,
+  Subtotal,
+  Actions,
+} from "./styled";
 
 /** Slide-in mini cart so shoppers can review the bag without leaving the page. */
 export const CartDrawer = () => {
@@ -24,7 +41,12 @@ export const CartDrawer = () => {
 
   return (
     <Overlay onClick={close}>
-      <Panel role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title" onClick={(e) => e.stopPropagation()}>
+      <Panel
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="cart-drawer-title"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Head>
           <h2 id="cart-drawer-title">
             Your cart <span>({cartCount})</span>
@@ -71,18 +93,31 @@ export const CartDrawer = () => {
                     </Link>
                     <small>{item.size}</small>
                     <Qty>
-                      <button type="button" onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1} aria-label={`Decrease ${item.name} quantity`}>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        disabled={item.quantity <= 1}
+                        aria-label={`Decrease ${item.name} quantity`}
+                      >
                         <Minus size={14} />
                       </button>
                       <span aria-live="polite">{item.quantity}</span>
-                      <button type="button" onClick={() => updateQuantity(item.id, item.quantity + 1)} aria-label={`Increase ${item.name} quantity`}>
+                      <button
+                        type="button"
+                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        aria-label={`Increase ${item.name} quantity`}
+                      >
                         <Plus size={14} />
                       </button>
                     </Qty>
                   </Info>
                   <End>
                     <strong>{formatINR(item.price * item.quantity)}</strong>
-                    <IconBtn type="button" onClick={() => removeItem(item.id)} aria-label={`Remove ${item.name}`}>
+                    <IconBtn
+                      type="button"
+                      onClick={() => removeItem(item.id)}
+                      aria-label={`Remove ${item.name}`}
+                    >
                       <Trash2 size={16} />
                     </IconBtn>
                   </End>

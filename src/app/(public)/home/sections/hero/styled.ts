@@ -27,9 +27,7 @@ export const Wrap = styled.section`
   display: flex;
   align-items: center;
   padding: calc(var(--header-h) + 2rem) 0 4rem;
-  background:
-    radial-gradient(60% 70% at 78% 45%, var(--glow) 0%, transparent 70%),
-    var(--paper);
+  background: radial-gradient(60% 70% at 78% 45%, var(--glow) 0%, transparent 70%), var(--paper);
   overflow: hidden;
 
   ${mq.md} {
@@ -60,10 +58,18 @@ export const Copy = styled.div`
   > * {
     animation: ${rise} 0.9s var(--ease-out) both;
   }
-  > :nth-child(1) { animation-delay: 0.05s; }
-  > :nth-child(3) { animation-delay: 0.34s; }
-  > :nth-child(4) { animation-delay: 0.44s; }
-  > :nth-child(5) { animation-delay: 0.54s; }
+  > :nth-child(1) {
+    animation-delay: 0.05s;
+  }
+  > :nth-child(3) {
+    animation-delay: 0.34s;
+  }
+  > :nth-child(4) {
+    animation-delay: 0.44s;
+  }
+  > :nth-child(5) {
+    animation-delay: 0.54s;
+  }
 `;
 
 export const Eyebrow = styled.p`
@@ -89,7 +95,9 @@ export const Title = styled.h1`
 
   em {
     font-style: italic;
-    font-variation-settings: "opsz" 144, "SOFT" 100;
+    font-variation-settings:
+      "opsz" 144,
+      "SOFT" 100;
     color: var(--olive);
   }
 `;

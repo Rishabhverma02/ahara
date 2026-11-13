@@ -2,7 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { GooglePay, Instagram, LinkedIn, Mastercard, Paytm, PhonePe, Visa, XTwitter, YouTube } from "@/src/components/ui/BrandIcons";
+import {
+  GooglePay,
+  Instagram,
+  LinkedIn,
+  Mastercard,
+  Paytm,
+  PhonePe,
+  Visa,
+  XTwitter,
+  YouTube,
+} from "@/src/components/ui/BrandIcons";
 import { Wrap, Inner, Top, Brand, Contact, Social, Col, Wordmark, Bottom, Payments, Compact } from "./styled";
 
 const COLUMNS = [

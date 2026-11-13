@@ -39,7 +39,7 @@ export const Header = () => {
 
   useEffect(() => {
     // only re-render when the boolean actually flips
-    const onScroll = () => setScrolled((prev) => (window.scrollY > 12) !== prev ? !prev : prev);
+    const onScroll = () => setScrolled((prev) => (window.scrollY > 12 !== prev ? !prev : prev));
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -78,7 +78,11 @@ export const Header = () => {
 
           <S.Nav aria-label="Primary">
             {NAV.map((item) => (
-              <S.NavLink key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+              <S.NavLink
+                key={item.href}
+                href={item.href}
+                aria-current={isActive(item.href) ? "page" : undefined}
+              >
                 {item.label}
               </S.NavLink>
             ))}
@@ -92,7 +96,12 @@ export const Header = () => {
               <Heart size={20} />
               {wishlistIds.length > 0 && <S.Count>{wishlistIds.length}</S.Count>}
             </S.IconLink>
-            <S.IconButton type="button" onClick={openCart} aria-label={`Open cart, ${cartCount} items`} aria-haspopup="dialog">
+            <S.IconButton
+              type="button"
+              onClick={openCart}
+              aria-label={`Open cart, ${cartCount} items`}
+              aria-haspopup="dialog"
+            >
               <ShoppingBag size={20} />
               {cartCount > 0 && <S.Count $accent>{cartCount}</S.Count>}
             </S.IconButton>
@@ -114,7 +123,12 @@ export const Header = () => {
             </S.DrawerTop>
             <S.DrawerNav aria-label="Mobile">
               {NAV.map((item, i) => (
-                <S.DrawerLink key={item.href} href={item.href} onClick={() => setOpen(false)} style={{ animationDelay: `${60 + i * 50}ms` }}>
+                <S.DrawerLink
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setOpen(false)}
+                  style={{ animationDelay: `${60 + i * 50}ms` }}
+                >
                   <span>0{i + 1}</span>
                   {item.label}
                 </S.DrawerLink>

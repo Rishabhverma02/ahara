@@ -8,8 +8,9 @@ export const FormCard = styled.div<{ $disabled?: boolean }>`
   border-radius: 20px;
   padding: 40px;
   border: 2px solid rgb(var(--olive-rgb) / 0.1);
-  box-shadow: 0 20px 40px -15px rgba(58, 47, 37, 0.05),
-              0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  box-shadow:
+    0 20px 40px -15px rgba(58, 47, 37, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
   pointer-events: ${({ $disabled }) => ($disabled ? "none" : "auto")};

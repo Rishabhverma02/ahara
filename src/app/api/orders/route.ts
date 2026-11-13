@@ -18,7 +18,10 @@ export async function POST(req: Request) {
 
   const parsed = orderRequestSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json({ error: "Validation failed", fields: fieldErrors(parsed.error) }, { status: 422 });
+    return NextResponse.json(
+      { error: "Validation failed", fields: fieldErrors(parsed.error) },
+      { status: 422 },
+    );
   }
 
   try {

@@ -10,7 +10,9 @@ export const contentType = "image/png";
 async function loadFont(family: string, text: string, ital = 0) {
   try {
     const css = await (
-      await fetch(`https://fonts.googleapis.com/css2?family=${family}:ital,wght@${ital},400&text=${encodeURIComponent(text)}`)
+      await fetch(
+        `https://fonts.googleapis.com/css2?family=${family}:ital,wght@${ital},400&text=${encodeURIComponent(text)}`,
+      )
     ).text();
     const url = css.match(/src: url\((.+?)\) format\('(opentype|truetype)'\)/)?.[1];
     return url ? await (await fetch(url)).arrayBuffer() : null;
@@ -33,40 +35,40 @@ export default async function OpengraphImage() {
   ].filter(Boolean) as { name: string; data: ArrayBuffer; style: "normal" | "italic"; weight: 400 }[];
 
   return new ImageResponse(
-    (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        padding: "72px 80px",
+        background: "#222B16",
+        color: "#F6F1E6",
+        fontFamily: "Fraunces",
+      }}
+    >
       <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "72px 80px",
-          background: "#222B16",
-          color: "#F6F1E6",
-          fontFamily: "Fraunces",
-        }}
+        style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}
       >
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "space-between", height: "100%" }}>
-          <div style={{ display: "flex", fontSize: 30, letterSpacing: 8, color: "#DE9420" }}>AHARA</div>
-          <div style={{ display: "flex", flexDirection: "column", fontSize: 104, lineHeight: 1 }}>
-            <span>Ancient food,</span>
-            <span style={{ fontStyle: "italic", color: "#C9CD8E" }}>modern life.</span>
-          </div>
-          <div style={{ display: "flex", fontSize: 28, color: "rgba(246,241,230,0.72)" }}>
-            Roasted makhana · Sattu · Millet cookies · Moringa
-          </div>
+        <div style={{ display: "flex", fontSize: 30, letterSpacing: 8, color: "#DE9420" }}>AHARA</div>
+        <div style={{ display: "flex", flexDirection: "column", fontSize: 104, lineHeight: 1 }}>
+          <span>Ancient food,</span>
+          <span style={{ fontStyle: "italic", color: "#C9CD8E" }}>modern life.</span>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> */}
-        <img
-          src={`data:image/png;base64,${kairo.toString("base64")}`}
-          width={300}
-          height={300}
-          style={{ borderRadius: 64 }}
-          alt=""
-        />
+        <div style={{ display: "flex", fontSize: 28, color: "rgba(246,241,230,0.72)" }}>
+          Roasted makhana · Sattu · Millet cookies · Moringa
+        </div>
       </div>
-    ),
+      {/* eslint-disable-next-line @next/next/no-img-element -- Satori renders plain <img> */}
+      <img
+        src={`data:image/png;base64,${kairo.toString("base64")}`}
+        width={300}
+        height={300}
+        style={{ borderRadius: 64 }}
+        alt=""
+      />
+    </div>,
     { ...size, fonts },
   );
 }

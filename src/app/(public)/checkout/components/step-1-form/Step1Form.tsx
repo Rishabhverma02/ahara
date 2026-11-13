@@ -26,7 +26,10 @@ import {
   FormActionButton,
 } from "./styled";
 
-type TextField = Exclude<keyof CheckoutForm, "marketingOptIn" | "deliveryMode" | "shippingMethod" | "paymentMethod">;
+type TextField = Exclude<
+  keyof CheckoutForm,
+  "marketingOptIn" | "deliveryMode" | "shippingMethod" | "paymentMethod"
+>;
 
 interface FieldProps {
   name: TextField;
@@ -42,7 +45,18 @@ interface FieldProps {
 }
 
 /** Label + input + error, wired for autofill and screen readers. */
-function Field({ name, label, autoComplete, type = "text", inputMode, placeholder, icon, full, digits, optional }: FieldProps) {
+function Field({
+  name,
+  label,
+  autoComplete,
+  type = "text",
+  inputMode,
+  placeholder,
+  icon,
+  full,
+  digits,
+  optional,
+}: FieldProps) {
   const { form, errors, setField } = useCheckoutForm();
   const error = errors[name];
   const errorId = `${name}-error`;
@@ -102,7 +116,16 @@ export const Step1Form = () => {
         </CardHeader>
 
         <ContactInfoContainer>
-          <Field name="email" label="Email address" type="email" inputMode="email" autoComplete="email" placeholder="you@example.com" icon={<Mail />} full />
+          <Field
+            name="email"
+            label="Email address"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            icon={<Mail />}
+            full
+          />
           <CheckboxGroup>
             <input
               id="marketingOptIn"
@@ -147,8 +170,21 @@ export const Step1Form = () => {
           <InputGrid>
             <Field name="firstName" label="First name" autoComplete="shipping given-name" />
             <Field name="lastName" label="Last name" autoComplete="shipping family-name" />
-            <Field name="address" label="Address" autoComplete="shipping address-line1" placeholder="House no., building, street, area" icon={<MapPin />} full />
-            <Field name="apartment" label="Apartment, floor, landmark" autoComplete="shipping address-line2" full optional />
+            <Field
+              name="address"
+              label="Address"
+              autoComplete="shipping address-line1"
+              placeholder="House no., building, street, area"
+              icon={<MapPin />}
+              full
+            />
+            <Field
+              name="apartment"
+              label="Apartment, floor, landmark"
+              autoComplete="shipping address-line2"
+              full
+              optional
+            />
             <Field name="city" label="City" autoComplete="shipping address-level2" />
 
             <InputGroup>
@@ -176,8 +212,22 @@ export const Step1Form = () => {
               )}
             </InputGroup>
 
-            <Field name="pinCode" label="PIN code" autoComplete="shipping postal-code" inputMode="numeric" digits={6} />
-            <Field name="phone" label="Mobile number" type="tel" autoComplete="shipping tel-national" inputMode="tel" digits={10} icon={<Phone />} />
+            <Field
+              name="pinCode"
+              label="PIN code"
+              autoComplete="shipping postal-code"
+              inputMode="numeric"
+              digits={6}
+            />
+            <Field
+              name="phone"
+              label="Mobile number"
+              type="tel"
+              autoComplete="shipping tel-national"
+              inputMode="tel"
+              digits={10}
+              icon={<Phone />}
+            />
           </InputGrid>
         ) : (
           <PickupStoreCard>

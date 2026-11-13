@@ -14,6 +14,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.8,
     })),
-    ...POLICY_SLUGS.map((slug) => ({ url: `${SITE_URL}/${slug}`, changeFrequency: "yearly" as const, priority: 0.2 })),
+    ...POLICY_SLUGS.map((slug) => ({
+      url: `${SITE_URL}/${slug}`,
+      changeFrequency: "yearly" as const,
+      priority: 0.2,
+    })),
   ];
 }

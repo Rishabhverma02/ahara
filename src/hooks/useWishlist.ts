@@ -7,7 +7,7 @@ export function useWishlist() {
   const isHydrated = useSyncExternalStore(
     emptySubscribe,
     () => true,
-    () => false
+    () => false,
   );
   const wishlistIds = useWishlistStore((state) => state.wishlistIds);
   const toggleWishlist = useWishlistStore((state) => state.toggleWishlist);

@@ -44,16 +44,24 @@ describe("orderRequestSchema", () => {
 
   it("requires an address when shipping, not for pickup", () => {
     expect(orderRequestSchema.safeParse({ ...order, address: undefined }).success).toBe(false);
-    expect(orderRequestSchema.safeParse({ ...order, deliveryMode: "pickup", address: undefined }).success).toBe(true);
+    expect(
+      orderRequestSchema.safeParse({ ...order, deliveryMode: "pickup", address: undefined }).success,
+    ).toBe(true);
   });
 
   it("caps quantities and requires at least one line", () => {
     expect(orderRequestSchema.safeParse({ ...order, lines: [] }).success).toBe(false);
-    expect(orderRequestSchema.safeParse({ ...order, lines: [{ productId: 1, size: "60g", quantity: 500 }] }).success).toBe(false);
+    expect(
+      orderRequestSchema.safeParse({ ...order, lines: [{ productId: 1, size: "60g", quantity: 500 }] })
+        .success,
+    ).toBe(false);
   });
 
   it("ignores client-sent prices entirely (they are not part of the schema)", () => {
-    const r = orderRequestSchema.safeParse({ ...order, lines: [{ productId: 1, size: "60g", quantity: 1, price: 1 }] });
+    const r = orderRequestSchema.safeParse({
+      ...order,
+      lines: [{ productId: 1, size: "60g", quantity: 1, price: 1 }],
+    });
     expect(r.success && "price" in r.data.lines[0]).toBe(false);
   });
 });

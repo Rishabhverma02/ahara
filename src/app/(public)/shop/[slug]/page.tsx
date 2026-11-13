@@ -18,7 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       title: product.name,
       description: product.description,
-      images: [{ url: product.image.src, width: product.image.width, height: product.image.height, alt: product.name }],
+      images: [
+        {
+          url: product.image.src,
+          width: product.image.width,
+          height: product.image.height,
+          alt: product.name,
+        },
+      ],
     },
   };
 }
@@ -41,7 +48,11 @@ export default async function ProductPage({ params }: Props) {
     sku: product.slug,
     brand: { "@type": "Brand", name: "Ahara" },
     category: product.category,
-    aggregateRating: { "@type": "AggregateRating", ratingValue: product.rating, reviewCount: product.reviewCount },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: product.rating,
+      reviewCount: product.reviewCount,
+    },
     offers: {
       "@type": "Offer",
       url: `${SITE_URL}/shop/${product.slug}`,

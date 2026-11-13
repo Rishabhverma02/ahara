@@ -17,7 +17,8 @@ const bodySchema = z.object({
  * customer closes the tab — see README.)
  */
 export async function POST(req: Request) {
-  if (!isRazorpayConfigured()) return NextResponse.json({ error: "Payments not configured" }, { status: 501 });
+  if (!isRazorpayConfigured())
+    return NextResponse.json({ error: "Payments not configured" }, { status: 501 });
 
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Invalid request" }, { status: 400 });

@@ -55,8 +55,7 @@ export const TimelineStep = styled.div<{
       $active ? "var(--olive)" : $completed ? "var(--olive-tint)" : "transparent"};
     color: ${({ $active, $completed }) =>
       $active ? "#ffffff" : $completed ? "var(--success)" : "var(--muted-2)"};
-    box-shadow: ${({ $active }) =>
-      $active ? "0 0 12px rgb(var(--olive-rgb) / 0.3)" : "none"};
+    box-shadow: ${({ $active }) => ($active ? "0 0 12px rgb(var(--olive-rgb) / 0.3)" : "none")};
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 

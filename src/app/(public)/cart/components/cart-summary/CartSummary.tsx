@@ -58,13 +58,7 @@ export const CartSummary = () => {
 
         <SummaryRow>
           <span>Delivery Charge</span>
-          <span>
-            {shippingCharge === 0 ? (
-              <FreeTag>Free</FreeTag>
-            ) : (
-              formatINR(shippingCharge)
-            )}
-          </span>
+          <span>{shippingCharge === 0 ? <FreeTag>Free</FreeTag> : formatINR(shippingCharge)}</span>
         </SummaryRow>
 
         <SummaryDivider />
@@ -99,26 +93,17 @@ export const CartSummary = () => {
                 value={promoCode}
                 onChange={(e) => setPromoCode(e.target.value)}
               />
-              <PromoButton
-                onClick={handleApplyPromo}
-                disabled={!promoCode}
-              >
+              <PromoButton onClick={handleApplyPromo} disabled={!promoCode}>
                 Apply
               </PromoButton>
             </PromoInputWrapper>
-            {promoError && (
-              <PromoErrorText>
-                {promoError}
-              </PromoErrorText>
-            )}
+            {promoError && <PromoErrorText>{promoError}</PromoErrorText>}
           </>
         )}
       </PromoCodeContainer>
 
       <CheckoutActionsGroup>
-        <CheckoutButton onClick={handleCheckout}>
-          Proceed to checkout
-        </CheckoutButton>
+        <CheckoutButton onClick={handleCheckout}>Proceed to checkout</CheckoutButton>
 
         <SecureCheckoutText>
           <Lock aria-hidden /> Secure, encrypted checkout

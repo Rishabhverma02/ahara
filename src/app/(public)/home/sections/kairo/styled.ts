@@ -3,9 +3,7 @@ import { container, mq, reveal, sectionY } from "@/src/theme";
 
 export const Section = styled.section`
   ${sectionY};
-  background:
-    radial-gradient(50% 60% at 75% 55%, var(--glow) 0%, transparent 70%),
-    var(--paper-2);
+  background: radial-gradient(50% 60% at 75% 55%, var(--glow) 0%, transparent 70%), var(--paper-2);
   overflow: hidden;
 `;
 

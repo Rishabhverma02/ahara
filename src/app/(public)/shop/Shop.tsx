@@ -73,7 +73,9 @@ export default function Shop() {
     ...categories.map((c) => ({ label: c, remove: () => toggle("categories", c) })),
     ...goals.map((g) => ({ label: g, remove: () => toggle("goals", g) })),
     ...ingredients.map((i) => ({ label: i, remove: () => toggle("ingredients", i) })),
-    ...(maxPrice < MAX_PRICE ? [{ label: `Under ${formatINR(maxPrice)}`, remove: () => update({ maxPrice: MAX_PRICE }) }] : []),
+    ...(maxPrice < MAX_PRICE
+      ? [{ label: `Under ${formatINR(maxPrice)}`, remove: () => update({ maxPrice: MAX_PRICE }) }]
+      : []),
   ];
   const filterCount = chips.length - (q ? 1 : 0);
 
@@ -86,17 +88,35 @@ export default function Shop() {
     <>
       <FilterGroup title="Category">
         {CATEGORIES.map((c) => (
-          <Check key={c} label={c} count={counts.categories[c]} checked={categories.includes(c)} onChange={() => toggle("categories", c)} />
+          <Check
+            key={c}
+            label={c}
+            count={counts.categories[c]}
+            checked={categories.includes(c)}
+            onChange={() => toggle("categories", c)}
+          />
         ))}
       </FilterGroup>
       <FilterGroup title="Health goal">
         {HEALTH_GOALS.map((g) => (
-          <Check key={g} label={g} count={counts.goals[g]} checked={goals.includes(g)} onChange={() => toggle("goals", g)} />
+          <Check
+            key={g}
+            label={g}
+            count={counts.goals[g]}
+            checked={goals.includes(g)}
+            onChange={() => toggle("goals", g)}
+          />
         ))}
       </FilterGroup>
       <FilterGroup title="Ingredient">
         {INGREDIENTS.map((i) => (
-          <Check key={i} label={i} count={counts.ingredients[i]} checked={ingredients.includes(i)} onChange={() => toggle("ingredients", i)} />
+          <Check
+            key={i}
+            label={i}
+            count={counts.ingredients[i]}
+            checked={ingredients.includes(i)}
+            onChange={() => toggle("ingredients", i)}
+          />
         ))}
       </FilterGroup>
       <FilterGroup title="Max price">
@@ -112,7 +132,11 @@ export default function Shop() {
             step={10}
             value={maxPrice}
             onChange={(e) => update({ maxPrice: Number(e.target.value) })}
-            style={{ "--pct": `${((maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%` } as React.CSSProperties}
+            style={
+              {
+                "--pct": `${((maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
+              } as React.CSSProperties
+            }
           />
           <S.RangeValues>
             <span>{formatINR(MIN_PRICE)}</span>
@@ -153,7 +177,8 @@ export default function Shop() {
           </S.SearchBox>
           <S.ToolbarEnd>
             <S.FilterToggle type="button" onClick={() => setDrawer(true)} aria-haspopup="dialog">
-              <SlidersHorizontal size={16} aria-hidden /> Filters{filterCount > 0 && <span>{filterCount}</span>}
+              <SlidersHorizontal size={16} aria-hidden /> Filters
+              {filterCount > 0 && <span>{filterCount}</span>}
             </S.FilterToggle>
             <S.Sort>
               <label htmlFor="sort">Sort</label>
@@ -181,7 +206,12 @@ export default function Shop() {
               {chips.length > 0 && (
                 <S.Chips>
                   {chips.map((c) => (
-                    <S.Chip key={c.label} type="button" onClick={c.remove} aria-label={`Remove filter ${c.label}`}>
+                    <S.Chip
+                      key={c.label}
+                      type="button"
+                      onClick={c.remove}
+                      aria-label={`Remove filter ${c.label}`}
+                    >
                       {c.label} <X size={14} aria-hidden />
                     </S.Chip>
                   ))}
@@ -211,7 +241,12 @@ export default function Shop() {
 
             {totalPages > 1 && (
               <S.Pagination aria-label="Pagination">
-                <S.PageBtn type="button" onClick={() => goToPage(current - 1)} disabled={current === 1} aria-label="Previous page">
+                <S.PageBtn
+                  type="button"
+                  onClick={() => goToPage(current - 1)}
+                  disabled={current === 1}
+                  aria-label="Previous page"
+                >
                   <ChevronLeft size={18} />
                 </S.PageBtn>
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
@@ -225,7 +260,12 @@ export default function Shop() {
                     {n}
                   </S.PageBtn>
                 ))}
-                <S.PageBtn type="button" onClick={() => goToPage(current + 1)} disabled={current === totalPages} aria-label="Next page">
+                <S.PageBtn
+                  type="button"
+                  onClick={() => goToPage(current + 1)}
+                  disabled={current === totalPages}
+                  aria-label="Next page"
+                >
                   <ChevronRight size={18} />
                 </S.PageBtn>
               </S.Pagination>
@@ -268,7 +308,17 @@ function FilterGroup({ title, children }: { title: string; children: React.React
   );
 }
 
-function Check({ label, count, checked, onChange }: { label: string; count?: number; checked: boolean; onChange: () => void }) {
+function Check({
+  label,
+  count,
+  checked,
+  onChange,
+}: {
+  label: string;
+  count?: number;
+  checked: boolean;
+  onChange: () => void;
+}) {
   return (
     <S.CheckRow>
       <input type="checkbox" checked={checked} onChange={onChange} />

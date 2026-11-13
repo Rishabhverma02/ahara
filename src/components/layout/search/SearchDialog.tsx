@@ -40,7 +40,12 @@ function SearchPanel({ onClose }: { onClose: () => void }) {
 
   return (
     <Overlay onClick={onClose}>
-      <Panel role="dialog" aria-modal="true" aria-label="Search products" onClick={(e) => e.stopPropagation()}>
+      <Panel
+        role="dialog"
+        aria-modal="true"
+        aria-label="Search products"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Inner>
           <Form onSubmit={submit} role="search">
             <Search size={22} aria-hidden />

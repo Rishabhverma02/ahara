@@ -44,7 +44,11 @@ export interface ProductQuery {
   sort?: SortOption;
 }
 
-const normalise = (s: string) => s.toLowerCase().normalize("NFKD").replace(/[^\w\s]/g, " ");
+const normalise = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[^\w\s]/g, " ");
 
 /** Every whitespace-separated term must appear somewhere in the product's text. */
 export function matchesSearch(p: Product, q: string) {
@@ -57,7 +61,14 @@ export function matchesSearch(p: Product, q: string) {
 }
 
 export function queryProducts(query: ProductQuery, source: Product[] = ALL_PRODUCTS): Product[] {
-  const { q, categories = [], goals = [], ingredients = [], maxPrice = MAX_PRICE, sort = "best-selling" } = query;
+  const {
+    q,
+    categories = [],
+    goals = [],
+    ingredients = [],
+    maxPrice = MAX_PRICE,
+    sort = "best-selling",
+  } = query;
 
   const result = source.filter(
     (p) =>

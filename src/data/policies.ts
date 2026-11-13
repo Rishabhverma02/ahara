@@ -15,7 +15,13 @@ import {
 } from "@/src/lib/pricing";
 
 export type PolicySection = { heading: string; body: string[] };
-export type Policy = { slug: string; title: string; summary: string; updated: string; sections: PolicySection[] };
+export type Policy = {
+  slug: string;
+  title: string;
+  summary: string;
+  updated: string;
+  sections: PolicySection[];
+};
 
 const CONTACT = "support@ahara.com"; // [TO CONFIRM]
 const GRIEVANCE =
@@ -45,7 +51,9 @@ export const POLICIES: Policy[] = [
       },
       {
         heading: "Where we ship",
-        body: ["We currently ship within India only. Some remote PIN codes may take longer or be unserviceable; we'll contact you if that applies."],
+        body: [
+          "We currently ship within India only. Some remote PIN codes may take longer or be unserviceable; we'll contact you if that applies.",
+        ],
       },
     ],
   },
@@ -68,7 +76,12 @@ export const POLICIES: Policy[] = [
           "Approved refunds go back to the original payment method within [TO CONFIRM — e.g. 5–7] working days. Cash on delivery orders are refunded by bank transfer or UPI.",
         ],
       },
-      { heading: "Cancellations", body: ["You can cancel an order free of charge before it is dispatched. Email us with your order number."] },
+      {
+        heading: "Cancellations",
+        body: [
+          "You can cancel an order free of charge before it is dispatched. Email us with your order number.",
+        ],
+      },
       { heading: "Grievances", body: [GRIEVANCE] },
     ],
   },
@@ -94,7 +107,9 @@ export const POLICIES: Policy[] = [
       },
       {
         heading: "Who we share it with",
-        body: ["Only the services needed to run the shop: payment processing (Razorpay), delivery partners, and our email provider. We never sell your data."],
+        body: [
+          "Only the services needed to run the shop: payment processing (Razorpay), delivery partners, and our email provider. We never sell your data.",
+        ],
       },
       {
         heading: "Your rights",
@@ -113,7 +128,9 @@ export const POLICIES: Policy[] = [
     sections: [
       {
         heading: "About us",
-        body: ["This site is operated by Ahara Foods, [TO CONFIRM — legal entity, address, GSTIN, FSSAI licence number]."],
+        body: [
+          "This site is operated by Ahara Foods, [TO CONFIRM — legal entity, address, GSTIN, FSSAI licence number].",
+        ],
       },
       {
         heading: "Orders & pricing",
@@ -128,7 +145,10 @@ export const POLICIES: Policy[] = [
           "We describe our products and their nutrition as accurately as we can. Our products are food, not medicine, and are not intended to diagnose, treat or cure any condition. Check the pack for allergen information.",
         ],
       },
-      { heading: "Governing law", body: ["These terms are governed by the laws of India. [TO CONFIRM — jurisdiction city]."] },
+      {
+        heading: "Governing law",
+        body: ["These terms are governed by the laws of India. [TO CONFIRM — jurisdiction city]."],
+      },
       { heading: "Grievances", body: [GRIEVANCE] },
     ],
   },

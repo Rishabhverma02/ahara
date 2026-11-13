@@ -47,12 +47,7 @@ export const OrderSummary = () => {
             <MiniItemRow key={item.id}>
               <MiniItemImage>
                 <MiniItemImageInner>
-                  <Image
-                    src={item.image}
-                    alt=""
-                    fill
-                    sizes="48px"
-                  />
+                  <Image src={item.image} alt="" fill sizes="48px" />
                 </MiniItemImageInner>
                 <span className="badge">{item.quantity}</span>
               </MiniItemImage>
@@ -94,11 +89,7 @@ export const OrderSummary = () => {
                 aria-invalid={!!promoError}
                 aria-describedby={promoError ? "promo-error" : undefined}
               />
-              <PromoButton
-                type="button"
-                onClick={applyPromo}
-                disabled={!promoInput}
-              >
+              <PromoButton type="button" onClick={applyPromo} disabled={!promoInput}>
                 Apply
               </PromoButton>
             </PromoInputWrapper>

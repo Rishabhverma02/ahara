@@ -14,9 +14,15 @@ import { Section, Inner, Copy, Actions, Stage, Chat, Bubble, Typing, Character, 
  */
 const SCRIPT: { from: "you" | "kairo"; text: string }[] = [
   { from: "you", text: "Something crunchy for 4 pm that won't wreck my diet?" },
-  { from: "kairo", text: "Try Makhana Lime & Pepper — roasted, never fried, and light enough for a chai-time craving." },
+  {
+    from: "kairo",
+    text: "Try Makhana Lime & Pepper — roasted, never fried, and light enough for a chai-time craving.",
+  },
   { from: "you", text: "And after a workout?" },
-  { from: "kairo", text: "A glass of Chocolate Sattu. Roasted chana gives you about 20 g of plant protein per 100 g." },
+  {
+    from: "kairo",
+    text: "A glass of Chocolate Sattu. Roasted chana gives you about 20 g of plant protein per 100 g.",
+  },
 ];
 
 const STEP_MS = 1500;

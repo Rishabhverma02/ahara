@@ -16,7 +16,11 @@ describe("queryProducts", () => {
 
   it("ORs values within a group and ANDs across groups", () => {
     const res = queryProducts({ categories: ["Snacks"], ingredients: ["Makhana", "Moringa"] });
-    expect(res.every((p) => p.category === "Snacks" && p.ingredients.some((i) => i === "Makhana" || i === "Moringa"))).toBe(true);
+    expect(
+      res.every(
+        (p) => p.category === "Snacks" && p.ingredients.some((i) => i === "Makhana" || i === "Moringa"),
+      ),
+    ).toBe(true);
   });
 
   it("respects max price", () => {

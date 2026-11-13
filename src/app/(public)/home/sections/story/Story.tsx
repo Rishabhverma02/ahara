@@ -8,10 +8,22 @@ import { Section, Inner, Lead, Kicker, Statement, Sign, List, Principle } from "
  * template pattern on the old page — with a manifesto and numbered principles.
  */
 const PRINCIPLES = [
-  { title: "Clean label", body: "If you can't pronounce it, it isn't in the pack. Every ingredient is listed, nothing hides behind “natural flavours”." },
-  { title: "Roasted, never fried", body: "Our makhana is slow-roasted in small batches, so the crunch comes from the seed, not the oil." },
-  { title: "Sourced at the root", body: "Makhana from the ponds of Madhubani, sattu from Bihar's chana fields — traced back to where they grow best." },
-  { title: "Made for today", body: "Lime & black pepper, dark chocolate, rose thandai — old foods in flavours you actually crave." },
+  {
+    title: "Clean label",
+    body: "If you can't pronounce it, it isn't in the pack. Every ingredient is listed, nothing hides behind “natural flavours”.",
+  },
+  {
+    title: "Roasted, never fried",
+    body: "Our makhana is slow-roasted in small batches, so the crunch comes from the seed, not the oil.",
+  },
+  {
+    title: "Sourced at the root",
+    body: "Makhana from the ponds of Madhubani, sattu from Bihar's chana fields — traced back to where they grow best.",
+  },
+  {
+    title: "Made for today",
+    body: "Lime & black pepper, dark chocolate, rose thandai — old foods in flavours you actually crave.",
+  },
 ];
 
 export const Story = () => {

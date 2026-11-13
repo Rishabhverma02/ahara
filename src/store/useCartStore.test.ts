@@ -1,7 +1,15 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { useCartStore } from "./useCartStore";
 
-const item = { productId: 5, slug: "makhana-tangy-lime", name: "Makhana – Tangy Lime", price: 199, quantity: 1, size: "60g", image: "x.webp" as never };
+const item = {
+  productId: 5,
+  slug: "makhana-tangy-lime",
+  name: "Makhana – Tangy Lime",
+  price: 199,
+  quantity: 1,
+  size: "60g",
+  image: "x.webp" as never,
+};
 
 describe("cart store", () => {
   beforeEach(() => useCartStore.getState().clearCart());

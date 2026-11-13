@@ -35,8 +35,12 @@ describe("priceOrder (server-side, authoritative)", () => {
   });
 
   it("rejects unknown products and sizes", () => {
-    expect(() => priceOrder(req({ lines: [{ productId: 9999, size: "Standard", quantity: 1 }] }))).toThrow(OrderError);
-    expect(() => priceOrder(req({ lines: [{ productId: 5, size: "1kg-free", quantity: 1 }] }))).toThrow(OrderError);
+    expect(() => priceOrder(req({ lines: [{ productId: 9999, size: "Standard", quantity: 1 }] }))).toThrow(
+      OrderError,
+    );
+    expect(() => priceOrder(req({ lines: [{ productId: 5, size: "1kg-free", quantity: 1 }] }))).toThrow(
+      OrderError,
+    );
   });
 
   it("normalises and validates promo codes", () => {

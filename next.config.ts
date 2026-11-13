@@ -16,7 +16,8 @@ const securityHeaders = [
   {
     key: "Permissions-Policy",
     // payment is allowed for Razorpay's checkout frame
-    value: 'camera=(), microphone=(), geolocation=(), payment=(self "https://api.razorpay.com" "https://checkout.razorpay.com")',
+    value:
+      'camera=(), microphone=(), geolocation=(), payment=(self "https://api.razorpay.com" "https://checkout.razorpay.com")',
   },
 ];
 

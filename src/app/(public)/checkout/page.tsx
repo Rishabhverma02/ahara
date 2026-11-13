@@ -12,13 +12,7 @@ import {
   ConfirmationContainer,
 } from "./styled";
 import { EmptyState } from "@/src/components/ui";
-import {
-  Timeline,
-  Step1Form,
-  Step2Form,
-  OrderSummary,
-  OrderConfirmation,
-} from "./components";
+import { Timeline, Step1Form, Step2Form, OrderSummary, OrderConfirmation } from "./components";
 
 function CheckoutContent() {
   const { isHydrated, itemCount, step } = useCheckoutStatus();
@@ -27,9 +21,7 @@ function CheckoutContent() {
   if (!isHydrated) {
     return (
       <CheckoutWrapper>
-        <CheckoutLoadingState aria-busy="true">
-          Loading secure checkout…
-        </CheckoutLoadingState>
+        <CheckoutLoadingState aria-busy="true">Loading secure checkout…</CheckoutLoadingState>
       </CheckoutWrapper>
     );
   }
@@ -71,9 +63,7 @@ function CheckoutContent() {
           <Timeline />
 
           <CheckoutLayout>
-            <FormColumn>
-              {step === 1 ? <Step1Form /> : <Step2Form />}
-            </FormColumn>
+            <FormColumn>{step === 1 ? <Step1Form /> : <Step2Form />}</FormColumn>
 
             <OrderSummary />
           </CheckoutLayout>
@@ -82,7 +72,6 @@ function CheckoutContent() {
     </CheckoutWrapper>
   );
 }
-
 
 export default function CheckoutPage() {
   return (

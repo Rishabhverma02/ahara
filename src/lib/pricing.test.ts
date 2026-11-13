@@ -9,7 +9,12 @@ import {
   parsePromo,
 } from "./pricing";
 
-const base = { promo: null, deliveryMode: "ship", shippingMethod: "standard", paymentMethod: "online" } as const;
+const base = {
+  promo: null,
+  deliveryMode: "ship",
+  shippingMethod: "standard",
+  paymentMethod: "online",
+} as const;
 
 describe("parsePromo", () => {
   it("accepts known codes case-insensitively and trims", () => {

@@ -26,7 +26,11 @@ export default function ProductDetail({ product }: { product: Product }) {
   const { addToCart, toggleSaved, saved } = useProductActions(product);
   const detail = getProductDetail(product.id);
   const sizes = detail?.sizes ?? [{ label: "Standard", price: product.price }];
-  const cleanLabel = detail?.cleanLabelPromises ?? ["No preservatives", "No artificial colour", "No refined junk"];
+  const cleanLabel = detail?.cleanLabelPromises ?? [
+    "No preservatives",
+    "No artificial colour",
+    "No refined junk",
+  ];
 
   const [sizeIdx, setSizeIdx] = useState(0);
   const [qty, setQty] = useState(1);
@@ -133,18 +137,31 @@ export default function ProductDetail({ product }: { product: Product }) {
 
           <S.Buy>
             <S.QtyBox>
-              <S.QtyBtn type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity">
+              <S.QtyBtn
+                type="button"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                aria-label="Decrease quantity"
+              >
                 <Minus size={16} />
               </S.QtyBtn>
               <S.QtyValue aria-live="polite">{qty}</S.QtyValue>
-              <S.QtyBtn type="button" onClick={() => setQty((q) => Math.min(20, q + 1))} aria-label="Increase quantity">
+              <S.QtyBtn
+                type="button"
+                onClick={() => setQty((q) => Math.min(20, q + 1))}
+                aria-label="Increase quantity"
+              >
                 <Plus size={16} />
               </S.QtyBtn>
             </S.QtyBox>
             <Button type="button" $size="lg" onClick={add}>
               {added ? "Added ✓" : `Add to cart · ${formatINR(size.price * qty)}`}
             </Button>
-            <S.SaveBtn type="button" onClick={toggleSaved} aria-pressed={saved} aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}>
+            <S.SaveBtn
+              type="button"
+              onClick={toggleSaved}
+              aria-pressed={saved}
+              aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}
+            >
               <Heart size={20} fill={saved ? "currentColor" : "none"} />
             </S.SaveBtn>
           </S.Buy>

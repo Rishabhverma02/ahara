@@ -22,7 +22,7 @@ export const useWishlistStore = create<WishlistState>()(
       clearWishlist: () => set({ wishlistIds: [] }),
     }),
     {
-      name: "ahara-wishlist-storage", 
-    }
-  )
+      name: "ahara-wishlist-storage",
+    },
+  ),
 );

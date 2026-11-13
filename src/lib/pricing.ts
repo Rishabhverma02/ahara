@@ -47,7 +47,13 @@ export interface Totals {
   freeShipping: boolean;
 }
 
-export function computeTotals({ subtotal, promo, deliveryMode, shippingMethod, paymentMethod }: TotalsInput): Totals {
+export function computeTotals({
+  subtotal,
+  promo,
+  deliveryMode,
+  shippingMethod,
+  paymentMethod,
+}: TotalsInput): Totals {
   const freeShipping = qualifiesForFreeShipping(subtotal, promo);
   const shipping =
     subtotal === 0 || deliveryMode === "pickup"
@@ -59,7 +65,14 @@ export function computeTotals({ subtotal, promo, deliveryMode, shippingMethod, p
           : STANDARD_SHIPPING_CHARGE;
   const discount = promoDiscount(subtotal, promo);
   const codFee = paymentMethod === "cod" ? COD_FEE : 0;
-  return { subtotal, discount, shipping, codFee, total: subtotal - discount + shipping + codFee, freeShipping };
+  return {
+    subtotal,
+    discount,
+    shipping,
+    codFee,
+    total: subtotal - discount + shipping + codFee,
+    freeShipping,
+  };
 }
 
 export const formatINR = (n: number) => `₹${n.toLocaleString("en-IN")}`;

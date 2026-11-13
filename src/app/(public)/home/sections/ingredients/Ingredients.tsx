@@ -61,7 +61,13 @@ export const Ingredients = () => {
         {INGREDIENTS.map((item, i) => (
           <Item key={item.name} $in={inView} $i={i}>
             <Media>
-              <Image src={item.image} alt={`${item.name}`} fill sizes="(max-width: 900px) 100vw, 33vw" placeholder="blur" />
+              <Image
+                src={item.image}
+                alt={`${item.name}`}
+                fill
+                sizes="(max-width: 900px) 100vw, 33vw"
+                placeholder="blur"
+              />
               <Num>0{i + 1}</Num>
             </Media>
             <Text>

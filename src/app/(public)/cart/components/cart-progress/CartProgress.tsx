@@ -17,13 +17,7 @@ import {
 } from "./styled";
 
 export const CartProgress = () => {
-  const {
-    cartTotal,
-    isFreeShipping,
-    animatedPercent,
-    rewardCopied,
-    handleCollectReward,
-  } = useCartPage();
+  const { cartTotal, isFreeShipping, animatedPercent, rewardCopied, handleCollectReward } = useCartPage();
 
   return (
     <ShippingProgressContainer>
@@ -46,9 +40,7 @@ export const CartProgress = () => {
         <TruckProgressMarker $percent={animatedPercent}>
           {animatedPercent >= 50 && (
             <FireRewardPopup type="button" onClick={handleCollectReward}>
-              {rewardCopied
-                ? "Code applied ✓"
-                : "Tap to unlock 10% off"}
+              {rewardCopied ? "Code applied ✓" : "Tap to unlock 10% off"}
             </FireRewardPopup>
           )}
           <Image src={truckImg} alt="" fill sizes="64px" />

@@ -23,24 +23,14 @@ import {
 } from "./styled";
 
 export const CartItemsList = () => {
-  const {
-    items,
-    updateQuantity,
-    removeItem,
-    playClickSound,
-  } = useCartPage();
+  const { items, updateQuantity, removeItem, playClickSound } = useCartPage();
 
   return (
     <CartItemsSection>
       {items.map((item) => (
         <CartItemCard key={item.id}>
           <ItemImageWrapper>
-            <Image
-              src={item.image}
-              alt={item.name}
-              fill
-              sizes="96px"
-            />
+            <Image src={item.image} alt={item.name} fill sizes="96px" />
           </ItemImageWrapper>
 
           <ItemDetails>
@@ -84,11 +74,7 @@ export const CartItemsList = () => {
 
           <PriceAndQtyWrapper>
             <ItemPrice>₹{item.price * item.quantity}</ItemPrice>
-            {item.quantity > 1 && (
-              <PriceEachLabel>
-                ₹{item.price} each
-              </PriceEachLabel>
-            )}
+            {item.quantity > 1 && <PriceEachLabel>₹{item.price} each</PriceEachLabel>}
           </PriceAndQtyWrapper>
         </CartItemCard>
       ))}

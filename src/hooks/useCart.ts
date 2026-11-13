@@ -6,7 +6,11 @@ const emptySubscribe = () => () => {};
 const EMPTY: CartItem[] = [];
 
 export function useCart() {
-  const isHydrated = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const isHydrated = useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false,
+  );
   const rawItems = useCartStore((s) => s.items);
   const addItem = useCartStore((s) => s.addItem);
   const removeItem = useCartStore((s) => s.removeItem);
@@ -24,7 +28,10 @@ export function useCart() {
   const { cartCount, cartTotal } = useMemo(
     () =>
       items.reduce(
-        (acc, i) => ({ cartCount: acc.cartCount + i.quantity, cartTotal: acc.cartTotal + i.price * i.quantity }),
+        (acc, i) => ({
+          cartCount: acc.cartCount + i.quantity,
+          cartTotal: acc.cartTotal + i.price * i.quantity,
+        }),
         { cartCount: 0, cartTotal: 0 },
       ),
     [items],

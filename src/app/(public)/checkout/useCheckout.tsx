@@ -3,7 +3,13 @@
 import { createContext, useCallback, useContext, useMemo, useReducer } from "react";
 import { useCart } from "@/src/hooks/useCart";
 import { playClick } from "@/src/lib/sound";
-import { computeTotals, parsePromo, type PaymentMethod, type ShippingMethod, type DeliveryMode } from "@/src/lib/pricing";
+import {
+  computeTotals,
+  parsePromo,
+  type PaymentMethod,
+  type ShippingMethod,
+  type DeliveryMode,
+} from "@/src/lib/pricing";
 import { addressSchema, contactSchema, fieldErrors } from "@/src/lib/checkout-schema";
 import { loadRazorpay } from "./razorpay-client";
 
@@ -118,7 +124,8 @@ function useCheckoutState() {
   const { form } = state;
 
   const setField = useCallback(
-    <K extends keyof CheckoutForm>(name: K, value: CheckoutForm[K]) => dispatch({ type: "field", name, value }),
+    <K extends keyof CheckoutForm>(name: K, value: CheckoutForm[K]) =>
+      dispatch({ type: "field", name, value }),
     [],
   );
 
@@ -196,7 +203,10 @@ function useCheckoutState() {
 
       const finish = (mode: PlacedOrder["mode"]) => {
         playClick();
-        dispatch({ type: "placed", order: { orderId: data.orderId, total: data.total, mode, form: snapshot } });
+        dispatch({
+          type: "placed",
+          order: { orderId: data.orderId, total: data.total, mode, form: snapshot },
+        });
         clearCart();
         scrollTop();
       };
@@ -224,15 +234,32 @@ function useCheckoutState() {
             body: JSON.stringify({ orderId: data.orderId, ...resp }),
           });
           if (v.ok) finish("razorpay");
-          else dispatch({ type: "submitting", value: false, error: "We couldn't verify your payment. If you were charged, contact support with order " + data.orderId + "." });
+          else
+            dispatch({
+              type: "submitting",
+              value: false,
+              error:
+                "We couldn't verify your payment. If you were charged, contact support with order " +
+                data.orderId +
+                ".",
+            });
         },
         modal: {
-          ondismiss: () => dispatch({ type: "submitting", value: false, error: "Payment was cancelled. Your cart is still here." }),
+          ondismiss: () =>
+            dispatch({
+              type: "submitting",
+              value: false,
+              error: "Payment was cancelled. Your cart is still here.",
+            }),
         },
       });
       rzp.open();
     } catch {
-      dispatch({ type: "submitting", value: false, error: "Network error — please check your connection and try again." });
+      dispatch({
+        type: "submitting",
+        value: false,
+        error: "Network error — please check your connection and try again.",
+      });
     }
   }, [form, appliedPromo, items, clearCart]);
 
@@ -261,7 +288,17 @@ function useCheckoutState() {
       submitError: state.submitError,
       totals,
     }),
-    [form, state.errors, setField, goToPayment, backToDetails, placeOrder, state.submitting, state.submitError, totals],
+    [
+      form,
+      state.errors,
+      setField,
+      goToPayment,
+      backToDetails,
+      placeOrder,
+      state.submitting,
+      state.submitError,
+      totals,
+    ],
   );
 
   const summaryValue = useMemo(

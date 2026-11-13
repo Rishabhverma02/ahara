@@ -37,7 +37,9 @@ export const Kicker = styled.span`
 
 export const Statement = styled.p`
   font-family: var(--font-display);
-  font-variation-settings: "opsz" 144, "SOFT" 50;
+  font-variation-settings:
+    "opsz" 144,
+    "SOFT" 50;
   font-size: clamp(1.875rem, 1.3rem + 2.2vw, 3.25rem);
   line-height: 1.12;
   letter-spacing: -0.02em;

@@ -19,8 +19,9 @@ export const StickySummaryCard = styled.div`
   border-radius: 20px;
   padding: 32px;
   border: 2px solid rgb(var(--olive-rgb) / 0.1);
-  box-shadow: 0 20px 40px -15px rgba(58, 47, 37, 0.05),
-              0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  box-shadow:
+    0 20px 40px -15px rgba(58, 47, 37, 0.05),
+    0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   display: flex;
   flex-direction: column;
   gap: 24px;

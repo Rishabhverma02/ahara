@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const UserLayout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="user-layout">
-      {children}
-    </div>
-  )
-}
+  return <div className="user-layout">{children}</div>;
+};
 
-export default UserLayout
+export default UserLayout;

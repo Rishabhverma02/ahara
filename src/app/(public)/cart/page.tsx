@@ -2,7 +2,14 @@
 
 import { CartPageProvider, useCartPage } from "./useCartPage";
 import { PageHero, EmptyState } from "@/src/components/ui";
-import { CartPageWrapper, PageContainer, Container, CartLayout, LoadingState, CartMainColumn } from "./styled";
+import {
+  CartPageWrapper,
+  PageContainer,
+  Container,
+  CartLayout,
+  LoadingState,
+  CartMainColumn,
+} from "./styled";
 import { CartProgress, CartItemsList, CartSummary, CartSuggestions } from "./components";
 
 function CartContent() {

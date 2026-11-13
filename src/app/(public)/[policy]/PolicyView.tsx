@@ -6,7 +6,11 @@ import { POLICIES, type Policy } from "@/src/data/policies";
 import { Layout, Side, Article, Draft, Updated } from "./styled";
 
 export function PolicyView({ policy }: { policy: Policy }) {
-  const updated = new Date(policy.updated).toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" });
+  const updated = new Date(policy.updated).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
     <>
@@ -25,7 +29,8 @@ export function PolicyView({ policy }: { policy: Policy }) {
         </Side>
         <Article>
           <Draft role="note">
-            Draft for review — this page is a template and must be checked by a legal professional before launch.
+            Draft for review — this page is a template and must be checked by a legal professional before
+            launch.
           </Draft>
           <Updated>Last updated {updated}</Updated>
           {policy.sections.map((s) => (

@@ -32,19 +32,53 @@ const AVG_RATING =
 type Quote = { quote: string; name: string; role: string; avatar: StaticImageData };
 
 const FEATURED = {
-  quote: "The ancient wisdom of Ayurveda, adapted for our fast-paced lives. It's the first “healthy snack” my whole family actually fights over.",
+  quote:
+    "The ancient wisdom of Ayurveda, adapted for our fast-paced lives. It's the first “healthy snack” my whole family actually fights over.",
   name: "Minal Sharma",
   role: "Bengaluru",
   avatar: minal,
 };
 
 const QUOTES: Quote[] = [
-  { quote: "Absolutely in love with the quality. Sourced properly and super clean — no hidden additives or preservatives.", name: "Tanvi Gokhale", role: "Co-founder, Koru Kids", avatar: tanvi },
-  { quote: "Finally a snack that doesn't make me feel guilty. Super crunchy, and the lime one is dangerously good.", name: "Raman Ojha", role: "Creator", avatar: raman },
-  { quote: "Sattu every morning has genuinely improved my digestion. Tastes like home, packs like a protein shake.", name: "Pratik Verma", role: "Co-founder, Gravida", avatar: pratik },
-  { quote: "The roasted makhanas are out of this world. Clean, light, and delicious.", name: "Riya Soni", role: "Mumbai", avatar: riya },
-  { quote: "Their commitment to authentic ingredients shows. I really appreciate the honest packaging.", name: "Avni Purohit", role: "Nutrition student", avatar: avni },
-  { quote: "I recommend Ahara to anyone who values clean eating. The cookies are my kids' new favourite.", name: "Priya Mishra", role: "Home chef, Pune", avatar: priya },
+  {
+    quote:
+      "Absolutely in love with the quality. Sourced properly and super clean — no hidden additives or preservatives.",
+    name: "Tanvi Gokhale",
+    role: "Co-founder, Koru Kids",
+    avatar: tanvi,
+  },
+  {
+    quote:
+      "Finally a snack that doesn't make me feel guilty. Super crunchy, and the lime one is dangerously good.",
+    name: "Raman Ojha",
+    role: "Creator",
+    avatar: raman,
+  },
+  {
+    quote:
+      "Sattu every morning has genuinely improved my digestion. Tastes like home, packs like a protein shake.",
+    name: "Pratik Verma",
+    role: "Co-founder, Gravida",
+    avatar: pratik,
+  },
+  {
+    quote: "The roasted makhanas are out of this world. Clean, light, and delicious.",
+    name: "Riya Soni",
+    role: "Mumbai",
+    avatar: riya,
+  },
+  {
+    quote: "Their commitment to authentic ingredients shows. I really appreciate the honest packaging.",
+    name: "Avni Purohit",
+    role: "Nutrition student",
+    avatar: avni,
+  },
+  {
+    quote: "I recommend Ahara to anyone who values clean eating. The cookies are my kids' new favourite.",
+    name: "Priya Mishra",
+    role: "Home chef, Pune",
+    avatar: priya,
+  },
 ];
 
 export const Testimonials = () => {
@@ -74,7 +108,13 @@ export const Testimonials = () => {
 
         <Feature $in={inView}>
           <Portrait>
-            <Image src={FEATURED.avatar} alt={FEATURED.name} fill sizes="(max-width: 900px) 40vw, 260px" placeholder="blur" />
+            <Image
+              src={FEATURED.avatar}
+              alt={FEATURED.name}
+              fill
+              sizes="(max-width: 900px) 40vw, 260px"
+              placeholder="blur"
+            />
           </Portrait>
           <figure>
             <blockquote>“{FEATURED.quote}”</blockquote>
