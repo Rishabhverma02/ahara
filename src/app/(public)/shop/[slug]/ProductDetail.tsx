@@ -5,9 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Heart, Leaf, Minus, Plus, ShieldCheck, Star, Truck } from "lucide-react";
-import type { Product } from "@/src/data/products";
-import { ALL_PRODUCTS } from "@/src/data/products";
-import { PRODUCT_DETAILS } from "@/src/data/product-details";
+import { getProductDetail, getRelatedProducts, type Product } from "@/src/services/catalog";
 import { useProductActions } from "@/src/hooks/useProductActions";
 import { formatINR, FREE_SHIPPING_THRESHOLD } from "@/src/lib/pricing";
 import { Button, ProductCard } from "@/src/components/ui";
@@ -26,7 +24,7 @@ export default function ProductDetail({ product }: { product: Product }) {
   const router = useRouter();
   const tabsId = useId();
   const { addToCart, toggleSaved, saved } = useProductActions(product);
-  const detail = PRODUCT_DETAILS[product.id];
+  const detail = getProductDetail(product.id);
   const sizes = detail?.sizes ?? [{ label: "Standard", price: product.price }];
   const cleanLabel = detail?.cleanLabelPromises ?? ["No preservatives", "No artificial colour", "No refined junk"];
 
@@ -37,7 +35,7 @@ export default function ProductDetail({ product }: { product: Product }) {
 
   const size = sizes[sizeIdx];
   const [line, flavour] = product.name.split(" – ");
-  const related = ALL_PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const related = getRelatedProducts(product);
 
   const add = () => {
     addToCart({ quantity: qty, size: size.label, price: size.price });

@@ -1,6 +1,6 @@
 import { useMemo, useSyncExternalStore } from "react";
 import { useCartStore, type CartItem } from "../store/useCartStore";
-import { getProductById } from "../data/products";
+import { getProductById } from "../services/catalog";
 
 const emptySubscribe = () => () => {};
 const EMPTY: CartItem[] = [];

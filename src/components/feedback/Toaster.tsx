@@ -22,6 +22,17 @@ export const Toaster = () => {
           <Body>
             <strong>{t.title}</strong>
             {t.body && <span>{t.body}</span>}
+            {t.action && (
+              <Action
+                type="button"
+                onClick={() => {
+                  t.action?.onClick();
+                  dismiss(t.id);
+                }}
+              >
+                {t.action.label}
+              </Action>
+            )}
           </Body>
           <Close onClick={() => dismiss(t.id)} aria-label="Dismiss notification">
             <X size={16} />
@@ -85,6 +96,18 @@ const Body = styled.div`
   span {
     color: rgb(246 241 230 / 0.7);
   }
+`;
+
+const Action = styled.button`
+  align-self: flex-start;
+  margin-top: 0.35rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--saffron);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 `;
 
 const Close = styled.button`

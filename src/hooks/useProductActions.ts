@@ -1,11 +1,12 @@
 "use client";
 
 import { useCallback } from "react";
-import type { Product } from "@/src/data/products";
+import type { Product } from "@/src/services/catalog";
 import { useCart } from "./useCart";
 import { useWishlist } from "./useWishlist";
 import { playClick } from "@/src/lib/sound";
 import { toast } from "@/src/store/useToastStore";
+import { useUiStore } from "@/src/store/useUiStore";
 
 /** Add-to-cart / wishlist behaviour shared by every product surface. */
 export function useProductActions(product: Product) {
@@ -27,7 +28,10 @@ export function useProductActions(product: Product) {
         size,
         image: product.image,
       });
-      toast("Added to cart", `${quantity} × ${product.name}${size !== "Standard" ? ` (${size})` : ""}`);
+      toast("Added to cart", `${quantity} × ${product.name}${size !== "Standard" ? ` (${size})` : ""}`, {
+        label: "View cart",
+        onClick: useUiStore.getState().openCart,
+      });
     },
     [addItem, product],
   );

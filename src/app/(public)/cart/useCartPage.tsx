@@ -3,7 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/src/hooks/useCart";
-import { ALL_PRODUCTS, Product } from "@/src/data/products";
+import { getAllProducts, type Product } from "@/src/services/catalog";
 import { playClick } from "@/src/lib/sound";
 import {
   FREE_SHIPPING_THRESHOLD,
@@ -88,7 +88,7 @@ function useCartPageState() {
   // Select recommended products (not already in cart)
   const getRecommendedProducts = (): Product[] => {
     const cartProductIds = items.map((item) => item.productId);
-    const available = ALL_PRODUCTS.filter(
+    const available = getAllProducts().filter(
       (prod) => !cartProductIds.includes(prod.id),
     );
     // Shuffle and pick 4

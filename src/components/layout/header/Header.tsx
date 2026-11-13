@@ -3,11 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ArrowLeft, Heart, Lock, Menu, ShoppingBag, X } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { ArrowLeft, Heart, Lock, Menu, Search, ShoppingBag, X } from "lucide-react";
 import Logo from "@/src/assets/images/Logo.webp";
 import { useCart } from "@/src/hooks/useCart";
 import { useWishlist } from "@/src/hooks/useWishlist";
+import { useDialog } from "@/src/hooks/useDialog";
+import { useUiStore } from "@/src/store/useUiStore";
 import * as S from "./styled";
 
 const NAV = [
@@ -23,6 +25,10 @@ export const Header = () => {
   const [open, setOpen] = useState(false);
   const { cartCount } = useCart();
   const { wishlistIds } = useWishlist();
+  const openCart = useUiStore((s) => s.openCart);
+  const openSearch = useUiStore((s) => s.openSearch);
+  const closeMenu = useCallback(() => setOpen(false), []);
+  useDialog(open, closeMenu);
 
   // close the drawer on navigation (adjust-state-during-render pattern)
   const [lastPath, setLastPath] = useState(pathname);
@@ -38,17 +44,6 @@ export const Header = () => {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
-    document.addEventListener("keydown", onKey);
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = "";
-    };
-  }, [open]);
 
   const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
 
@@ -90,14 +85,17 @@ export const Header = () => {
           </S.Nav>
 
           <S.Actions>
+            <S.IconButton type="button" onClick={openSearch} aria-label="Search products">
+              <Search size={20} />
+            </S.IconButton>
             <S.IconLink href="/wishlist" aria-label={`Wishlist, ${wishlistIds.length} items`} $hideSm>
               <Heart size={20} />
               {wishlistIds.length > 0 && <S.Count>{wishlistIds.length}</S.Count>}
             </S.IconLink>
-            <S.IconLink href="/cart" aria-label={`Cart, ${cartCount} items`}>
+            <S.IconButton type="button" onClick={openCart} aria-label={`Open cart, ${cartCount} items`} aria-haspopup="dialog">
               <ShoppingBag size={20} />
               {cartCount > 0 && <S.Count $accent>{cartCount}</S.Count>}
-            </S.IconLink>
+            </S.IconButton>
             <S.MenuButton onClick={() => setOpen(true)} aria-label="Open menu" aria-expanded={open}>
               <Menu size={22} />
             </S.MenuButton>

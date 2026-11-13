@@ -8,7 +8,9 @@ import { useInView } from "@/src/hooks/useInView";
 import { useSnapCarousel } from "@/src/hooks/useSnapCarousel";
 import { container, mq, reveal, sectionY } from "@/src/theme";
 import { Dots } from "../shared";
-import { ALL_PRODUCTS } from "@/src/data/products";
+import { getAllProducts } from "@/src/services/catalog";
+
+const ALL_PRODUCTS = getAllProducts();
 
 // Aggregate from the catalogue rather than a hard-coded marketing number.
 const TOTAL_REVIEWS = ALL_PRODUCTS.reduce((n, p) => n + p.reviewCount, 0);

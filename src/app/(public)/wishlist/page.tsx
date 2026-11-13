@@ -2,12 +2,12 @@
 
 import { PageHero, EmptyState, ProductCard } from "@/src/components/ui";
 import { useWishlist } from "@/src/hooks/useWishlist";
-import { ALL_PRODUCTS } from "@/src/data/products";
+import { getAllProducts } from "@/src/services/catalog";
 import { WishlistPageWrapper, PageContainer, Container, WishlistGrid } from "./styled";
 
 export default function WishlistPage() {
   const { wishlistIds, isHydrated } = useWishlist();
-  const saved = ALL_PRODUCTS.filter((p) => wishlistIds.includes(p.id));
+  const saved = getAllProducts().filter((p) => wishlistIds.includes(p.id));
 
   return (
     <WishlistPageWrapper>

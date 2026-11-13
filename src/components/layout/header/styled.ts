@@ -120,6 +120,23 @@ export const IconLink = styled(Link)<{ $hideSm?: boolean }>`
     `}
 `;
 
+export const IconButton = styled.button`
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgb(29 33 22 / 0.06);
+  }
+`;
+
 export const Count = styled.span<{ $accent?: boolean }>`
   position: absolute;
   top: 5px;

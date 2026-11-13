@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 import { Heart, Plus, Star } from "lucide-react";
-import type { Product } from "@/src/data/products";
+import type { Product } from "@/src/services/catalog";
 import { useProductActions } from "@/src/hooks/useProductActions";
 import { formatINR } from "@/src/lib/pricing";
 import { mq } from "@/src/theme";

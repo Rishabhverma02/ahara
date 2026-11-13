@@ -3,7 +3,9 @@
 import styled from "styled-components";
 import { ArrowRight } from "lucide-react";
 import { ButtonLink, ProductCard, SectionHeading } from "@/src/components/ui";
-import { BEST_SELLERS } from "@/src/data/products";
+import { getBestSellers } from "@/src/services/catalog";
+
+const BEST_SELLERS = getBestSellers();
 import { useInView } from "@/src/hooks/useInView";
 import { useSnapCarousel } from "@/src/hooks/useSnapCarousel";
 import { container, mq, reveal, sectionY } from "@/src/theme";

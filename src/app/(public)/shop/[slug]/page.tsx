@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ALL_PRODUCTS, getProductBySlug } from "@/src/data/products";
+import { getAllProducts, getProductBySlug } from "@/src/services/catalog";
 import ProductDetail from "./ProductDetail";
 
 type Props = {
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export function generateStaticParams() {
-  return ALL_PRODUCTS.map((p) => ({ slug: p.slug }));
+  return getAllProducts().map((p) => ({ slug: p.slug }));
 }
 
 export default async function ProductPage({ params }: Props) {

@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import styled from "styled-components";
-import { FaCcMastercard, FaCcVisa, FaInstagram, FaLinkedinIn, FaXTwitter, FaYoutube } from "react-icons/fa6";
-import { SiPaytm, SiPhonepe, SiGooglepay } from "react-icons/si";
+import { GooglePay, Instagram, LinkedIn, Mastercard, Paytm, PhonePe, Visa, XTwitter, YouTube } from "@/src/components/ui/BrandIcons";
 import { container, mq } from "@/src/theme";
 
 const COLUMNS = [
@@ -38,13 +37,13 @@ const COLUMNS = [
 ];
 
 const SOCIAL = [
-  { icon: FaInstagram, label: "Instagram", href: "#" },
-  { icon: FaYoutube, label: "YouTube", href: "#" },
-  { icon: FaXTwitter, label: "X", href: "#" },
-  { icon: FaLinkedinIn, label: "LinkedIn", href: "#" },
+  { icon: Instagram, label: "Instagram", href: "#" },
+  { icon: YouTube, label: "YouTube", href: "#" },
+  { icon: XTwitter, label: "X", href: "#" },
+  { icon: LinkedIn, label: "LinkedIn", href: "#" },
 ];
 
-const PAYMENTS = [SiGooglepay, SiPhonepe, SiPaytm, FaCcVisa, FaCcMastercard];
+const PAYMENTS = [GooglePay, PhonePe, Paytm, Visa, Mastercard];
 
 export const Footer = () => {
   const pathname = usePathname();
@@ -111,7 +110,7 @@ export const Footer = () => {
           <span>© {year} Ahara Foods. Made in India.</span>
           <Payments aria-label="Accepted payments">
             {PAYMENTS.map((Icon, i) => (
-              <Icon key={i} aria-hidden />
+              <Icon key={i} />
             ))}
           </Payments>
         </Bottom>
