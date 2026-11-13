@@ -17,17 +17,31 @@ export const Community = () => {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
+  const [sending, setSending] = useState(false);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       setError("Please enter a valid email address.");
       return;
     }
-    // TODO: connect to the mailing-list provider
+    setSending(true);
     setError("");
-    setDone(true);
-    toast("You're on the list", "Watch your inbox for recipes and early access to Kairo.");
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error ?? "Couldn't subscribe right now.");
+      setDone(true);
+      toast("You're on the list", "Watch your inbox for recipes and early access to Kairo.");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Couldn't subscribe right now.");
+    } finally {
+      setSending(false);
+    }
   };
 
   return (
@@ -65,7 +79,7 @@ export const Community = () => {
               aria-invalid={!!error}
               aria-describedby={error ? "newsletter-error" : undefined}
             />
-            <Button type="submit" $variant="dark" $size="lg">
+            <Button type="submit" $variant="dark" $size="lg" disabled={sending} aria-busy={sending}>
               Subscribe <ArrowRight aria-hidden />
             </Button>
             {error && <Err id="newsletter-error">{error}</Err>}

@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { orderRequestSchema, fieldErrors } from "@/src/lib/checkout-schema";
 import { createOrder, updateOrder, OrderError } from "@/src/services/orders";
 import { createRazorpayOrder, isRazorpayConfigured, razorpayKeyId } from "@/src/services/payments/razorpay";
+import { sendOrderConfirmation } from "@/src/services/email";
+
+const notify = (order: Parameters<typeof sendOrderConfirmation>[0]) =>
+  sendOrderConfirmation(order).catch((e) => console.error("[email] confirmation failed", e));
 
 /**
  * POST /api/orders — validates the checkout, re-prices it from the catalogue
@@ -29,6 +33,7 @@ export async function POST(req: Request) {
     const base = { orderId: order.id, total: order.totals.total, totals: order.totals, status: order.status };
 
     if (parsed.data.paymentMethod === "cod") {
+      await notify(order);
       return NextResponse.json({ ...base, mode: "cod" });
     }
 
@@ -43,7 +48,8 @@ export async function POST(req: Request) {
         );
       }
       // No gateway keys — mark as paid so the flow can be tested end to end.
-      await updateOrder(order.id, { status: "paid" });
+      const paid = await updateOrder(order.id, { status: "paid" });
+      if (paid) await notify(paid);
       return NextResponse.json({ ...base, status: "paid", mode: "demo" });
     }
 

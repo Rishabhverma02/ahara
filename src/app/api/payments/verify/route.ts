@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getOrder, updateOrder } from "@/src/services/orders";
 import { isRazorpayConfigured, verifyPaymentSignature } from "@/src/services/payments/razorpay";
+import { sendOrderConfirmation } from "@/src/services/email";
 
 const bodySchema = z.object({
   orderId: z.string().min(1),
@@ -33,9 +34,13 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Payment verification failed" }, { status: 400 });
   }
 
-  await updateOrder(orderId, {
+  const alreadyPaid = order.status === "paid"; // the webhook may have got here first
+  const updated = await updateOrder(orderId, {
     status: "paid",
     gateway: { provider: "razorpay", orderId: razorpay_order_id, paymentId: razorpay_payment_id },
   });
+  if (updated && !alreadyPaid) {
+    await sendOrderConfirmation(updated).catch((e) => console.error("[email] confirmation failed", e));
+  }
   return NextResponse.json({ ok: true, orderId, total: order.totals.total });
 }

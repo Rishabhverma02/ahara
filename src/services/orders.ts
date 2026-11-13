@@ -10,6 +10,7 @@
  * demos only. Replace the `store` below with a real database adapter.
  */
 import { randomUUID } from "node:crypto";
+import { db } from "./db";
 import { getProductById, getProductDetail } from "./catalog";
 import { computeTotals, parsePromo, type Totals } from "@/src/lib/pricing";
 import type { OrderRequest } from "@/src/lib/checkout-schema";
@@ -68,12 +69,16 @@ export function priceOrder(req: OrderRequest) {
   return { lines, promo, totals };
 }
 
-/* ---------- storage adapter ---------- */
+/* ---------- storage adapters ---------- */
+
+/** Fields that change after creation. */
+export type OrderPatch = Partial<Pick<Order, "status" | "gateway">>;
 
 interface OrderStore {
   save(order: Order): Promise<void>;
   get(id: string): Promise<Order | undefined>;
-  update(id: string, patch: Partial<Order>): Promise<Order | undefined>;
+  getByGatewayOrderId(gatewayOrderId: string): Promise<Order | undefined>;
+  update(id: string, patch: OrderPatch): Promise<Order | undefined>;
 }
 
 const memory = new Map<string, Order>();
@@ -84,6 +89,9 @@ const memoryStore: OrderStore = {
   async get(id) {
     return memory.get(id);
   },
+  async getByGatewayOrderId(gid) {
+    return [...memory.values()].find((o) => o.gateway?.orderId === gid);
+  },
   async update(id, patch) {
     const o = memory.get(id);
     if (!o) return undefined;
@@ -93,10 +101,84 @@ const memoryStore: OrderStore = {
   },
 };
 
-// TODO(database): swap for a Postgres adapter when DATABASE_URL is set.
-const store: OrderStore = memoryStore;
+type Row = {
+  id: string;
+  created_at: Date;
+  status: OrderStatus;
+  promo: string | null;
+  subtotal: number;
+  discount: number;
+  shipping: number;
+  cod_fee: number;
+  total: number;
+  request: OrderRequest;
+  lines: PricedLine[];
+  gateway_order_id: string | null;
+  gateway_payment_id: string | null;
+};
 
-export const isPersistent = () => false;
+const fromRow = (r: Row): Order => ({
+  id: r.id,
+  createdAt: new Date(r.created_at).toISOString(),
+  status: r.status,
+  request: r.request,
+  lines: r.lines,
+  promo: r.promo,
+  totals: {
+    subtotal: r.subtotal,
+    discount: r.discount,
+    shipping: r.shipping,
+    codFee: r.cod_fee,
+    total: r.total,
+    freeShipping: r.shipping === 0,
+  },
+  gateway: r.gateway_order_id
+    ? { provider: "razorpay", orderId: r.gateway_order_id, paymentId: r.gateway_payment_id ?? undefined }
+    : undefined,
+});
+
+/** Postgres adapter — schema in db/schema.sql. Used when DATABASE_URL is set. */
+function postgresStore(sql: NonNullable<ReturnType<typeof db>>): OrderStore {
+  return {
+    async save(o) {
+      const t = o.totals;
+      await sql`
+        insert into orders (id, created_at, status, email, phone, delivery_mode, payment_method, promo,
+          subtotal, discount, shipping, cod_fee, total, request, lines, gateway_order_id)
+        values (${o.id}, ${o.createdAt}, ${o.status}, ${o.request.contact.email}, ${o.request.address?.phone ?? null},
+          ${o.request.deliveryMode}, ${o.request.paymentMethod}, ${o.promo}, ${t.subtotal}, ${t.discount},
+          ${t.shipping}, ${t.codFee}, ${t.total}, ${sql.json(o.request)}, ${sql.json(o.lines)},
+          ${o.gateway?.orderId ?? null})`;
+    },
+    async get(id) {
+      const [r] = await sql<Row[]>`select * from orders where id = ${id}`;
+      return r ? fromRow(r) : undefined;
+    },
+    async getByGatewayOrderId(gid) {
+      const [r] = await sql<Row[]>`select * from orders where gateway_order_id = ${gid}`;
+      return r ? fromRow(r) : undefined;
+    },
+    async update(id, patch) {
+      const [r] = await sql<Row[]>`
+        update orders set
+          status = coalesce(${patch.status ?? null}, status),
+          gateway_order_id = coalesce(${patch.gateway?.orderId ?? null}, gateway_order_id),
+          gateway_payment_id = coalesce(${patch.gateway?.paymentId ?? null}, gateway_payment_id),
+          updated_at = now()
+        where id = ${id}
+        returning *`;
+      return r ? fromRow(r) : undefined;
+    },
+  };
+}
+
+const store = (): OrderStore => {
+  const sql = db();
+  return sql ? postgresStore(sql) : memoryStore;
+};
+
+/** True when orders survive restarts (a database is configured). */
+export const isPersistent = () => db() !== null;
 
 export async function createOrder(req: OrderRequest): Promise<Order> {
   const priced = priceOrder(req);
@@ -107,9 +189,10 @@ export async function createOrder(req: OrderRequest): Promise<Order> {
     request: req,
     ...priced,
   };
-  await store.save(order);
+  await store().save(order);
   return order;
 }
 
-export const getOrder = (id: string) => store.get(id);
-export const updateOrder = (id: string, patch: Partial<Order>) => store.update(id, patch);
+export const getOrder = (id: string) => store().get(id);
+export const getOrderByGatewayId = (gatewayOrderId: string) => store().getByGatewayOrderId(gatewayOrderId);
+export const updateOrder = (id: string, patch: OrderPatch) => store().update(id, patch);
