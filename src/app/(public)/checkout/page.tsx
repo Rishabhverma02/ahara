@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import { CheckoutProvider, useCheckout } from "./useCheckout";
+import { CheckoutProvider, useCheckoutStatus } from "./useCheckout";
 import {
   CheckoutWrapper,
   PageContainer,
@@ -22,21 +21,20 @@ import {
 } from "./components";
 
 function CheckoutContent() {
-  const { isHydrated, items, step } = useCheckout();
+  const { isHydrated, itemCount, step } = useCheckoutStatus();
 
-  // Next.js Hydration Guard
+  // cart lives in localStorage, so wait for hydration before deciding what to show
   if (!isHydrated) {
     return (
       <CheckoutWrapper>
-        <CheckoutLoadingState>
-          Initializing secure checkout...
+        <CheckoutLoadingState aria-busy="true">
+          Loading secure checkout…
         </CheckoutLoadingState>
       </CheckoutWrapper>
     );
   }
 
-  // Redirect to cart if empty
-  if (items.length === 0 && step !== 3) {
+  if (itemCount === 0 && step !== 3) {
     return (
       <CheckoutWrapper>
         <PageContainer>
@@ -54,7 +52,6 @@ function CheckoutContent() {
     );
   }
 
-  // If order complete (Step 3), render Confirmation page
   if (step === 3) {
     return (
       <CheckoutWrapper>
@@ -71,16 +68,13 @@ function CheckoutContent() {
     <CheckoutWrapper>
       <PageContainer>
         <Container>
-          {/* timeline step tracker */}
           <Timeline />
 
           <CheckoutLayout>
-            {/* Left Column Forms */}
             <FormColumn>
               {step === 1 ? <Step1Form /> : <Step2Form />}
             </FormColumn>
 
-            {/* Right Column Order Summary */}
             <OrderSummary />
           </CheckoutLayout>
         </Container>

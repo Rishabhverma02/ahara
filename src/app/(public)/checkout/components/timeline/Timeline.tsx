@@ -2,16 +2,16 @@
 
 import React from "react";
 import { StepsTimeline, TimelineStep, TimelineDivider } from "./styled";
-import { useCheckout } from "../../useCheckout";
+import { useCheckoutStatus } from "../../useCheckout";
 
 export const Timeline = () => {
-  const { step } = useCheckout();
+  const { step } = useCheckoutStatus();
 
   return (
-    <StepsTimeline>
+    <StepsTimeline aria-label={`Checkout progress: step ${step} of 3`}>
       <TimelineStep $active={step === 1} $completed={step > 1}>
         <span className="circle">1</span>
-        <span className="text">Shipping</span>
+        <span className="text">Details</span>
       </TimelineStep>
       <TimelineDivider $completed={step > 1} />
       <TimelineStep $active={step === 2} $completed={step > 2}>

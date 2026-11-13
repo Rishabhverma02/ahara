@@ -6,15 +6,11 @@ const fadeIn = keyframes`
 `;
 
 export const FormCard = styled.div<{ $disabled?: boolean }>`
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-radius: 20px;
-  padding: 40px;
-  border: 2px solid rgb(var(--olive-rgb) / 0.1);
-  box-shadow: 0 20px 40px -15px rgba(58, 47, 37, 0.05),
-              0 0 0 1px rgba(255, 255, 255, 0.5) inset;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: clamp(1.5rem, 3vw, 2.5rem);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
   opacity: ${({ $disabled }) => ($disabled ? 0.6 : 1)};
   pointer-events: ${({ $disabled }) => ($disabled ? "none" : "auto")};
 
@@ -28,7 +24,7 @@ export const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1.5px solid var(--surface);
+  border-bottom: 1px solid var(--line);
   padding-bottom: 20px;
   margin-bottom: 24px;
 `;
@@ -40,7 +36,7 @@ export const DeliveryCardHeader = styled(CardHeader)`
 export const CardTitle = styled.h2`
   font-family: var(--font-display);
   font-variation-settings: "opsz" 36;
-  font-size: 18px;
+  font-size: 1.375rem;
   font-weight: 500;
   color: var(--ink);
   margin: 0;

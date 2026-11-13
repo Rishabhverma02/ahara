@@ -79,7 +79,6 @@ export const OrderDetailRow = styled.div<{ $isTotal?: boolean }>`
     font-weight: ${({ $isTotal }) => ($isTotal ? 900 : 700)};
     color: ${({ $isTotal }) => ($isTotal ? "var(--olive)" : "var(--earth)")};
     font-size: ${({ $isTotal }) => ($isTotal ? "18px" : "13px")};
-    text-transform: capitalize;
     text-align: right;
   }
 

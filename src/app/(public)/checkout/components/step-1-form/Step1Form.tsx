@@ -1,15 +1,8 @@
 "use client";
 
-import React from "react";
-import {
-  User,
-  Mail,
-  Truck,
-  Building,
-  MapPin,
-  Phone,
-  ArrowRight,
-} from "lucide-react";
+import { ArrowRight, Building, Mail, MapPin, Phone, Truck, User } from "lucide-react";
+import { INDIAN_STATES } from "@/src/lib/checkout-schema";
+import { useCheckoutForm, type CheckoutForm } from "../../useCheckout";
 import {
   FormCard,
   CardHeader,
@@ -32,316 +25,171 @@ import {
   PickupStoreCard,
   FormActionButton,
 } from "./styled";
-import { useCheckout } from "../../useCheckout";
 
-export const Step1Form = () => {
-  const {
-    email,
-    setEmail,
-    marketingOptIn,
-    setMarketingOptIn,
-    deliveryMode,
-    setDeliveryMode,
-    firstName,
-    setFirstName,
-    lastName,
-    setLastName,
-    address,
-    setAddress,
-    apartment,
-    setApartment,
-    city,
-    setCity,
-    state,
-    setState,
-    pinCode,
-    setPinCode,
-    phone,
-    setPhone,
-    errors,
-    setErrors,
-    playClickSound,
-    handleGoToPayment,
-  } = useCheckout();
+type TextField = Exclude<keyof CheckoutForm, "marketingOptIn" | "deliveryMode" | "shippingMethod" | "paymentMethod">;
+
+interface FieldProps {
+  name: TextField;
+  label: string;
+  autoComplete: string;
+  type?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  placeholder?: string;
+  icon?: React.ReactNode;
+  full?: boolean;
+  digits?: number;
+  optional?: boolean;
+}
+
+/** Label + input + error, wired for autofill and screen readers. */
+function Field({ name, label, autoComplete, type = "text", inputMode, placeholder, icon, full, digits, optional }: FieldProps) {
+  const { form, errors, setField } = useCheckoutForm();
+  const error = errors[name];
+  const errorId = `${name}-error`;
+
+  const input = (
+    <FormInput
+      id={name}
+      name={name}
+      type={type}
+      inputMode={inputMode}
+      autoComplete={autoComplete}
+      placeholder={placeholder}
+      maxLength={digits}
+      required={!optional}
+      value={form[name]}
+      onChange={(e) => setField(name, digits ? e.target.value.replace(/\D/g, "") : e.target.value)}
+      aria-invalid={!!error}
+      aria-describedby={error ? errorId : undefined}
+      $hasIcon={!!icon}
+    />
+  );
 
   return (
-    <form onSubmit={handleGoToPayment}>
+    <InputGroup $fullWidth={full}>
+      <FieldLabel htmlFor={name}>
+        {label}
+        {optional && " (optional)"}
+      </FieldLabel>
+      {icon ? (
+        <InputWrapper>
+          <InputIcon aria-hidden>{icon}</InputIcon>
+          {input}
+        </InputWrapper>
+      ) : (
+        input
+      )}
+      {error && (
+        <ErrorMessage id={errorId} role="alert">
+          {error}
+        </ErrorMessage>
+      )}
+    </InputGroup>
+  );
+}
+
+export const Step1Form = () => {
+  const { form, errors, setField, goToPayment } = useCheckoutForm();
+
+  return (
+    <form onSubmit={goToPayment} noValidate>
       <FormCard>
         <CardHeader>
           <CardTitle>
-            <User size={18} /> Contact Information
+            <User size={18} aria-hidden /> Contact
           </CardTitle>
           <CardHeaderBadge>Step 1 of 2</CardHeaderBadge>
         </CardHeader>
 
         <ContactInfoContainer>
-          <InputGroup $fullWidth>
-            <FieldLabel htmlFor="email">Email Address</FieldLabel>
-            <InputWrapper>
-              <InputIcon>
-                <Mail />
-              </InputIcon>
-              <FormInput
-                id="email"
-                type="email"
-                placeholder="e.g. rishabh@example.com"
-                value={email}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  if (errors.email)
-                    setErrors((prev) => ({ ...prev, email: "" }));
-                }}
-                $hasIcon
-              />
-            </InputWrapper>
-            {errors.email && (
-              <ErrorMessage>
-                {errors.email}
-              </ErrorMessage>
-            )}
-          </InputGroup>
-
+          <Field name="email" label="Email address" type="email" inputMode="email" autoComplete="email" placeholder="you@example.com" icon={<Mail />} full />
           <CheckboxGroup>
             <input
+              id="marketingOptIn"
               type="checkbox"
-              checked={marketingOptIn}
-              onChange={(e) => setMarketingOptIn(e.target.checked)}
+              checked={form.marketingOptIn}
+              onChange={(e) => setField("marketingOptIn", e.target.checked)}
             />
-            <CheckboxLabelText>
-              Email me with exclusive wellness offers, recipes, and clean label insights
+            <CheckboxLabelText as="label" htmlFor="marketingOptIn">
+              Email me recipes, new flavours and occasional offers
             </CheckboxLabelText>
           </CheckboxGroup>
         </ContactInfoContainer>
 
         <DeliveryCardHeader>
           <CardTitle>
-            <Truck size={18} /> Delivery Options
+            <Truck size={18} aria-hidden /> Delivery
           </CardTitle>
         </DeliveryCardHeader>
 
-        <ToggleContainer>
+        <ToggleContainer role="radiogroup" aria-label="Delivery method">
           <ToggleButton
             type="button"
-            $active={deliveryMode === "ship"}
-            onClick={() => {
-              playClickSound();
-              setDeliveryMode("ship");
-            }}
+            role="radio"
+            aria-checked={form.deliveryMode === "ship"}
+            $active={form.deliveryMode === "ship"}
+            onClick={() => setField("deliveryMode", "ship")}
           >
-            <Truck size={14} /> Ship to Address
+            <Truck size={14} aria-hidden /> Ship to address
           </ToggleButton>
           <ToggleButton
             type="button"
-            $active={deliveryMode === "pickup"}
-            onClick={() => {
-              playClickSound();
-              setDeliveryMode("pickup");
-            }}
+            role="radio"
+            aria-checked={form.deliveryMode === "pickup"}
+            $active={form.deliveryMode === "pickup"}
+            onClick={() => setField("deliveryMode", "pickup")}
           >
-            <Building size={14} /> Store Pickup
+            <Building size={14} aria-hidden /> Store pickup
           </ToggleButton>
         </ToggleContainer>
 
-        {deliveryMode === "ship" ? (
+        {form.deliveryMode === "ship" ? (
           <InputGrid>
-            <InputGroup>
-              <FieldLabel htmlFor="firstName">First Name</FieldLabel>
-              <FormInput
-                id="firstName"
-                type="text"
-                placeholder="Rishabh"
-                value={firstName}
-                onChange={(e) => {
-                  setFirstName(e.target.value);
-                  if (errors.firstName)
-                    setErrors((prev) => ({
-                      ...prev,
-                      firstName: "",
-                    }));
-                }}
-              />
-              {errors.firstName && (
-                <ErrorMessage>
-                  {errors.firstName}
-                </ErrorMessage>
-              )}
-            </InputGroup>
-
-            <InputGroup>
-              <FieldLabel htmlFor="lastName">Last Name</FieldLabel>
-              <FormInput
-                id="lastName"
-                type="text"
-                placeholder="Verma"
-                value={lastName}
-                onChange={(e) => {
-                  setLastName(e.target.value);
-                  if (errors.lastName)
-                    setErrors((prev) => ({
-                      ...prev,
-                      lastName: "",
-                    }));
-                }}
-              />
-              {errors.lastName && (
-                <ErrorMessage>
-                  {errors.lastName}
-                </ErrorMessage>
-              )}
-            </InputGroup>
-
-            <InputGroup $fullWidth>
-              <FieldLabel htmlFor="address">Shipping Address</FieldLabel>
-              <InputWrapper>
-                <InputIcon>
-                  <MapPin />
-                </InputIcon>
-                <FormInput
-                  id="address"
-                  type="text"
-                  placeholder="Flat/House No, Building, Street, Area"
-                  value={address}
-                  onChange={(e) => {
-                    setAddress(e.target.value);
-                    if (errors.address)
-                      setErrors((prev) => ({
-                        ...prev,
-                        address: "",
-                      }));
-                  }}
-                  $hasIcon
-                />
-              </InputWrapper>
-              {errors.address && (
-                <ErrorMessage>
-                  {errors.address}
-                </ErrorMessage>
-              )}
-            </InputGroup>
-
-            <InputGroup $fullWidth>
-              <FieldLabel htmlFor="apartment">
-                Apartment, Suite, Unit (Optional)
-              </FieldLabel>
-              <FormInput
-                id="apartment"
-                type="text"
-                placeholder="e.g. Floor 2, Suite 201"
-                value={apartment}
-                onChange={(e) => setApartment(e.target.value)}
-              />
-            </InputGroup>
-
-            <InputGroup>
-              <FieldLabel htmlFor="city">City</FieldLabel>
-              <FormInput
-                id="city"
-                type="text"
-                placeholder="Jaora"
-                value={city}
-                onChange={(e) => {
-                  setCity(e.target.value);
-                  if (errors.city)
-                    setErrors((prev) => ({ ...prev, city: "" }));
-                }}
-              />
-              {errors.city && (
-                <ErrorMessage>
-                  {errors.city}
-                </ErrorMessage>
-              )}
-            </InputGroup>
+            <Field name="firstName" label="First name" autoComplete="shipping given-name" />
+            <Field name="lastName" label="Last name" autoComplete="shipping family-name" />
+            <Field name="address" label="Address" autoComplete="shipping address-line1" placeholder="House no., building, street, area" icon={<MapPin />} full />
+            <Field name="apartment" label="Apartment, floor, landmark" autoComplete="shipping address-line2" full optional />
+            <Field name="city" label="City" autoComplete="shipping address-level2" />
 
             <InputGroup>
               <FieldLabel htmlFor="state">State</FieldLabel>
               <FormSelect
                 id="state"
-                value={state}
-                onChange={(e) => {
-                  setState(e.target.value);
-                  if (errors.state)
-                    setErrors((prev) => ({ ...prev, state: "" }));
-                }}
+                name="state"
+                autoComplete="shipping address-level1"
+                value={form.state}
+                onChange={(e) => setField("state", e.target.value)}
+                aria-invalid={!!errors.state}
+                aria-describedby={errors.state ? "state-error" : undefined}
               >
-                <option value="">Select State</option>
-                <option value="Madhya Pradesh">Madhya Pradesh</option>
-                <option value="Maharashtra">Maharashtra</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Karnataka">Karnataka</option>
-                <option value="Gujarat">Gujarat</option>
-                <option value="Rajasthan">Rajasthan</option>
-                <option value="Uttar Pradesh">Uttar Pradesh</option>
+                <option value="">Select state</option>
+                {INDIAN_STATES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
               </FormSelect>
               {errors.state && (
-                <ErrorMessage>
+                <ErrorMessage id="state-error" role="alert">
                   {errors.state}
                 </ErrorMessage>
               )}
             </InputGroup>
 
-            <InputGroup>
-              <FieldLabel htmlFor="pinCode">PIN Code</FieldLabel>
-              <FormInput
-                id="pinCode"
-                type="text"
-                placeholder="457226"
-                maxLength={6}
-                value={pinCode}
-                onChange={(e) => {
-                  const val = e.target.value.replace(/\D/g, "");
-                  setPinCode(val);
-                  if (errors.pinCode)
-                    setErrors((prev) => ({ ...prev, pinCode: "" }));
-                }}
-              />
-              {errors.pinCode && (
-                <ErrorMessage>
-                  {errors.pinCode}
-                </ErrorMessage>
-              )}
-            </InputGroup>
-
-            <InputGroup>
-              <FieldLabel htmlFor="phone">Mobile Phone</FieldLabel>
-              <InputWrapper>
-                <InputIcon>
-                  <Phone />
-                </InputIcon>
-                <FormInput
-                  id="phone"
-                  type="tel"
-                  placeholder="10-digit number"
-                  maxLength={10}
-                  value={phone}
-                  onChange={(e) => {
-                    const val = e.target.value.replace(/\D/g, "");
-                    setPhone(val);
-                    if (errors.phone)
-                      setErrors((prev) => ({ ...prev, phone: "" }));
-                  }}
-                  $hasIcon
-                />
-              </InputWrapper>
-              {errors.phone && (
-                <ErrorMessage>
-                  {errors.phone}
-                </ErrorMessage>
-              )}
-            </InputGroup>
+            <Field name="pinCode" label="PIN code" autoComplete="shipping postal-code" inputMode="numeric" digits={6} />
+            <Field name="phone" label="Mobile number" type="tel" autoComplete="shipping tel-national" inputMode="tel" digits={10} icon={<Phone />} />
           </InputGrid>
         ) : (
           <PickupStoreCard>
-            <h3>Ahara Wellness HQ Office</h3>
-            <p>Somwariya Bazar, Jaora, Madhya Pradesh, 457226, India</p>
-            <p className="pickup-time">
-              Ready for collection in 2-4 days (Mon-Sat, 10 AM - 7 PM)
-            </p>
-            <span className="badge">FREE PICKUP</span>
+            <h3>Ahara Wellness HQ</h3>
+            <p>Somwariya Bazar, Jaora, Madhya Pradesh 457226</p>
+            <p className="pickup-time">Ready in 2–4 days · Mon–Sat, 10 AM – 7 PM</p>
+            <span className="badge">Free pickup</span>
           </PickupStoreCard>
         )}
 
         <FormActionButton type="submit">
-          Continue to Payment <ArrowRight size={16} />
+          Continue to payment <ArrowRight size={16} aria-hidden />
         </FormActionButton>
       </FormCard>
     </form>

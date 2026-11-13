@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { Lock, ShieldCheck, Ticket } from "lucide-react";
-import { useCheckout } from "../../useCheckout";
+import { useCheckoutSummary } from "../../useCheckout";
+import { formatINR } from "@/src/lib/pricing";
 import {
   SummaryColumn,
   StickySummaryCard,
@@ -29,20 +30,8 @@ import {
 } from "./styled";
 
 export const OrderSummary = () => {
-  const {
-    items,
-    cartTotal,
-    appliedPromo,
-    promoCode,
-    setPromoCode,
-    promoError,
-    activeShippingCharge,
-    discountAmount,
-    codFee,
-    finalTotal,
-    handleApplyPromo,
-    handleRemovePromo,
-  } = useCheckout();
+  const { items, totals, appliedPromo, promoInput, setPromoInput, promoError, applyPromo, removePromo } =
+    useCheckoutSummary();
 
   return (
     <SummaryColumn>
@@ -60,7 +49,7 @@ export const OrderSummary = () => {
                 <MiniItemImageInner>
                   <Image
                     src={item.image}
-                    alt={item.name}
+                    alt=""
                     fill
                     sizes="48px"
                   />
@@ -69,9 +58,9 @@ export const OrderSummary = () => {
               </MiniItemImage>
               <MiniItemDetails>
                 <span className="name">{item.name}</span>
-                <span className="variant">Variant: {item.size}</span>
+                <span className="variant">{item.size}</span>
               </MiniItemDetails>
-              <MiniItemPrice>₹{item.price * item.quantity}</MiniItemPrice>
+              <MiniItemPrice>{formatINR(item.price * item.quantity)}</MiniItemPrice>
             </MiniItemRow>
           ))}
         </MiniItemList>
@@ -79,12 +68,12 @@ export const OrderSummary = () => {
         {/* Promo Code Fields */}
         <PromoCodeBox>
           <PromoFieldLabel htmlFor="promo-input">
-            <Ticket size={12} /> Promo Code
+            <Ticket size={12} aria-hidden /> Promo code
           </PromoFieldLabel>
           {appliedPromo ? (
             <ActivePromoContainer>
               <span>Active: {appliedPromo}</span>
-              <button onClick={handleRemovePromo}>
+              <button type="button" onClick={removePromo}>
                 Remove
               </button>
             </ActivePromoContainer>
@@ -94,20 +83,28 @@ export const OrderSummary = () => {
                 id="promo-input"
                 type="text"
                 placeholder="e.g. AHARA10"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
+                value={promoInput}
+                onChange={(e) => setPromoInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    applyPromo();
+                  }
+                }}
+                aria-invalid={!!promoError}
+                aria-describedby={promoError ? "promo-error" : undefined}
               />
               <PromoButton
                 type="button"
-                onClick={handleApplyPromo}
-                disabled={!promoCode}
+                onClick={applyPromo}
+                disabled={!promoInput}
               >
                 Apply
               </PromoButton>
             </PromoInputWrapper>
           )}
           {promoError && (
-            <PromoErrorText>
+            <PromoErrorText id="promo-error" role="alert">
               {promoError}
             </PromoErrorText>
           )}
@@ -117,39 +114,33 @@ export const OrderSummary = () => {
         <CostsSection>
           <CostSummaryRow>
             <span>Subtotal</span>
-            <span className="value">₹{cartTotal}</span>
+            <span className="value">{formatINR(totals.subtotal)}</span>
           </CostSummaryRow>
 
-          {discountAmount > 0 && (
+          {totals.discount > 0 && (
             <CostSummaryRow $isDiscount>
               <span>Discount (10% off)</span>
-              <span className="value">-₹{discountAmount}</span>
+              <span className="value">−{formatINR(totals.discount)}</span>
             </CostSummaryRow>
           )}
 
           <CostSummaryRow>
             <span>Shipping</span>
             <span className="value">
-              {activeShippingCharge === 0 ? (
-                <FreeText>FREE</FreeText>
-              ) : (
-                `₹${activeShippingCharge}`
-              )}
+              {totals.shipping === 0 ? <FreeText>Free</FreeText> : formatINR(totals.shipping)}
             </span>
           </CostSummaryRow>
 
-          {codFee > 0 && (
+          {totals.codFee > 0 && (
             <CostSummaryRow>
-              <span>CoD Handling Fee</span>
-              <span className="value">₹{codFee}</span>
+              <span>Cash on delivery fee</span>
+              <span className="value">{formatINR(totals.codFee)}</span>
             </CostSummaryRow>
           )}
 
           <CostSummaryRow $isTotal>
-            <span>Total Amount</span>
-            <span className="value">
-              ₹{finalTotal}
-            </span>
+            <span>Total</span>
+            <span className="value">{formatINR(totals.total)}</span>
           </CostSummaryRow>
         </CostsSection>
 
@@ -161,7 +152,7 @@ export const OrderSummary = () => {
           </TrustBadge>
           <TrustBadge>
             <ShieldCheck aria-hidden />
-            Guaranteed Wellness Quality
+            Freshness guaranteed
           </TrustBadge>
         </TrustBadgeWrapper>
       </StickySummaryCard>
