@@ -11,7 +11,7 @@ export const FormCard = styled.div<{ $disabled?: boolean }>`
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
   padding: 40px;
-  border: 2px solid rgba(126, 124, 42, 0.1);
+  border: 2px solid rgb(var(--olive-rgb) / 0.1);
   box-shadow: 0 20px 40px -15px rgba(58, 47, 37, 0.05),
               0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -28,30 +28,32 @@ export const CardHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1.5px solid #fdfaf5;
+  border-bottom: 1.5px solid var(--surface);
   padding-bottom: 20px;
   margin-bottom: 24px;
 `;
 
 export const CardTitle = styled.h2`
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 36;
   font-size: 18px;
-  font-weight: 800;
-  color: #5f320fff;
+  font-weight: 500;
+  color: var(--ink);
   margin: 0;
   display: flex;
   align-items: center;
   gap: 10px;
 
   svg {
-    color: #7e7c2a;
+    color: var(--olive);
   }
 `;
 
 export const CardHeaderBadge = styled.span`
   font-size: 11px;
   font-weight: 700;
-  color: #7e7c2a;
-  background: rgba(126, 124, 42, 0.08);
+  color: var(--olive);
+  background: rgb(var(--olive-rgb) / 0.08);
   padding: 4px 10px;
   border-radius: 20px;
 `;
@@ -68,7 +70,7 @@ export const ShippingSelectionGrid = styled(SelectionGrid)`
 
 export const OptionCard = styled.div<{ $selected: boolean }>`
   border: 1.5px solid
-    ${({ $selected }) => ($selected ? "#7e7c2a" : "rgba(126, 124, 42, 0.12)")};
+    ${({ $selected }) => ($selected ? "var(--olive)" : "rgb(var(--olive-rgb) / 0.12)")};
   background: ${({ $selected }) => ($selected ? "rgba(253, 250, 245, 0.85)" : "rgba(255, 255, 255, 0.65)")};
   backdrop-filter: blur(5px);
   border-radius: 16px;
@@ -79,12 +81,12 @@ export const OptionCard = styled.div<{ $selected: boolean }>`
   align-items: center;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: ${({ $selected }) =>
-    $selected ? "0 8px 24px rgba(126, 124, 42, 0.08)" : "none"};
+    $selected ? "0 8px 24px rgb(var(--olive-rgb) / 0.08)" : "none"};
 
   &:hover {
-    border-color: #7e7c2a;
+    border-color: var(--olive);
     background: rgba(253, 250, 245, 0.95);
-    box-shadow: 0 10px 25px rgba(126, 124, 42, 0.08);
+    box-shadow: 0 10px 25px rgb(var(--olive-rgb) / 0.08);
   }
 `;
 
@@ -98,7 +100,7 @@ export const OptionRadio = styled.div<{ $selected: boolean }>`
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  border: 2px solid ${({ $selected }) => ($selected ? "#7e7c2a" : "#c5c1b0")};
+  border: 2px solid ${({ $selected }) => ($selected ? "var(--olive)" : "var(--muted-2)")};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -109,7 +111,7 @@ export const OptionRadio = styled.div<{ $selected: boolean }>`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: #7e7c2a;
+    background: var(--olive);
     transform: scale(${({ $selected }) => ($selected ? 1 : 0)});
     transition: transform 0.2s ease;
   }
@@ -123,29 +125,29 @@ export const OptionLabel = styled.div`
   span.title {
     font-size: 14px;
     font-weight: 700;
-    color: #2a241e;
+    color: var(--ink);
   }
 
   span.desc {
     font-size: 11px;
-    color: #8a8775;
+    color: var(--muted);
     font-weight: 500;
   }
 `;
 
 export const OptionPrice = styled.div`
   font-size: 14px;
-  font-weight: 800;
-  color: #2a241e;
+  font-weight: 600;
+  color: var(--ink);
 
   span.free {
-    color: #496a35;
+    color: var(--success);
   }
 `;
 
 export const PickupNoticeText = styled.p`
   font-size: 13px;
-  color: #6c6959;
+  color: var(--muted);
   margin-bottom: 32px;
   font-style: italic;
 `;
@@ -153,7 +155,7 @@ export const PickupNoticeText = styled.p`
 export const PaymentDetailsBox = styled.div`
   margin-top: 16px;
   padding-top: 16px;
-  border-top: 1.5px dashed rgba(126, 124, 42, 0.15);
+  border-top: 1.5px dashed rgb(var(--olive-rgb) / 0.15);
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -172,16 +174,16 @@ export const UPIOptionGrid = styled.div`
 
 export const UPILogoButton = styled.button<{ $active: boolean }>`
   border: 2px solid
-    ${({ $active }) => ($active ? "#7e7c2a" : "rgba(126, 124, 42, 0.12)")};
-  background: ${({ $active }) => ($active ? "rgba(126, 124, 42, 0.06)" : "rgba(255, 255, 255, 0.65)")};
+    ${({ $active }) => ($active ? "var(--olive)" : "rgb(var(--olive-rgb) / 0.12)")};
+  background: ${({ $active }) => ($active ? "rgb(var(--olive-rgb) / 0.06)" : "rgba(255, 255, 255, 0.65)")};
   backdrop-filter: blur(5px);
-  border-radius: 14px;
+  border-radius: var(--radius-sm);
   padding: 14px 20px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: ${({ $active }) => ($active ? "0 8px 20px rgba(126, 124, 42, 0.08)" : "none")};
+  box-shadow: ${({ $active }) => ($active ? "0 8px 20px rgb(var(--olive-rgb) / 0.08)" : "none")};
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   min-height: 54px;
 
@@ -195,8 +197,8 @@ export const UPILogoButton = styled.button<{ $active: boolean }>`
   }
 
   &:hover {
-    border-color: #7e7c2a;
-    background: ${({ $active }) => ($active ? "rgba(126, 124, 42, 0.08)" : "rgba(253, 250, 245, 0.95)")};
+    border-color: var(--olive);
+    background: ${({ $active }) => ($active ? "rgb(var(--olive-rgb) / 0.08)" : "rgba(253, 250, 245, 0.95)")};
     svg, img {
       opacity: 1;
     }
@@ -217,7 +219,7 @@ export const InputGroup = styled.div<{ $fullWidth?: boolean }>`
 export const FieldLabel = styled.label`
   font-size: 11px;
   font-weight: 700;
-  color: #8a8775;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -226,34 +228,34 @@ export const FormInput = styled.input`
   width: 100%;
   padding: 14px 16px;
   background: rgba(255, 255, 255, 0.6);
-  border: 1.5px solid rgba(126, 124, 42, 0.12);
+  border: 1.5px solid rgb(var(--olive-rgb) / 0.12);
   border-radius: 12px;
   font-size: 13px;
-  color: #2a241e;
+  color: var(--ink);
   font-weight: 600;
   outline: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &::placeholder {
-    color: #a7a48a;
+    color: var(--muted-2);
     font-weight: 500;
   }
 
   &:hover {
-    border-color: rgba(126, 124, 42, 0.3);
+    border-color: rgb(var(--olive-rgb) / 0.3);
     background: rgba(255, 255, 255, 0.9);
   }
 
   &:focus {
-    border-color: #7e7c2a;
+    border-color: var(--olive);
     background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(126, 124, 42, 0.1);
+    box-shadow: 0 0 0 4px rgb(var(--olive-rgb) / 0.1);
   }
 `;
 
 export const ErrorMessage = styled.span`
   font-size: 11px;
-  color: #c0392b;
+  color: var(--danger);
   font-weight: 600;
 `;
 
@@ -290,7 +292,7 @@ const cardSides = css`
 
 export const CardFront = styled.div`
   ${cardSides}
-  background: linear-gradient(135deg, #1b1612 0%, #4f4e19 50%, #7e7c2a 100%);
+  background: linear-gradient(135deg, var(--ink) 0%, var(--olive-600) 50%, var(--olive) 100%);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -300,7 +302,7 @@ export const CardFront = styled.div`
 
 export const CardBack = styled.div`
   ${cardSides}
-  background: linear-gradient(135deg, #7e7c2a 0%, #4f4e19 50%, #1b1612 100%);
+  background: linear-gradient(135deg, var(--olive) 0%, var(--olive-600) 50%, var(--ink) 100%);
   transform: rotateY(180deg);
   display: flex;
   flex-direction: column;
@@ -356,7 +358,7 @@ export const CardRow = styled.div`
 
 export const CardLogo = styled.div`
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: 1px;
 `;
 
@@ -460,10 +462,10 @@ export const FormSelect = styled.select`
   width: 100%;
   padding: 14px 16px;
   background: rgba(255, 255, 255, 0.6);
-  border: 1.5px solid rgba(126, 124, 42, 0.12);
+  border: 1.5px solid rgb(var(--olive-rgb) / 0.12);
   border-radius: 12px;
   font-size: 13px;
-  color: #2a241e;
+  color: var(--ink);
   font-weight: 600;
   outline: none;
   appearance: none;
@@ -473,7 +475,7 @@ export const FormSelect = styled.select`
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
-    border-color: rgba(126, 124, 42, 0.3);
+    border-color: rgb(var(--olive-rgb) / 0.3);
     background-color: rgba(255, 255, 255, 0.9);
   }
 `;
@@ -481,15 +483,13 @@ export const FormSelect = styled.select`
 export const SecondaryButton = styled.button`
   background: rgba(255, 255, 255, 0.55);
   backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(126, 124, 42, 0.2);
-  color: #7e7c2a;
+  border: 1.5px solid rgb(var(--olive-rgb) / 0.2);
+  color: var(--olive);
   height: 60px;
   padding: 0 24px;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   font-size: 13.5px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
@@ -498,8 +498,8 @@ export const SecondaryButton = styled.button`
   gap: 6px;
 
   &:hover {
-    background: rgba(126, 124, 42, 0.06);
-    border-color: #7e7c2a;
+    background: rgb(var(--olive-rgb) / 0.06);
+    border-color: var(--olive);
   }
 
   &:active {
@@ -511,14 +511,12 @@ export const ActionButton = styled.button`
   width: 100%;
   max-width: 300px;
   height: 60px;
-  border: 1.5px solid #7e7c2a;
-  border-radius: 12px;
-  background: #5f320fff;
+  border: 1.5px solid var(--olive);
+  border-radius: var(--radius-sm);
+  background: var(--olive);
   color: #ffffff;
   font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 8px 20px rgba(27, 22, 18, 0.1);
@@ -531,10 +529,10 @@ export const ActionButton = styled.button`
   overflow: hidden;
 
   &:hover {
-    background: #7e7c2a;
-    border-color: #7e7c2a;
+    background: var(--olive);
+    border-color: var(--olive);
     color: #ffffff;
-    box-shadow: 0 12px 25px rgba(126, 124, 42, 0.2);
+    box-shadow: 0 12px 25px rgb(var(--olive-rgb) / 0.2);
   }
 
   &:active {
@@ -562,10 +560,10 @@ export const CODInfoBox = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(126, 124, 42, 0.05);
+  background: rgb(var(--olive-rgb) / 0.05);
   padding: 12px 16px;
   border-radius: 10px;
   font-size: 12px;
-  color: #7e7c2a;
+  color: var(--olive);
   font-weight: 600;
 `;

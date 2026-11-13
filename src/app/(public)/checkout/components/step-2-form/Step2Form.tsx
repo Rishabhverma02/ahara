@@ -3,9 +3,9 @@
 import React from "react";
 import Image from "next/image";
 import { Truck, CreditCard, Info, ArrowLeft } from "lucide-react";
-import gpayLogo from "@/src/assets/images/illustration/G_pay_logo.png";
-import phonepeLogo from "@/src/assets/images/illustration/phone-pe-logo.png";
-import paytmLogo from "@/src/assets/images/illustration/paytm-logo.png";
+import gpayLogo from "@/src/assets/images/illustration/G_pay_logo.webp";
+import phonepeLogo from "@/src/assets/images/illustration/phone-pe-logo.webp";
+import paytmLogo from "@/src/assets/images/illustration/paytm-logo.webp";
 import {
   STANDARD_SHIPPING_CHARGE,
   EXPRESS_SHIPPING_CHARGE,

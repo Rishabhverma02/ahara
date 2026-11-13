@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ALL_PRODUCTS, getProductBySlug } from "../data/products";
+import { ALL_PRODUCTS, getProductBySlug } from "@/src/data/products";
 import ProductDetail from "./ProductDetail";
 
 type Props = {

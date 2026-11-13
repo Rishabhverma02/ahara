@@ -36,9 +36,15 @@ export const useCartStore = create<CartState>()(
           );
 
           if (existingItemIndex > -1) {
-            const updatedItems = [...state.items];
-            updatedItems[existingItemIndex].quantity += newItem.quantity;
-            return { items: updatedItems };
+            // Immutable update: mutating the existing object in place meant
+            // anything comparing item references never saw the change.
+            return {
+              items: state.items.map((item, i) =>
+                i === existingItemIndex
+                  ? { ...item, quantity: item.quantity + newItem.quantity }
+                  : item,
+              ),
+            };
           }
 
           return {
@@ -67,17 +73,13 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "ahara-cart-storage",
+      // Image URLs are content-hashed per build, so never trust a persisted
+      // one — useCart re-resolves images from the catalog.
+      partialize: (s) => ({
+        appliedPromo: s.appliedPromo,
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        items: s.items.map(({ image, ...rest }) => rest),
+      }),
     }
   )
 );
-
-
-export const useCartCount = () => {
-  const items = useCartStore((state) => state.items);
-  return items.reduce((acc, item) => acc + item.quantity, 0);
-};
-
-export const useCartTotal = () => {
-  const items = useCartStore((state) => state.items);
-  return items.reduce((acc, item) => acc + item.price * item.quantity, 0);
-};

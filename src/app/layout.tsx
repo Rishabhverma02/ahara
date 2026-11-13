@@ -1,44 +1,53 @@
-import type { Metadata } from "next";
-import { Poppins, Monoton, Story_Script } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Fraunces, Instrument_Sans } from "next/font/google";
 import { StyledComponentsRegistry } from "../style/registry";
 
-
-const poppins = Poppins({
+/**
+ * Two families instead of three (Poppins ×7 weights, Monoton, Story Script):
+ * Fraunces — a warm, slightly soft old-style serif for display — and
+ * Instrument Sans for UI and body. Both are variable fonts, so each is a
+ * single file regardless of weights used.
+ */
+const fraunces = Fraunces({
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-poppins",
+  variable: "--font-fraunces",
+  axes: ["opsz", "SOFT"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
-const monoton = Monoton({
+const instrument = Instrument_Sans({
   subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-monoton",
-});
-
-const storyScript = Story_Script({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-story-script",
+  variable: "--font-instrument",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Ahara",
-  description: "Ahara provides you super food - Combination of taste and health together",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: {
+    default: "Ahara — Ancient food, modern life",
+    template: "%s · Ahara",
+  },
+  description:
+    "Roasted makhana, sattu, millet cookies and moringa — India's forgotten superfoods, made clean and snackable.",
+  openGraph: {
+    type: "website",
+    siteName: "Ahara",
+    title: "Ahara — Ancient food, modern life",
+    description:
+      "Roasted makhana, sattu, millet cookies and moringa — India's forgotten superfoods, made clean and snackable.",
+  },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const viewport: Viewport = {
+  themeColor: "#F6F1E6",
+};
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className={`${poppins.variable} ${monoton.variable} ${storyScript.variable} ${poppins.className} antialiased`}>
-        <StyledComponentsRegistry>
-          {/* <AuthProvider> */}
-            {children}
-          {/* </AuthProvider> */}
-        </StyledComponentsRegistry>
+    <html lang="en" className={`${fraunces.variable} ${instrument.variable}`}>
+      <body>
+        <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>
   );

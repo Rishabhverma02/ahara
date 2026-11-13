@@ -1,97 +1,77 @@
 "use client";
 
-import React from "react";
-import AutoAwesomeTwoToneIcon from '@mui/icons-material/AutoAwesomeTwoTone';
-import { useRouter } from "next/navigation";
-import {
-  EmptyStateWrapper,
-  FloatingTag,
-  Badge,
-  EmptyIconWrapper,
-  EmptyTextGroup,
-  ShopNowBtn,
-} from "./styled";
-
-export interface FloatingTagItem {
-  text: string;
-  delay: string;
-  style: React.CSSProperties;
-}
+import styled from "styled-components";
+import { ArrowRight } from "lucide-react";
+import { h3 } from "@/src/theme";
+import { ButtonLink } from "../Button";
+import { Mascot, type MascotPose } from "../Mascot";
 
 export interface EmptyStateProps {
-  icon: React.ReactNode;
-  badgeText: string;
+  pose?: MascotPose;
+  kicker?: string;
   title: string;
   description: string;
   btnText: string;
   btnHref?: string;
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-  floatingTags?: FloatingTagItem[];
 }
 
-const defaultTags: FloatingTagItem[] = [
-  { text: "🍿 Makhana Crunch", delay: "0s", style: { top: "12%", left: "-30px" } as React.CSSProperties },
-  { text: "💪 Sattu Power", delay: "1.5s", style: { bottom: "24%", left: "-35px" } as React.CSSProperties },
-  { text: "🌿 Pure Moringa", delay: "0.7s", style: { top: "30%", right: "-45px" } as React.CSSProperties }
-];
-
-export const EmptyState: React.FC<EmptyStateProps> = ({
-  icon,
-  badgeText,
+/**
+ * Empty states are where Kairo earns his keep — a moment of personality where
+ * the page would otherwise be blank. Replaces the pulse rings, sparkles and
+ * three emoji pills.
+ */
+export const EmptyState = ({
+  pose = "parachute",
+  kicker,
   title,
   description,
   btnText,
   btnHref = "/shop",
-  onClick,
-  floatingTags = defaultTags,
-}) => {
-  const router = useRouter();
+}: EmptyStateProps) => (
+  <Wrap>
+    <Mascot pose={pose} width={pose === "parachute" ? 150 : 120} motion={pose === "parachute" ? "sway" : "bob"} />
+    <Text>
+      {kicker && <Kicker>{kicker}</Kicker>}
+      <h2>{title}</h2>
+      <p>{description}</p>
+    </Text>
+    <ButtonLink href={btnHref} $size="lg">
+      {btnText} <ArrowRight aria-hidden />
+    </ButtonLink>
+  </Wrap>
+);
 
-  const handleButtonClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.75rem;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+`;
 
-    try {
-      const audio = new Audio("/audio/click.mp3");
-      audio.play().catch((err) => console.log("Audio playback was blocked or failed:", err));
-    } catch (err) {
-      console.log("Failed to initialize audio:", err);
-    }
+const Text = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-width: 28rem;
 
-    if (onClick) {
-      onClick(e);
-    }
+  h2 {
+    ${h3};
+    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+  }
+  p {
+    color: var(--muted);
+  }
+`;
 
-    // Delay navigation slightly so the click sound is heard immediately on click
-    setTimeout(() => {
-      router.push(btnHref);
-    }, 165);
-  };
-
-  return (
-    <EmptyStateWrapper>
-      {floatingTags.map((tag, idx) => (
-        <FloatingTag key={idx} $delay={tag.delay} style={tag.style}>
-          {tag.text}
-        </FloatingTag>
-      ))}
-
-      <EmptyIconWrapper>
-        <div className="icon-pulse-ring" />
-        {icon}
-        <AutoAwesomeTwoToneIcon className="sparkle-1" sx={{ fontSize: 16 }} />
-        <AutoAwesomeTwoToneIcon className="sparkle-2" sx={{ fontSize: 12 }} />
-      </EmptyIconWrapper>
-
-      <EmptyTextGroup>
-        <Badge>{badgeText}</Badge>
-        <h2>{title}</h2>
-        <p>{description}</p>
-      </EmptyTextGroup>
-
-      <ShopNowBtn href={btnHref} onClick={handleButtonClick}>
-        <span>{btnText}</span>
-        <AutoAwesomeTwoToneIcon sx={{ fontSize: 16 }} />
-      </ShopNowBtn>
-    </EmptyStateWrapper>
-  );
-};
+const Kicker = styled.span`
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--olive);
+`;

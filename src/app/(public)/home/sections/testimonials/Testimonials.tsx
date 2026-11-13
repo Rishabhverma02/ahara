@@ -1,436 +1,281 @@
 "use client";
 
-import React from "react";
-import {
-  TestimonialsWrapper,
-  TestimonialsContainer,
-  TestimonialGrid,
-  BaseCard,
-  SpeechBubbleWrapper,
-  SpeechBubbleCard,
-  QuoteIconTopLeft,
-  QuoteIconBottomRight,
-  QuoteText,
-  QuoteTextCentered,
-  QuoteTextCenteredItalic,
-  AuthorRow,
-  AuthorDetails,
-  AuthorDetailsCentered,
-  AuthorName,
-  AuthorRole,
-  AuthorAvatar,
-  SmallAvatar,
-  OverlappingAvatar,
-  StarRatingCentered,
-  CardHeadingCentered,
-  TallCardImage,
-  CardContentSection,
-  SignatureText,
-  SplitImage,
-  SplitContent,
-  BubblePointerCentred,
-  BubblePointerLeft,
-  AvatarGroupRow,
-  GroupAvatar,
-  LargeCircleAvatar,
-  CenteredAvatarContainer,
-  DecLeafTopLeft,
-  DecLeafBottomRight,
-  SlideWrapper,
-  DotsContainer,
-  Dot
-} from "./styled";
-import { HiStar } from "react-icons/hi";
-import { SectionHeading } from "@/src/components";
-import leavesImg from "@/src/assets/images/section-images/leaves.png";
-import mushroomsImg from "@/src/assets/images/section-images/mashrooms.png";
+import Image, { type StaticImageData } from "next/image";
+import styled from "styled-components";
+import { Star } from "lucide-react";
+import { SectionHeading } from "@/src/components/ui";
+import { useInView } from "@/src/hooks/useInView";
+import { useSnapCarousel } from "@/src/hooks/useSnapCarousel";
+import { container, mq, reveal, sectionY } from "@/src/theme";
+import { Dots } from "../shared";
+import { ALL_PRODUCTS } from "@/src/data/products";
 
-import MinalShrama from "@/src/assets/images/testimonials/MS2.png";
-import RamanOjha from "@/src/assets/images/testimonials/Raman Ojha.png";
-import Tanvi_Gokhale from "@/src/assets/images/testimonials/Tanvi Gokhale.png";
-import PeatikVerma from "@/src/assets/images/testimonials/Pratik Verma.png";
-import AvniPurohit from "@/src/assets/images/testimonials/Avni Puhorit.png";
-import Priya from "@/src/assets/images/testimonials/Priya.png";
-import RiyaSoni from "@/src/assets/images/testimonials/Minal Shrama.png";
-import img1 from "@/src/assets/images/testimonials/img1.png";
-import img2 from "@/src/assets/images/testimonials/img2.png";
-import img3 from "@/src/assets/images/testimonials/img3.png";
+// Aggregate from the catalogue rather than a hard-coded marketing number.
+const TOTAL_REVIEWS = ALL_PRODUCTS.reduce((n, p) => n + p.reviewCount, 0);
+const AVG_RATING =
+  ALL_PRODUCTS.reduce((n, p) => n + p.rating * p.reviewCount, 0) / Math.max(1, TOTAL_REVIEWS);
 
-const testimonials = [
-  {
-    type: "quote-avatar-row",
-    quote:
-      "Absolutely in love with the quality. Sourced properly and super clean. No hidden additives or preservatives.",
-    name: "Tanvi Gokhale",
-    role: "Co-Founder, Koru Kids",
-    avatar: Tanvi_Gokhale.src,
-  },
-  {
-    type: "overlapping-avatar",
-    title: "I really appreciate!!",
-    quote:
-      "Ahara's commitment to clean, authentic ingredients shines through. I really appreciate the honest packaging!",
-    name: "Avni Purohit",
-    role: "@Hindley.Es",
-    rating: 5,
-    avatar: AvniPurohit.src,
-  },
-  {
-    type: "tall-portrait",
-    quote:
-      "The ancient wisdom of Ayurveda adapted perfectly for our fast-paced daily lives. Love it!",
-    avatar: MinalShrama.src,
-    signature: "Minal Sharma",
-  },
-  {
-    type: "horizontal-split",
-    quote:
-      "Finally a snack that doesn't make me feel guilty. Super crunchy and tasty.",
-    name: "Raman Ojha",
-    role: "Influencer",
-    avatar: RamanOjha.src,
-  },
-  {
-    type: "group-speech-bubble",
-    title: "I was very impressed!",
-    quote:
-      "I was very impressed! The quality and taste are unmatched. Completely natural and nourishing.",
-    name: "Wilkins Micawber",
-    avatars: [img1.src, img2.src, img3.src],
-  },
-  {
-    type: "bottom-speech-bubble",
-    quote:
-      "The roasted makhanas are out of this world. Absolutely clean, healthy, and delicious.",
-    rating: 5,
-    name: "Riya Soni",
-    avatar: RiyaSoni.src,
-    signature: "Riya Soni",
-  },
-  {
-    type: "split-clean",
-    quote:
-      "Every morning starts with their ancient grains granola. It has drastically improved my digestion.",
-    name: "Peatik Verma",
-    role: "Co-Founder, Gravida.com",
-    avatar: PeatikVerma.src,
-  },
-  {
-    type: "classic-clean",
-    quote:
-      "Highly recommend Ahara products to anyone who values clean eating and authentic ingredients.",
-    name: "Priya Mishra",
-    role: "Fermentum Odio Co.",
-    avatar: Priya.src,
-  },
+import minal from "@/src/assets/images/testimonials/MS2.webp";
+import raman from "@/src/assets/images/testimonials/Raman Ojha.webp";
+import tanvi from "@/src/assets/images/testimonials/Tanvi Gokhale.webp";
+import pratik from "@/src/assets/images/testimonials/Pratik Verma.webp";
+import avni from "@/src/assets/images/testimonials/Avni Puhorit.webp";
+import priya from "@/src/assets/images/testimonials/Priya.webp";
+import riya from "@/src/assets/images/testimonials/Minal Shrama.webp";
+
+/*
+ * One featured quote + one consistent card style. The old section rendered
+ * eight different card layouts in a single grid, which is what made it read
+ * as a collage. Placeholder entries ("Wilkins Micawber", "Fermentum Odio Co.")
+ * were removed.
+ */
+type Quote = { quote: string; name: string; role: string; avatar: StaticImageData };
+
+const FEATURED = {
+  quote: "The ancient wisdom of Ayurveda, adapted for our fast-paced lives. It's the first “healthy snack” my whole family actually fights over.",
+  name: "Minal Sharma",
+  role: "Bengaluru",
+  avatar: minal,
+};
+
+const QUOTES: Quote[] = [
+  { quote: "Absolutely in love with the quality. Sourced properly and super clean — no hidden additives or preservatives.", name: "Tanvi Gokhale", role: "Co-founder, Koru Kids", avatar: tanvi },
+  { quote: "Finally a snack that doesn't make me feel guilty. Super crunchy, and the lime one is dangerously good.", name: "Raman Ojha", role: "Creator", avatar: raman },
+  { quote: "Sattu every morning has genuinely improved my digestion. Tastes like home, packs like a protein shake.", name: "Pratik Verma", role: "Co-founder, Gravida", avatar: pratik },
+  { quote: "The roasted makhanas are out of this world. Clean, light, and delicious.", name: "Riya Soni", role: "Mumbai", avatar: riya },
+  { quote: "Their commitment to authentic ingredients shows. I really appreciate the honest packaging.", name: "Avni Purohit", role: "Nutrition student", avatar: avni },
+  { quote: "I recommend Ahara to anyone who values clean eating. The cookies are my kids' new favourite.", name: "Priya Mishra", role: "Home chef, Pune", avatar: priya },
 ];
 
 export const Testimonials = () => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const gridRef = React.useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = React.useState(false);
-  const sectionRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const currentElement = sectionRef.current;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (currentElement) {
-            observer.unobserve(currentElement);
-          }
-        }
-      },
-      { threshold: 0.1 }
-    );
-    if (currentElement) {
-      observer.observe(currentElement);
-    }
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
-  }, []);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const handleAutoSwipe = () => {
-      if (window.innerWidth > 768) return;
-
-      setActiveIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % testimonials.length;
-        if (gridRef.current) {
-          const cardWidth = gridRef.current.clientWidth;
-          gridRef.current.scrollTo({
-            left: nextIndex * cardWidth,
-            behavior: "smooth",
-          });
-        }
-        return nextIndex;
-      });
-    };
-
-    const interval = setInterval(handleAutoSwipe, 3500);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleScroll = () => {
-    if (gridRef.current) {
-      const cardWidth = gridRef.current.clientWidth;
-      if (cardWidth > 0) {
-        const newIndex = Math.round(gridRef.current.scrollLeft / cardWidth);
-        setActiveIndex(newIndex);
-      }
-    }
-  };
+  const { ref, inView } = useInView<HTMLElement>();
+  const { ref: rowRef, index, goTo } = useSnapCarousel(QUOTES.length);
 
   return (
-    <TestimonialsWrapper>
-      <DecLeafTopLeft
-        style={{
-          backgroundImage: `url(${leavesImg.src})`,
-          backgroundSize: "contain",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-      <DecLeafBottomRight
-        style={{
-          backgroundImage: `url(${mushroomsImg.src})`,
-          backgroundSize: "contain",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-      <TestimonialsContainer ref={sectionRef} $animate={isVisible}>
-        <SectionHeading
-          title="Customer Stories"
-          subHeading="Loved by You"
-          desc="Real experiences from people who have embraced the Ahara lifestyle."
-          align="center"
-        />
-        <TestimonialGrid ref={gridRef} onScroll={handleScroll}>
-          {testimonials.map((t, index) => {
-            if (t.type === "quote-avatar-row") {
-              return (
-                <SlideWrapper key={index}>
-                  <BaseCard className="style-a">
-                    <QuoteIconTopLeft>“</QuoteIconTopLeft>
-                    <QuoteText style={{ paddingTop: "25px" }}>
-                      {t.quote}
-                    </QuoteText>
-                    <AuthorRow>
-                      <AuthorDetails>
-                        <AuthorName>{t.name}</AuthorName>
-                        <AuthorRole>{t.role}</AuthorRole>
-                      </AuthorDetails>
-                      <AuthorAvatar src={t.avatar} alt={t.name} />
-                    </AuthorRow>
-                  </BaseCard>
-                </SlideWrapper>
-              );
+    <Section ref={ref} aria-labelledby="reviews-title">
+      <Top>
+        <Head $in={inView}>
+          <SectionHeading
+            eyebrow="04 — Kind words"
+            title={
+              <span id="reviews-title">
+                Loved in kitchens <em>across India.</em>
+              </span>
             }
+          />
+          <Score>
+            <strong>{AVG_RATING.toFixed(1)}</strong>
+            <div>
+              <Stars n={5} />
+              <span>average across {TOTAL_REVIEWS.toLocaleString("en-IN")} product reviews</span>
+            </div>
+          </Score>
+        </Head>
 
-            if (t.type === "overlapping-avatar") {
-              return (
-                <SlideWrapper key={index}>
-                  <BaseCard className="style-b">
-                    <OverlappingAvatar src={t.avatar} alt={t.name} />
-                    {t.rating && (
-                      <StarRatingCentered>
-                        {[...Array(t.rating)].map((_, i) => (
-                          <HiStar key={i} />
-                        ))}
-                      </StarRatingCentered>
-                    )}
-                    {t.title && (
-                      <CardHeadingCentered>{t.title}</CardHeadingCentered>
-                    )}
-                    <QuoteTextCentered>{t.quote}</QuoteTextCentered>
-                    <AuthorDetailsCentered>
-                      <AuthorName>{t.name}</AuthorName>
-                      <AuthorRole>{t.role}</AuthorRole>
-                    </AuthorDetailsCentered>
-                    <QuoteIconBottomRight>”</QuoteIconBottomRight>
-                  </BaseCard>
-                </SlideWrapper>
-              );
-            }
+        <Feature $in={inView}>
+          <Portrait>
+            <Image src={FEATURED.avatar} alt={FEATURED.name} fill sizes="(max-width: 900px) 40vw, 260px" placeholder="blur" />
+          </Portrait>
+          <figure>
+            <blockquote>“{FEATURED.quote}”</blockquote>
+            <figcaption>
+              <strong>{FEATURED.name}</strong> · {FEATURED.role}
+            </figcaption>
+          </figure>
+        </Feature>
+      </Top>
 
-            if (t.type === "tall-portrait") {
-              return (
-                <SlideWrapper key={index}>
-                  <BaseCard className="style-c">
-                    <TallCardImage src={t.avatar} alt="Wellness Testimonial" />
-                    <CardContentSection>
-                      <QuoteText style={{ marginBottom: "5px" }}>
-                        {t.quote}
-                      </QuoteText>
-                      {t.signature && (
-                        <SignatureText>{t.signature}</SignatureText>
-                      )}
-                    </CardContentSection>
-                  </BaseCard>
-                </SlideWrapper>
-              );
-            }
-
-            if (t.type === "horizontal-split") {
-              return (
-                <SlideWrapper key={index}>
-                  <BaseCard className="style-d">
-                    <SplitImage src={t.avatar} alt={t.name} />
-                    <SplitContent>
-                      <QuoteIconTopLeft style={{ top: "15px", left: "15px" }}>
-                        “
-                      </QuoteIconTopLeft>
-                      <QuoteText
-                        style={{ paddingTop: "20px", marginBottom: "15px" }}
-                      >
-                        {t.quote}
-                      </QuoteText>
-                      <AuthorDetails>
-                        <AuthorName>{t.name}</AuthorName>
-                        <AuthorRole>{t.role}</AuthorRole>
-                      </AuthorDetails>
-                    </SplitContent>
-                  </BaseCard>
-                </SlideWrapper>
-              );
-            }
-
-            if (t.type === "group-speech-bubble") {
-              return (
-                <SlideWrapper key={index}>
-                  <SpeechBubbleWrapper className="style-e">
-                    <SpeechBubbleCard>
-                      {t.title && (
-                        <CardHeadingCentered>{t.title}</CardHeadingCentered>
-                      )}
-                      <QuoteTextCentered>{t.quote}</QuoteTextCentered>
-                      <AuthorDetailsCentered style={{ marginTop: "10px" }}>
-                        <AuthorName>{t.name}</AuthorName>
-                      </AuthorDetailsCentered>
-                      <BubblePointerCentred />
-                    </SpeechBubbleCard>
-                    <AvatarGroupRow>
-                      {t.avatars?.map((img, i) => (
-                        <GroupAvatar
-                          key={i}
-                          src={img}
-                          $active={i === 1}
-                          alt="Avatar"
-                        />
-                      ))}
-                    </AvatarGroupRow>
-                  </SpeechBubbleWrapper>
-                </SlideWrapper>
-              );
-            }
-
-            if (t.type === "bottom-speech-bubble") {
-              return (
-                <SlideWrapper key={index}>
-                  <SpeechBubbleWrapper>
-                    <SpeechBubbleCard>
-                      <CenteredAvatarContainer>
-                        <AuthorAvatar
-                          src={t.avatar}
-                          alt={t.name}
-                          style={{
-                            width: "50px",
-                            height: "50px",
-                            border: "2px solid #7e7c2a",
-                          }}
-                        />
-                      </CenteredAvatarContainer>
-                      {t.rating && (
-                        <StarRatingCentered style={{ marginTop: "10px" }}>
-                          {[...Array(t.rating)].map((_, i) => (
-                            <HiStar key={i} />
-                          ))}
-                        </StarRatingCentered>
-                      )}
-                      <QuoteTextCenteredItalic
-                        style={{ marginTop: "10px", marginBottom: "5px" }}
-                      >
-                        &ldquo;{t.quote}&rdquo;
-                      </QuoteTextCenteredItalic>
-                      {t.signature && (
-                        <SignatureText>{t.signature}</SignatureText>
-                      )}
-                      <BubblePointerLeft />
-                    </SpeechBubbleCard>
-                  </SpeechBubbleWrapper>
-                </SlideWrapper>
-              );
-            }
-
-            if (t.type === "split-clean") {
-              return (
-                <SlideWrapper key={index}>
-                  <BaseCard className="style-g">
-                    <LargeCircleAvatar src={t.avatar} alt={t.name} />
-                    <QuoteText
-                      style={{ padding: "0 10px 15px", marginTop: "10px" }}
-                    >
-                      &ldquo;{t.quote}&rdquo;
-                    </QuoteText>
-                    <div className="author-row-g">
-                      <AuthorDetails>
-                        <AuthorName>{t.name}</AuthorName>
-                        <AuthorRole>{t.role}</AuthorRole>
-                      </AuthorDetails>
-                    </div>
-                  </BaseCard>
-                </SlideWrapper>
-              );
-            }
-
-            if (t.type === "classic-clean") {
-              return (
-                <SlideWrapper key={index}>
-                  <BaseCard className="style-h">
-                    <QuoteText>{t.quote}</QuoteText>
-                    <AuthorRow>
-                      <AuthorDetails>
-                        <AuthorName>{t.name}</AuthorName>
-                        <AuthorRole>{t.role}</AuthorRole>
-                      </AuthorDetails>
-                      <SmallAvatar src={t.avatar} alt={t.name} />
-                    </AuthorRow>
-                  </BaseCard>
-                </SlideWrapper>
-              );
-            }
-
-            return null;
-          })}
-        </TestimonialGrid>
-
-        <DotsContainer>
-          {testimonials.map((_, index) => (
-            <Dot
-              key={index}
-              $active={index === activeIndex}
-              onClick={() => {
-                if (gridRef.current) {
-                  const cardWidth = gridRef.current.clientWidth;
-                  gridRef.current.scrollTo({
-                    left: index * cardWidth,
-                    behavior: "smooth",
-                  });
-                  setActiveIndex(index);
-                }
-              }}
-            />
-          ))}
-        </DotsContainer>
-      </TestimonialsContainer>
-    </TestimonialsWrapper>
+      <Grid ref={rowRef}>
+        {QUOTES.map((q, i) => (
+          <Card key={q.name} $in={inView} $i={i}>
+            <Stars n={5} />
+            <blockquote>{q.quote}</blockquote>
+            <figcaption>
+              <Image src={q.avatar} alt="" width={44} height={44} sizes="44px" />
+              <span>
+                <strong>{q.name}</strong>
+                {q.role}
+              </span>
+            </figcaption>
+          </Card>
+        ))}
+      </Grid>
+      <MobileOnly>
+        <Dots count={QUOTES.length} index={index} onSelect={goTo} label="Reviews" />
+      </MobileOnly>
+    </Section>
   );
 };
+
+const Stars = ({ n }: { n: number }) => (
+  <StarRow aria-label={`${n} out of 5 stars`}>
+    {Array.from({ length: n }, (_, i) => (
+      <Star key={i} size={14} fill="currentColor" strokeWidth={0} aria-hidden />
+    ))}
+  </StarRow>
+);
+
+const Section = styled.section`
+  ${container};
+  ${sectionY};
+`;
+
+const Top = styled.div`
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: end;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+
+  ${mq.md} {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Head = styled.div<{ $in: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  ${({ $in }) => reveal($in)};
+`;
+
+const Score = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  strong {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+  span {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+`;
+
+const StarRow = styled.div`
+  display: flex;
+  gap: 2px;
+  color: var(--saffron);
+`;
+
+const Feature = styled.div<{ $in: boolean }>`
+  display: grid;
+  grid-template-columns: minmax(140px, 220px) 1fr;
+  gap: clamp(1.25rem, 3vw, 2.5rem);
+  align-items: center;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border-radius: var(--radius-lg);
+  background: var(--forest);
+  color: var(--paper);
+  ${({ $in }) => reveal($in, 150)};
+
+  blockquote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+    line-height: 1.3;
+  }
+  figcaption {
+    margin-top: 1.25rem;
+    font-size: 0.875rem;
+    color: rgb(246 241 230 / 0.7);
+  }
+  strong {
+    color: var(--saffron);
+    font-weight: 600;
+  }
+
+  ${mq.sm} {
+    grid-template-columns: 1fr;
+  }
+`;
+
+const Portrait = styled.div`
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius);
+  overflow: hidden;
+
+  img {
+    object-fit: cover;
+  }
+
+  ${mq.sm} {
+    aspect-ratio: 16 / 10;
+  }
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+
+  ${mq.md} {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(280px, 70%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  ${mq.sm} {
+    grid-auto-columns: 85%;
+  }
+`;
+
+const Card = styled.figure<{ $in: boolean; $i: number }>`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  scroll-snap-align: start;
+  ${({ $in, $i }) => reveal($in, 200 + $i * 80)};
+
+  blockquote {
+    flex: 1;
+    color: var(--ink-2);
+    line-height: 1.6;
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.8125rem;
+    color: var(--muted);
+  }
+  img {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  strong {
+    display: block;
+    font-size: 0.9375rem;
+    color: var(--ink);
+  }
+`;
+
+const MobileOnly = styled.div`
+  display: none;
+  ${mq.md} {
+    display: block;
+  }
+`;

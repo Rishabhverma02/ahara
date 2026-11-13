@@ -1,4 +1,5 @@
-import styled, { css, keyframes } from "styled-components";
+import styled, { keyframes } from "styled-components";
+import { container } from "@/src/theme";
 
 const fadeIn = keyframes`
   from {
@@ -12,18 +13,12 @@ const fadeIn = keyframes`
 `;
 
 export const ShopPageWrapper = styled.div`
-  background: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
+  background: var(--paper);
 `;
 
 export const PageContainer = styled.div`
-  width: 100%;
-  padding: 50px ;
-  background-color: #7e7d2a18;
-  
+  ${container};
+  padding-block: clamp(2rem, 4vw, 3.5rem) var(--section-y);
 `;
 
 export const ActiveFiltersRow = styled.div`
@@ -33,18 +28,18 @@ export const ActiveFiltersRow = styled.div`
   gap: 8px;
   margin-bottom: 32px;
   padding: 12px 20px;
-  background: #fbfbf9;
-  border: 1px solid rgba(126, 124, 42, 0.08);
+  background: var(--surface);
+  border: 1px solid rgb(var(--olive-rgb) / 0.08);
   border-radius: 10px;
   min-height: 48px;
   animation: ${fadeIn} 0.4s ease;
-  box-shadow: 0 4px 15px rgba(42, 36, 30, 0.01);
+  box-shadow: 0 4px 15px rgb(29 33 22 / 0.01);
 `;
 
 export const ActiveFilterLabel = styled.span`
   font-size: 11px;
   font-weight: 800;
-  color: #7e7c2a;
+  color: var(--olive);
   letter-spacing: 1px;
   margin-right: 6px;
   text-transform: uppercase;
@@ -55,27 +50,27 @@ export const FilterChip = styled.button`
   align-items: center;
   gap: 8px;
   background: #ffffff;
-  color: #5f320fff;
-  border: 1px solid rgba(126, 124, 42, 0.15);
+  color: var(--earth);
+  border: 1px solid rgb(var(--olive-rgb) / 0.15);
   border-radius: 100px;
   padding: 6px 14px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(42, 36, 30, 0.02);
+  box-shadow: 0 2px 4px rgb(29 33 22 / 0.02);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
   span {
     font-weight: 600;
     font-size: 13px;
-    color: rgba(126, 124, 42, 0.6);
+    color: rgb(var(--olive-rgb) / 0.6);
     transition: color 0.25s ease;
   }
 
   &:hover {
-    background: #bd5338; /* Beautiful coral-red on active filter tag hover for quick clear feedback */
+    background: var(--danger); /* Beautiful coral-red on active filter tag hover for quick clear feedback */
     color: #ffffff;
-    border-color: #bd5338;
+    border-color: var(--danger);
     transform: translateY(-1px);
     box-shadow: 0 4px 10px rgba(189, 83, 56, 0.2);
 
@@ -88,7 +83,7 @@ export const FilterChip = styled.button`
 export const ClearAllBtn = styled.button`
   font-size: 11px;
   font-weight: 800;
-  color: #bd5338; /* Coral red */
+  color: var(--danger); /* Coral red */
   background: rgba(189, 83, 56, 0.04);
   border: 1px solid rgba(189, 83, 56, 0.1);
   cursor: pointer;
@@ -99,9 +94,9 @@ export const ClearAllBtn = styled.button`
   transition: all 0.25s ease;
 
   &:hover {
-    background: #bd5338;
+    background: var(--danger);
     color: #ffffff;
-    border-color: #bd5338;
+    border-color: var(--danger);
     box-shadow: 0 4px 10px rgba(189, 83, 56, 0.15);
   }
 `;
@@ -119,8 +114,8 @@ export const ContentLayout = styled.div`
 `;
 
 export const SidebarWrapper = styled.aside`
-  background: #fbfbf9; /* Soft organic off-white/cream background */
-  border: 1px solid rgba(126, 124, 42, 0.08);
+  background: var(--surface); /* Soft organic off-white/cream background */
+  border: 1px solid rgb(var(--olive-rgb) / 0.08);
   border-radius: 10px;
   padding: 32px 28px;
   position: sticky;
@@ -128,7 +123,7 @@ export const SidebarWrapper = styled.aside`
   max-height: calc(100vh - 160px);
   display: flex;
   flex-direction: column;
-  box-shadow: 0 10px 40px rgba(42, 36, 30, 0.02);
+  box-shadow: 0 10px 40px rgb(29 33 22 / 0.02);
 
   @media (max-width: 1024px) {
     position: static;
@@ -159,17 +154,17 @@ export const SidebarScrollArea = styled.div`
 export const SidebarTitle = styled.h2`
   font-size: 15px;
   font-weight: 800;
-  color: #5f320fff;
+  color: var(--earth);
   margin-bottom: 24px;
   padding-bottom: 14px;
-  border-bottom: 1px solid rgba(126, 124, 42, 0.08);
+  border-bottom: 1px solid rgb(var(--olive-rgb) / 0.08);
   letter-spacing: 1.5px;
   text-transform: uppercase;
 `;
 
 export const FilterSection = styled.div`
   margin-bottom: 24px;
-  border-bottom: 1px solid rgba(126, 124, 42, 0.06);
+  border-bottom: 1px solid rgb(var(--olive-rgb) / 0.06);
   padding-bottom: 24px;
 
   &:last-child {
@@ -194,14 +189,14 @@ export const FilterSectionHeader = styled.button`
 export const FilterSectionTitle = styled.span`
   font-size: 11px;
   font-weight: 800;
-  color: #7e7c2a;
+  color: var(--olive);
   text-transform: uppercase;
   letter-spacing: 1.2px;
 `;
 
 export const FilterChevron = styled.span<{ $open: boolean }>`
   font-size: 14px;
-  color: #7e7c2a;
+  color: var(--olive);
   transform: ${({ $open }) => ($open ? "rotate(180deg)" : "rotate(0deg)")};
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
@@ -233,8 +228,8 @@ export const CheckboxLabel = styled.label`
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   background: #ffffff;
-  border: 1px solid rgba(126, 124, 42, 0.1);
-  color: #5f320fff;
+  border: 1px solid rgb(var(--olive-rgb) / 0.1);
+  color: var(--earth);
 
   /* Hide default checkbox */
   input[type="checkbox"] {
@@ -247,23 +242,23 @@ export const CheckboxLabel = styled.label`
   }
 
   &:hover {
-    background: #fbfbf9;
-    border-color: rgba(126, 124, 42, 0.3);
-    color: #7e7c2a;
+    background: var(--surface);
+    border-color: rgb(var(--olive-rgb) / 0.3);
+    color: var(--olive);
     transform: translateY(-1px);
   }
 
   /* Target label containing checked input */
   &:has(input:checked) {
-    background: #7e7c2a;
-    border-color: #7e7c2a;
+    background: var(--olive);
+    border-color: var(--olive);
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(126, 124, 42, 0.15);
+    box-shadow: 0 4px 12px rgb(var(--olive-rgb) / 0.15);
   }
 
   &:has(input:checked):hover {
-    background: #6c6a23;
-    border-color: #6c6a23;
+    background: var(--olive-600);
+    border-color: var(--olive-600);
   }
 `;
 
@@ -279,10 +274,10 @@ export const RangeSlider = styled.input`
   height: 4px;
   background: linear-gradient(
     to right,
-    #7e7c2a 0%,
-    #7e7c2a var(--val),
-    #e8e6df var(--val),
-    #e8e6df 100%
+    var(--olive) 0%,
+    var(--olive) var(--val),
+    var(--paper) var(--val),
+    var(--paper) 100%
   );
   border-radius: 10px;
   outline: none;
@@ -295,15 +290,15 @@ export const RangeSlider = styled.input`
     height: 16px;
     border-radius: 50%;
     background: #ffffff;
-    border: 2.5px solid #7e7c2a;
-    box-shadow: 0 3px 8px rgba(126, 124, 42, 0.2);
+    border: 2.5px solid var(--olive);
+    box-shadow: 0 3px 8px rgb(var(--olive-rgb) / 0.2);
     cursor: pointer;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 
     &:hover {
       transform: scale(1.25);
-      background: #7e7c2a;
-      box-shadow: 0 4px 12px rgba(126, 124, 42, 0.35);
+      background: var(--olive);
+      box-shadow: 0 4px 12px rgb(var(--olive-rgb) / 0.35);
     }
   }
 `;
@@ -312,7 +307,7 @@ export const PriceValues = styled.div`
   display: flex;
   justify-content: space-between;
   font-size: 12.5px;
-  color: #7e7c2a;
+  color: var(--olive);
   font-weight: 700;
 `;
 
@@ -339,10 +334,10 @@ export const ResultsCount = styled.span`
 
 export const SortSelect = styled.select`
   padding: 10px 40px 10px 16px;
-  border: 1px solid rgba(126, 124, 42, 0.15);
+  border: 1px solid rgb(var(--olive-rgb) / 0.15);
   border-radius: 10px;
   background: #ffffff;
-  color: #5f320fff;
+  color: var(--earth);
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -353,12 +348,12 @@ export const SortSelect = styled.select`
   background-position: right 14px center;
   font-family: inherit;
   transition: all 0.25s ease;
-  box-shadow: 0 2px 8px rgba(42, 36, 30, 0.02);
+  box-shadow: 0 2px 8px rgb(29 33 22 / 0.02);
 
   &:focus,
   &:hover {
-    border-color: #7e7c2a;
-    box-shadow: 0 4px 12px rgba(126, 124, 42, 0.08);
+    border-color: var(--olive);
+    box-shadow: 0 4px 12px rgb(var(--olive-rgb) / 0.08);
   }
 `;
 
@@ -378,130 +373,18 @@ export const ProductGrid = styled.div`
   }
 `;
 
-export const CardWrapper = styled.div`
-  background: #ffffff;
-  border: 1px solid rgba(126, 124, 42, 0.08);
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  cursor: pointer;
-  position: relative;
-  box-shadow: 0 4px 20px rgba(42, 36, 30, 0.02);
-  animation: ${fadeIn} 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 24px 50px rgba(42, 36, 30, 0.09);
-    border-color: rgba(126, 124, 42, 0.25);
-  }
-`;
-
-export const CardBadge = styled.span<{ $type: string }>`
-  position: absolute;
-  top: 14px;
-  left: 14px;
-  z-index: 2;
-  font-size: 10.5px;
-  font-weight: 800;
-  letter-spacing: 0.8px;
-  text-transform: uppercase;
-  padding: 5px 12px;
-  border-radius: 100px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-
-  ${({ $type }) =>
-    $type === "Bestseller" &&
-    css`
-      background: #3a2f25;
-      color: #ecf3d4;
-    `}
-  ${({ $type }) =>
-    $type === "New" &&
-    css`
-      background: #7e7c2a;
-      color: #ffffff;
-    `}
-  ${({ $type }) =>
-    $type === "Sale" &&
-    css`
-      background: #c0392b;
-      color: #ffffff;
-    `}
-`;
-
-export const CardImageContainer = styled.div`
-  width: 100%;
-  aspect-ratio: 1.05 / 1;
-  background: #fbfbfa;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(126, 124, 42, 0.04);
-  transition: background 0.3s ease;
-
-  ${CardWrapper}:hover & {
-    background: #f6f8ef;
-  }
-`;
-
-export const CardBody = styled.div`
-  padding: 20px 22px 24px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-`;
-
-export const ProductName = styled.h3`
-  font-size: 16px;
-  font-weight: 800;
-  color: #2a241e;
-  margin-bottom: 8px;
-  line-height: 1.4;
-  letter-spacing: -0.2px;
-  transition: color 0.2s ease;
-
-  ${CardWrapper}:hover & {
-    color: #7e7c2a;
-  }
-`;
-
-export const ProductDesc = styled.p`
-  font-size: 13px;
-  color: #6f8b5b;
-  line-height: 1.5;
-  margin-bottom: 16px;
-  flex-grow: 1;
-`;
-
-export const TagRow = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 16px;
-`;
 
 export const Tag = styled.span`
   font-size: 11px;
   font-weight: 700;
-  color: #7e7c2a;
-  background: rgba(126, 124, 42, 0.06);
-  border: 1px solid rgba(126, 124, 42, 0.1);
+  color: var(--olive);
+  background: rgb(var(--olive-rgb) / 0.06);
+  border: 1px solid rgb(var(--olive-rgb) / 0.1);
   border-radius: 100px;
   padding: 4px 10px;
   letter-spacing: 0.2px;
 `;
 
-export const RatingRow = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 16px;
-`;
 
 export const Stars = styled.div`
   display: flex;
@@ -510,73 +393,29 @@ export const Stars = styled.div`
   font-size: 14px;
 `;
 
-export const ReviewCount = styled.span`
-  font-size: 12px;
-  color: #a7a48a;
-  font-weight: 500;
-`;
 
-export const PriceRow = styled.div`
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 18px;
-`;
 
 export const Price = styled.span`
   font-size: 19px;
   font-weight: 800;
-  color: #3a2f25;
+  color: var(--ink);
 `;
 
-export const OriginalPrice = styled.span`
-  font-size: 13.5px;
-  color: #b5b09e;
-  text-decoration: line-through;
-  font-weight: 500;
-`;
 
-export const AddToCartBtn = styled.button`
-  width: 100%;
-  padding: 12px;
-  background: transparent;
-  border: 2px solid #7e7c2a;
-  border-radius: 10px;
-  color: #7e7c2a;
-  font-size: 13.5px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  font-family: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-
-  &:hover {
-    background: #7e7c2a;
-    color: #ffffff;
-    box-shadow: 0 8px 16px rgba(126, 124, 42, 0.15);
-  }
-
-  &:active {
-    transform: scale(0.97);
-  }
-`;
 
 export const EmptyState = styled.div`
   text-align: center;
   padding: 96px 24px;
   color: #6f8b5b;
   background: #fcfbfa;
-  border: 1px dashed rgba(126, 124, 42, 0.15);
+  border: 1px dashed rgb(var(--olive-rgb) / 0.15);
   border-radius: 20px;
 
   h3 {
     font-size: 20px;
     font-weight: 700;
     margin-bottom: 10px;
-    color: #2a241e;
+    color: var(--ink);
   }
   p {
     font-size: 14.5px;
@@ -595,9 +434,9 @@ export const PageBtn = styled.button<{ $active?: boolean; $arrow?: boolean }>`
   height: 40px;
   border-radius: 10px;
   border: 1.5px solid
-    ${({ $active }) => ($active ? "#7e7c2a" : "rgba(126, 124, 42, 0.12)")};
-  background: ${({ $active }) => ($active ? "#7e7c2a" : "#ffffff")};
-  color: ${({ $active }) => ($active ? "#ffffff" : "#3a2f25")};
+    ${({ $active }) => ($active ? "var(--olive)" : "rgb(var(--olive-rgb) / 0.12)")};
+  background: ${({ $active }) => ($active ? "var(--olive)" : "#ffffff")};
+  color: ${({ $active }) => ($active ? "#ffffff" : "var(--ink)")};
   font-size: 14px;
   font-weight: ${({ $active }) => ($active ? "700" : "600")};
   cursor: pointer;
@@ -607,13 +446,13 @@ export const PageBtn = styled.button<{ $active?: boolean; $arrow?: boolean }>`
   padding: 0 12px;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   font-family: inherit;
-  box-shadow: 0 2px 6px rgba(42, 36, 30, 0.01);
+  box-shadow: 0 2px 6px rgb(29 33 22 / 0.01);
 
   &:hover:not(:disabled) {
-    border-color: #7e7d2a2b;
+    border-color: rgb(var(--olive-rgb) / 0.17);
     background: ${({ $active }) =>
-      $active ? "#7e7c2a" : "rgba(126, 124, 42, 0.05)"};
-    color: ${({ $active }) => ($active ? "#ffffff" : "#7e7c2a")};
+      $active ? "var(--olive)" : "rgb(var(--olive-rgb) / 0.05)"};
+    color: ${({ $active }) => ($active ? "#ffffff" : "var(--olive)")};
   }
 
   &:disabled {
@@ -627,27 +466,27 @@ export const MobileFilterToggle = styled.button`
   justify-content: center;
   gap: 10px;
   background: #ffffff;
-  border: 1.5px solid rgba(126, 124, 42, 0.15);
+  border: 1.5px solid rgb(var(--olive-rgb) / 0.15);
   border-radius: 10px;
   padding: 12px 24px;
   font-size: 14px;
   font-weight: 700;
-  color: #5f320fff;
+  color: var(--earth);
   cursor: pointer;
   transition: all 0.25s ease;
   font-family: inherit;
   margin-bottom: 24px;
   width: 100%;
-  box-shadow: 0 2px 8px rgba(42, 36, 30, 0.02);
+  box-shadow: 0 2px 8px rgb(29 33 22 / 0.02);
 
   svg {
     font-size: 16px;
   }
 
   &:hover {
-    border-color: #7e7c2a;
-    color: #7e7c2a;
-    background: rgba(126, 124, 42, 0.02);
+    border-color: var(--olive);
+    color: var(--olive);
+    background: rgb(var(--olive-rgb) / 0.02);
   }
 
   @media (max-width: 1024px) {
@@ -659,7 +498,7 @@ export const MobileFilterToggle = styled.button`
 export const FilterDrawerOverlay = styled.div`
   position: fixed;
   inset: 0;
-  background: rgba(42, 36, 30, 0.4);
+  background: rgb(29 33 22 / 0.4);
   backdrop-filter: blur(4px);
   z-index: 300;
   display: none;
@@ -680,8 +519,8 @@ export const FilterDrawer = styled.aside`
   z-index: 301;
   padding: 32px 28px;
   overflow-y: auto;
-  box-shadow: 8px 0 36px rgba(42, 36, 30, 0.12);
-  border-right: 1px solid rgba(126, 124, 42, 0.1);
+  box-shadow: 8px 0 36px rgb(29 33 22 / 0.12);
+  border-right: 1px solid rgb(var(--olive-rgb) / 0.1);
   display: flex;
   flex-direction: column;
 
@@ -701,7 +540,7 @@ export const FilterDrawerHeader = styled.div`
 
 export const FilterDrawerClose = styled.button`
   background: none;
-  border: 1px solid rgba(126, 124, 42, 0.15);
+  border: 1px solid rgb(var(--olive-rgb) / 0.15);
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -709,14 +548,14 @@ export const FilterDrawerClose = styled.button`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #3a2f25;
+  color: var(--ink);
   font-size: 18px;
   transition: all 0.25s ease;
 
   &:hover {
-    border-color: #7e7c2a;
-    color: #7e7c2a;
-    background: rgba(126, 124, 42, 0.05);
+    border-color: var(--olive);
+    color: var(--olive);
+    background: rgb(var(--olive-rgb) / 0.05);
     transform: rotate(90deg);
   }
 `;

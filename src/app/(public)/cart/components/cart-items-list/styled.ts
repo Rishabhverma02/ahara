@@ -16,14 +16,14 @@ export const CartItemCard = styled.div`
   grid-template-columns: auto 1fr auto;
   gap: 24px;
   align-items: center;
-  border: 1px solid rgba(126, 124, 42, 0.08);
-  box-shadow: 0 6px 20px rgba(42, 36, 30, 0.02);
+  border: 1px solid rgb(var(--olive-rgb) / 0.08);
+  box-shadow: 0 6px 20px rgb(29 33 22 / 0.02);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(126, 124, 42, 0.06);
-    border-color: rgba(126, 124, 42, 0.15);
+    box-shadow: 0 10px 25px rgb(var(--olive-rgb) / 0.06);
+    border-color: rgb(var(--olive-rgb) / 0.15);
   }
 
   @media (max-width: 600px) {
@@ -36,11 +36,11 @@ export const CartItemCard = styled.div`
 export const ItemImageWrapper = styled.div`
   width: 120px;
   height: 120px;
-  background: #f6f8ef;
+  background: var(--paper);
   border-radius: 10px;
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(126, 124, 42, 0.05);
+  border: 1px solid rgb(var(--olive-rgb) / 0.05);
 
   img {
     object-fit: cover;
@@ -60,7 +60,7 @@ export const ItemDetails = styled.div`
 export const ItemName = styled.h3`
   font-size: 18px;
   font-weight: 700;
-  color: #5f320fff;
+  color: var(--ink);
   margin: 0;
 
   a {
@@ -68,7 +68,7 @@ export const ItemName = styled.h3`
     text-decoration: none;
     transition: color 0.2s;
     &:hover {
-      color: #7e7c2a;
+      color: var(--olive);
     }
   }
 `;
@@ -76,7 +76,7 @@ export const ItemName = styled.h3`
 export const ItemVariant = styled.span`
   font-size: 12px;
   font-weight: 600;
-  color: #a7a48a;
+  color: var(--muted-2);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -101,7 +101,7 @@ export const RemoveButton = styled.button`
   background: none;
   border: none;
   font-size: 13px;
-  color: #c0392b;
+  color: var(--danger);
   font-weight: 700;
   cursor: pointer;
   display: flex;
@@ -109,7 +109,7 @@ export const RemoveButton = styled.button`
   gap: 4px;
   transition: all 0.2s;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
 
   &:hover {
     background: rgba(192, 57, 43, 0.08);
@@ -131,13 +131,13 @@ export const PriceAndQtyWrapper = styled.div`
 
 export const ItemPrice = styled.span`
   font-size: 20px;
-  font-weight: 800;
-  color: #5f320fff;
+  font-weight: 600;
+  color: var(--ink);
 `;
 
 export const PriceEachLabel = styled.span`
   font-size: 12px;
-  color: #a7a48a;
+  color: var(--muted-2);
   font-weight: 600;
 `;
 
@@ -146,7 +146,7 @@ export const ContinueShoppingLink = styled(Link)`
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: #7e7c2a;
+  color: var(--olive);
   font-weight: 700;
   font-size: 14px;
   margin-top: 10px;

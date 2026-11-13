@@ -100,7 +100,7 @@ export const InteractiveCharacter: React.FC = () => {
 
           // 3. TRUST BAR -> BEST SELLERS (Scroll 15% to 35%):
           // Detach from rope! Rope retracts back up.
-          // Switch pose: open parachute (parachute.png) and drift left!
+          // Switch pose: open parachute (parachute.webp) and drift left!
           .to(rope, { y: 0, duration: 1 }, "+=0.1")
           // Set pose to Parachute
           .set(p1, { autoAlpha: 0 }, "<")
@@ -232,7 +232,7 @@ export const InteractiveCharacter: React.FC = () => {
       {/* Retractable Hanging Rope (custom watercolor rope image) */}
       <RopeImage
         ref={ropeRef}
-        src="/images/character/png/rope.png"
+        src="/images/character/png/rope.webp"
         alt="Rope"
       />
 
@@ -241,49 +241,49 @@ export const InteractiveCharacter: React.FC = () => {
         {/* Pose 1: Holding rope / waving (front) */}
         <CharacterImage
           ref={ch1Ref}
-          src="/images/character/png/ch1.png"
+          src="/images/character/png/ch1.webp"
           alt="Ahara Character Front"
         />
 
         {/* Pose 2: Gliding with parachute */}
         <CharacterImage
           ref={parachuteRef}
-          src="/images/character/png/parachute.png"
+          src="/images/character/png/parachute.webp"
           alt="Ahara Character Parachute"
         />
 
         {/* Pose 3: Three-fourths profile stand (facing left) */}
         <CharacterImage
           ref={threeforthRef}
-          src="/images/character/png/ch-threeforth.png"
+          src="/images/character/png/ch-threeforth.webp"
           alt="Ahara Character Three-Fourths"
         />
 
         {/* Pose 4: Three-fourths profile opposite stand (facing right) */}
         <CharacterImage
           ref={threeforthOppRef}
-          src="/images/character/png/ch-threeforth - opp.png"
+          src="/images/character/png/ch-threeforth - opp.webp"
           alt="Ahara Character Three-Fourths Opp"
         />
 
         {/* Pose 5: Left side profile stand (facing left) */}
         <CharacterImage
           ref={lSideRef}
-          src="/images/character/png/ch-l-side.png"
+          src="/images/character/png/ch-l-side.webp"
           alt="Ahara Character Left Side"
         />
 
         {/* Pose 6: Right side profile stand (facing right) */}
         <CharacterImage
           ref={rSideRef}
-          src="/images/character/png/ch-r-side.png"
+          src="/images/character/png/ch-r-side.webp"
           alt="Ahara Character Right Side"
         />
 
         {/* Pose 7: Back profile stand */}
         <CharacterImage
           ref={backRef}
-          src="/images/character/png/ch-back.png"
+          src="/images/character/png/ch-back.webp"
           alt="Ahara Character Back"
         />
       </CharacterWrapper>

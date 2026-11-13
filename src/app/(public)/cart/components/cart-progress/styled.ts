@@ -1,10 +1,10 @@
 import styled, { keyframes } from "styled-components";
 
 export const ShippingProgressContainer = styled.div`
-  background: #fdfaf5;
+  background: var(--surface);
   border-radius: 10px;
   padding: 16px 20px;
-  border: 1px solid rgba(126, 124, 42, 0.12);
+  border: 1px solid rgb(var(--olive-rgb) / 0.12);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -14,18 +14,18 @@ export const ShippingProgressContainer = styled.div`
 export const ShippingProgressText = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: #3a2f25;
+  color: var(--ink);
   display: flex;
   align-items: center;
   gap: 8px;
 
   span {
     font-weight: 700;
-    color: #7e7c2a;
+    color: var(--olive);
   }
 
   svg {
-    color: #7e7c2a;
+    color: var(--olive);
     font-size: 16px;
   }
 `;
@@ -33,7 +33,7 @@ export const ShippingProgressText = styled.div`
 export const ProgressBarWrapper = styled.div`
   width: 100%;
   height: 4px;
-  background: #e8e6df;
+  background: var(--paper);
   border-radius: 2px;
   position: relative;
   margin: 64px 0 16px 0;
@@ -45,7 +45,7 @@ export const ProgressBarFill = styled.div<{ $percent: number }>`
     const pct = Math.min(100, $percent);
     return `calc(${pct}% + ${1.105 * (100 - pct)}px)`;
   }};
-  background: #7e7c2a;
+  background: var(--olive);
   border-radius: 2px;
   transition: width 3s cubic-bezier(0.22, 1, 0.36, 1);
   position: absolute;
@@ -61,11 +61,11 @@ export const RewardCheckpoint = styled.div<{ $percent: number }>`
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: ${({ $percent }) => ($percent >= 50 ? "#7e7c2a" : "#e8e6df")};
-  border: 2px solid #fdfaf5;
+  background: ${({ $percent }) => ($percent >= 50 ? "var(--olive)" : "var(--paper)")};
+  border: 2px solid var(--surface);
   box-shadow: 0 0 0 2px
     ${({ $percent }) =>
-      $percent >= 50 ? "rgba(126, 124, 42, 0.4)" : "rgba(232, 230, 223, 0.4)"};
+      $percent >= 50 ? "rgb(var(--olive-rgb) / 0.4)" : "rgba(232, 230, 223, 0.4)"};
   z-index: 5;
   transition: all 0.5s ease;
 
@@ -96,16 +96,16 @@ const firePulse = keyframes`
   }
 `;
 
-export const FireRewardPopup = styled.div`
+export const FireRewardPopup = styled.button`
   position: absolute;
   top: -52px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
-  color: #ffffff;
+  background: var(--saffron);
+  color: var(--forest);
   padding: 8px 14px;
   border-radius: 30px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
   display: flex;

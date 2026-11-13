@@ -18,7 +18,7 @@ export const StickySummaryCard = styled.div`
   -webkit-backdrop-filter: blur(20px);
   border-radius: 20px;
   padding: 32px;
-  border: 2px solid rgba(126, 124, 42, 0.1);
+  border: 2px solid rgb(var(--olive-rgb) / 0.1);
   box-shadow: 0 20px 40px -15px rgba(58, 47, 37, 0.05),
               0 0 0 1px rgba(255, 255, 255, 0.5) inset;
   display: flex;
@@ -28,11 +28,13 @@ export const StickySummaryCard = styled.div`
 `;
 
 export const SummarySectionTitle = styled.h3`
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 36;
   font-size: 16px;
-  font-weight: 800;
-  color: #5f320fff;
+  font-weight: 500;
+  color: var(--ink);
   margin: 0;
-  border-bottom: 1.5px solid #fdfaf5;
+  border-bottom: 1.5px solid var(--surface);
   padding-bottom: 12px;
   display: flex;
   justify-content: space-between;
@@ -41,8 +43,8 @@ export const SummarySectionTitle = styled.h3`
   span.item-count {
     font-size: 11px;
     font-weight: 700;
-    color: #7e7c2a;
-    background: rgba(126, 124, 42, 0.08);
+    color: var(--olive);
+    background: rgb(var(--olive-rgb) / 0.08);
     padding: 2px 8px;
     border-radius: 10px;
   }
@@ -68,7 +70,7 @@ export const MiniItemRow = styled.div`
   align-items: center;
   gap: 16px;
   padding-bottom: 14px;
-  border-bottom: 1px dashed rgba(126, 124, 42, 0.12);
+  border-bottom: 1px dashed rgb(var(--olive-rgb) / 0.12);
 
   &:last-child {
     border-bottom: none;
@@ -91,20 +93,20 @@ export const MiniItemImageInner = styled.div`
 export const MiniItemImage = styled.div`
   width: 48px;
   height: 48px;
-  background: #fdfaf5;
+  background: var(--surface);
   border-radius: 8px;
   position: relative;
-  border: 1px solid rgba(126, 124, 42, 0.06);
+  border: 1px solid rgb(var(--olive-rgb) / 0.06);
   flex-shrink: 0;
 
   span.badge {
     position: absolute;
     top: -6px;
     right: -6px;
-    background: #7e7c2a;
+    background: var(--olive);
     color: #ffffff;
     font-size: 10px;
-    font-weight: 800;
+    font-weight: 600;
     width: 18px;
     height: 18px;
     border-radius: 50%;
@@ -127,7 +129,7 @@ export const MiniItemDetails = styled.div`
   span.name {
     font-size: 13px;
     font-weight: 700;
-    color: #48260bff;
+    color: var(--ink);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -135,7 +137,7 @@ export const MiniItemDetails = styled.div`
 
   span.variant {
     font-size: 10px;
-    color: #a7a48a;
+    color: var(--muted-2);
     font-weight: 600;
     text-transform: uppercase;
   }
@@ -143,15 +145,15 @@ export const MiniItemDetails = styled.div`
 
 export const MiniItemPrice = styled.div`
   font-size: 13px;
-  font-weight: 800;
-  color: #5f320fff;
+  font-weight: 600;
+  color: var(--ink);
   text-align: right;
 `;
 
 export const FieldLabel = styled.label`
   font-size: 11px;
   font-weight: 700;
-  color: #8a8775;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 `;
@@ -167,28 +169,28 @@ export const FormInput = styled.input`
   width: 100%;
   padding: 14px 16px;
   background: rgba(255, 255, 255, 0.6);
-  border: 1.5px solid rgba(126, 124, 42, 0.12);
+  border: 1.5px solid rgb(var(--olive-rgb) / 0.12);
   border-radius: 12px;
   font-size: 13px;
-  color: #2a241e;
+  color: var(--ink);
   font-weight: 600;
   outline: none;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 
   &::placeholder {
-    color: #a7a48a;
+    color: var(--muted-2);
     font-weight: 500;
   }
 
   &:hover {
-    border-color: rgba(126, 124, 42, 0.3);
+    border-color: rgb(var(--olive-rgb) / 0.3);
     background: rgba(255, 255, 255, 0.9);
   }
 
   &:focus {
-    border-color: #7e7c2a;
+    border-color: var(--olive);
     background: #ffffff;
-    box-shadow: 0 0 0 4px rgba(126, 124, 42, 0.1);
+    box-shadow: 0 0 0 4px rgb(var(--olive-rgb) / 0.1);
   }
 `;
 
@@ -196,14 +198,12 @@ export const ActionButton = styled.button`
   width: 100%;
   max-width: 300px;
   height: 60px;
-  border: 1.5px solid #7e7c2a;
-  border-radius: 12px;
-  background: #5f320fff;
+  border: 1.5px solid var(--olive);
+  border-radius: var(--radius-sm);
+  background: var(--olive);
   color: #ffffff;
   font-size: 14px;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 8px 20px rgba(27, 22, 18, 0.1);
@@ -216,10 +216,10 @@ export const ActionButton = styled.button`
   overflow: hidden;
 
   &:hover {
-    background: #7e7c2a;
-    border-color: #7e7c2a;
+    background: var(--olive);
+    border-color: var(--olive);
     color: #ffffff;
-    box-shadow: 0 12px 25px rgba(126, 124, 42, 0.2);
+    box-shadow: 0 12px 25px rgb(var(--olive-rgb) / 0.2);
   }
 
   &:active {
@@ -237,21 +237,21 @@ export const ActivePromoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f0f4ed;
+  background: var(--paper);
   border: 1px solid rgba(73, 106, 53, 0.2);
   border-radius: 10px;
   padding: 8px 16px;
 
   span {
     font-size: 12px;
-    color: #496a35;
+    color: var(--success);
     font-weight: 700;
   }
 
   button {
     background: none;
     border: none;
-    color: #c0392b;
+    color: var(--danger);
     font-size: 11px;
     font-weight: 700;
     cursor: pointer;
@@ -274,12 +274,12 @@ export const PromoButton = styled(ActionButton)`
   padding: 0 16px;
   height: 38px;
   font-size: 11px;
-  border-radius: 10px;
+  border-radius: var(--radius-sm);
 `;
 
 export const PromoErrorText = styled.span`
   font-size: 11px;
-  color: #c0392b;
+  color: var(--danger);
   font-weight: 600;
 `;
 
@@ -290,8 +290,8 @@ export const CostsSection = styled.div`
 `;
 
 export const FreeText = styled.span`
-  color: #496a35;
-  font-weight: 800;
+  color: var(--success);
+  font-weight: 600;
 `;
 
 export const CostSummaryRow = styled.div<{
@@ -304,13 +304,13 @@ export const CostSummaryRow = styled.div<{
   font-size: ${({ $isTotal }) => ($isTotal ? "16px" : "13px")};
   font-weight: ${({ $isTotal }) => ($isTotal ? "800" : "600")};
   color: ${({ $isTotal, $isDiscount }) =>
-    $isTotal ? "#5f320fff" : $isDiscount ? "#496a35" : "#6c6959"};
+    $isTotal ? "var(--earth)" : $isDiscount ? "var(--success)" : "var(--muted)"};
 
   span.value {
     font-size: ${({ $isTotal }) => ($isTotal ? "22px" : "14px")};
-    font-weight: 800;
+    font-weight: 600;
     color: ${({ $isTotal, $isDiscount }) =>
-      $isTotal ? "#7e7c2a" : $isDiscount ? "#496a35" : "#48260bff"};
+      $isTotal ? "var(--olive)" : $isDiscount ? "var(--success)" : "var(--earth-700)"};
   }
 `;
 
@@ -319,7 +319,7 @@ export const TrustBadgeWrapper = styled.div`
   flex-direction: column;
   gap: 12px;
   padding-top: 16px;
-  border-top: 1px solid #fdfaf5;
+  border-top: 1px solid var(--surface);
 `;
 
 export const TrustBadge = styled.div`
@@ -328,12 +328,12 @@ export const TrustBadge = styled.div`
   gap: 10px;
   font-size: 11px;
   font-weight: 700;
-  color: #8a8775;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
   svg {
-    color: #7e7c2a;
+    color: var(--olive);
     font-size: 26px;
   }
 `;

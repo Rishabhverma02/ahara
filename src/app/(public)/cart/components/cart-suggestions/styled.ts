@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SuggestionsSection = styled.div`
   width: 100%;
-  border-top: 1.5px solid #f0efe8;
+  border-top: 1.5px solid var(--paper);
   padding-top: 56px;
   margin-top: 40px;
   display: flex;
@@ -11,9 +11,11 @@ export const SuggestionsSection = styled.div`
 `;
 
 export const SectionTitle = styled.h2`
+  font-family: var(--font-display);
+  font-variation-settings: "opsz" 36;
   font-size: 28px;
-  font-weight: 800;
-  color: #5f320fff;
+  font-weight: 500;
+  color: var(--ink);
   margin: 0;
   letter-spacing: -0.6px;
 `;

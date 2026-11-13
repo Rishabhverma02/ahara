@@ -2,9 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Ticket } from "lucide-react";
-import LockTwoToneIcon from "@mui/icons-material/LockTwoTone";
-import GppGoodTwoToneIcon from "@mui/icons-material/GppGoodTwoTone";
+import { Lock, ShieldCheck, Ticket } from "lucide-react";
 import { useCheckout } from "../../useCheckout";
 import {
   SummaryColumn,
@@ -50,7 +48,7 @@ export const OrderSummary = () => {
     <SummaryColumn>
       <StickySummaryCard>
         <SummarySectionTitle>
-          <span>Order Summary</span>
+          <span>Order summary</span>
           <span className="item-count">{items.length} items</span>
         </SummarySectionTitle>
 
@@ -158,11 +156,11 @@ export const OrderSummary = () => {
         {/* Trust and secure badges */}
         <TrustBadgeWrapper>
           <TrustBadge>
-            <LockTwoToneIcon />
-            Secure 256-Bit SSL Connection
+            <Lock aria-hidden />
+            Encrypted, secure payment
           </TrustBadge>
           <TrustBadge>
-            <GppGoodTwoToneIcon />
+            <ShieldCheck aria-hidden />
             Guaranteed Wellness Quality
           </TrustBadge>
         </TrustBadgeWrapper>

@@ -2,17 +2,21 @@
 
 import React, { createContext, useContext, useState } from "react";
 import { useCart } from "@/src/hooks/useCart";
+import { playClick } from "@/src/lib/sound";
+import {
+  COD_FEE,
+  EXPRESS_SHIPPING_CHARGE,
+  FREE_SHIPPING_THRESHOLD,
+  STANDARD_SHIPPING_CHARGE,
+  parsePromo,
+  promoDiscount,
+  qualifiesForFreeShipping,
+} from "@/src/lib/pricing";
 
-// Shipping constants
-export const STANDARD_SHIPPING_CHARGE = 60;
-export const EXPRESS_SHIPPING_CHARGE = 120;
-export const FREE_SHIPPING_THRESHOLD = 999;
+export { EXPRESS_SHIPPING_CHARGE, FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING_CHARGE };
 
 function useCheckoutState() {
-  const playClickSound = () => {
-    const audio = new Audio("/audio/click.mp3");
-    audio.play().catch((err) => console.log("Audio play failed:", err));
-  };
+  const playClickSound = playClick;
 
   const {
     items,
@@ -76,8 +80,7 @@ function useCheckoutState() {
   // Form Validation Errors
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const isFreeShipping =
-    cartTotal >= FREE_SHIPPING_THRESHOLD || appliedPromo === "FREESHIP";
+  const isFreeShipping = qualifiesForFreeShipping(cartTotal, appliedPromo);
 
   const activeShippingCharge =
     deliveryMode === "pickup"
@@ -88,10 +91,9 @@ function useCheckoutState() {
           ? 0
           : STANDARD_SHIPPING_CHARGE;
 
-  const discountAmount =
-    appliedPromo === "AHARA10" ? Math.round(cartTotal * 0.1) : 0;
+  const discountAmount = promoDiscount(cartTotal, appliedPromo);
 
-  const codFee = paymentMethod === "cod" ? 40 : 0;
+  const codFee = paymentMethod === "cod" ? COD_FEE : 0;
   const finalTotal = cartTotal + activeShippingCharge - discountAmount + codFee;
 
   const validateStep1 = () => {
@@ -166,16 +168,12 @@ function useCheckoutState() {
   const handleApplyPromo = () => {
     playClickSound();
     setPromoError("");
-    const code = promoCode.trim().toUpperCase();
-
-    if (code === "AHARA10") {
-      setAppliedPromo("AHARA10");
-      setPromoCode("");
-    } else if (code === "FREESHIP") {
-      setAppliedPromo("FREESHIP");
+    const code = parsePromo(promoCode);
+    if (code) {
+      setAppliedPromo(code);
       setPromoCode("");
     } else {
-      setPromoError("Invalid promo code. Try 'AHARA10' or 'FREESHIP'.");
+      setPromoError("That code isn't valid. Check the spelling and try again.");
     }
   };
 

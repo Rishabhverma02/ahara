@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Check } from "lucide-react";
+import { Mascot } from "@/src/components/ui";
 import {
   ConfirmationCard,
   SuccessIconWrapper,
@@ -31,15 +31,15 @@ export const OrderConfirmation = () => {
   return (
     <ConfirmationCard>
       <SuccessIconWrapper>
-        <Check size={32} strokeWidth={3} />
+        <Mascot pose="front" width={110} motion="bob" alt="Kairo waving" />
       </SuccessIconWrapper>
 
       <ConfirmationTitle>
-        Order Placed Successfully!
+        Thank you — your order is in.
       </ConfirmationTitle>
       
       <ConfirmationMessage>
-        Thank you for choosing AHARA. Your order has been registered and is
+        Thank you for choosing Ahara. Your order has been registered and is
         being processed. A confirmation has been sent to{" "}
         <strong>{email}</strong>.
       </ConfirmationMessage>

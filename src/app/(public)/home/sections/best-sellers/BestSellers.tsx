@@ -1,132 +1,99 @@
 "use client";
 
-import React from 'react';
-import { 
-  BestSellersWrapper, 
-  BestSellersContainer, 
-  SectionHeader, 
-  ShopAllLink, 
-  ProductGrid,
-  SlideWrapper,
-  DotsContainer,
-  Dot
-} from './styled';
-import { HiArrowRight } from 'react-icons/hi';
-import { SectionHeading, BestSellerCard } from '@/src/components';
-import { products } from './data/bestProducts';
+import styled from "styled-components";
+import { ArrowRight } from "lucide-react";
+import { ButtonLink, ProductCard, SectionHeading } from "@/src/components/ui";
+import { BEST_SELLERS } from "@/src/data/products";
+import { useInView } from "@/src/hooks/useInView";
+import { useSnapCarousel } from "@/src/hooks/useSnapCarousel";
+import { container, mq, reveal, sectionY } from "@/src/theme";
+import { Dots } from "../shared";
 
 export const BestSellers = () => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [activeIndex, setActiveIndex] = React.useState(0);
-  const sectionRef = React.useRef<HTMLDivElement>(null);
-  const gridRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    const currentElement = sectionRef.current;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          if (currentElement) {
-            observer.unobserve(currentElement);
-          }
-        }
-      },
-      {
-        threshold: 0.1, 
-      }
-    );
-
-    if (currentElement) {
-      observer.observe(currentElement);
-    }
-
-    return () => {
-      if (currentElement) {
-        observer.unobserve(currentElement);
-      }
-    };
-  }, []);
-
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const handleAutoSwipe = () => {
-      if (window.innerWidth > 768) return;
-
-      setActiveIndex((prevIndex) => {
-        const nextIndex = (prevIndex + 1) % products.length;
-        if (gridRef.current) {
-          const cardWidth = gridRef.current.clientWidth;
-          gridRef.current.scrollTo({
-            left: nextIndex * cardWidth,
-            behavior: "smooth",
-          });
-        }
-        return nextIndex;
-      });
-    };
-
-    const interval = setInterval(handleAutoSwipe, 3000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleScroll = () => {
-    if (gridRef.current) {
-      const cardWidth = gridRef.current.clientWidth;
-      if (cardWidth > 0) {
-        const newIndex = Math.round(gridRef.current.scrollLeft / cardWidth);
-        setActiveIndex(newIndex);
-      }
-    }
-  };
+  const { ref, inView } = useInView<HTMLElement>();
+  const { ref: rowRef, index, goTo } = useSnapCarousel(BEST_SELLERS.length);
 
   return (
-    <BestSellersWrapper>
-      <BestSellersContainer ref={sectionRef}>
-        <SectionHeader $animate={isVisible}>
-          <SectionHeading
-            title="Best Sellers"
-            subHeading="Curated Favorites"
-            align="left"
-          />
-          <ShopAllLink href="/shop">
-            Shop All <HiArrowRight size={20} />
-          </ShopAllLink>
-        </SectionHeader>
+    <Section ref={ref} aria-labelledby="bestsellers-title">
+      <Head $in={inView}>
+        <SectionHeading
+          eyebrow="01 — Best sellers"
+          title={
+            <span id="bestsellers-title">
+              Pantry favourites, <em>by popular demand.</em>
+            </span>
+          }
+        />
+        <ButtonLink href="/shop" $variant="outline">
+          Shop all <ArrowRight aria-hidden />
+        </ButtonLink>
+      </Head>
 
-        <ProductGrid ref={gridRef} onScroll={handleScroll}>
-          {products.map((product) => (
-            <SlideWrapper key={product.id}>
-              <BestSellerCard 
-                product={product} 
-                $animate={isVisible} 
-              />
-            </SlideWrapper>
-          ))}
-        </ProductGrid>
-
-        <DotsContainer>
-          {products.map((_, index) => (
-            <Dot 
-              key={index} 
-              $active={index === activeIndex} 
-              onClick={() => {
-                if (gridRef.current) {
-                  const cardWidth = gridRef.current.clientWidth;
-                  gridRef.current.scrollTo({
-                    left: index * cardWidth,
-                    behavior: "smooth",
-                  });
-                  setActiveIndex(index);
-                }
-              }}
-            />
-          ))}
-        </DotsContainer>
-      </BestSellersContainer>
-    </BestSellersWrapper>
+      <Row ref={rowRef}>
+        {BEST_SELLERS.map((p, i) => (
+          <Cell key={p.id} $in={inView} $i={i}>
+            <ProductCard product={p} image={p.cardImage} />
+          </Cell>
+        ))}
+      </Row>
+      <MobileOnly>
+        <Dots count={BEST_SELLERS.length} index={index} onSelect={goTo} label="Best sellers" />
+      </MobileOnly>
+    </Section>
   );
 };
+
+const Section = styled.section`
+  ${container};
+  ${sectionY};
+`;
+
+const Head = styled.div<{ $in: boolean }>`
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+  ${({ $in }) => reveal($in)};
+
+  ${mq.sm} {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+`;
+
+const Row = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+
+  ${mq.lg} {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(260px, 42%);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    scroll-padding-inline: var(--gutter);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  ${mq.sm} {
+    grid-auto-columns: 80%;
+  }
+`;
+
+const Cell = styled.div<{ $in: boolean; $i: number }>`
+  scroll-snap-align: start;
+  ${({ $in, $i }) => reveal($in, 120 + $i * 90)};
+`;
+
+const MobileOnly = styled.div`
+  display: none;
+  ${mq.lg} {
+    display: block;
+  }
+`;

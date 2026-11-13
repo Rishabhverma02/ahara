@@ -19,8 +19,8 @@ import {
   type HealthGoal,
   type Ingredient,
   type SortOption,
-} from "./data/products";
-import makhanaBg from "@/src/assets/images/section-images/makhana-bg.jpg";
+} from "@/src/data/products";
+import makhanaBg from "@/src/assets/images/section-images/makhana-bg.webp";
 import { PageHero, ProductCard } from "@/src/components/ui";
 import {
   ShopPageWrapper,
@@ -301,21 +301,14 @@ export default function Shop() {
     <ShopPageWrapper>
       {/* Hero */}
       <PageHero
-        bg={makhanaBg.src}
+        image={makhanaBg}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Shop" }]}
         title={
           <>
-            <span className="line">
-              <span className="w1">Shop </span>
-              <span className="w2">All</span>
-            </span>
-
-            <span className="line">
-              <span className="w3">Products</span>
-            </span>
+            The whole <em>pantry</em>
           </>
         }
-        subtitle="Discover our full range of traditional Indian superfoods, consciously sourced and clean label guaranteed."
+        subtitle="Makhana, sattu, millet cookies and moringa — every product roasted or stone-ground, never fried, and clean label."
       />
 
       <PageContainer>

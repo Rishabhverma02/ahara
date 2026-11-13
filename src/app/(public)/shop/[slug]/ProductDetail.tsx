@@ -1,390 +1,249 @@
 "use client";
 
-import React, { useState } from "react";
+import { useId, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/src/hooks/useCart";
-import type { Product } from "../data/products";
-import { PRODUCT_DETAILS } from "../data/product-details";
-import { createPortal } from "react-dom";
-import {
-  DetailPageWrapper,
-  Breadcrumb,
-  TopSection,
-  GalleryColumn,
-  MainImage,
-  ThumbnailRow,
-  Thumbnail,
-  InfoColumn,
-  ProductHeaderGroup,
-  ProductName,
-  ShortDesc,
-  TagPills,
-  TagPill,
-  PriceBlock,
-  BigPrice,
-  OldPrice,
-  SizeSelectorGroup,
-  SizeLabel,
-  SizeRow,
-  SizeChip,
-  ActionRow,
-  QtyBox,
-  QtyBtn,
-  QtyValue,
-  AddToCartBtn,
-  BuyNowBtn,
-  DeliveryNote,
-  CleanLabelSection,
-  CleanLabelTitle,
-  CleanLabelGrid,
-  CleanLabelItem,
-  CleanLabelText,
-  Divider,
-  TabsSection,
-  TabBar,
-  TabButton,
-  TabContent,
-  StoryLayout,
-  StoryImage,
-  StoryText,
-  TextBlock,
-  NutritionTable,
-  ReviewsPlaceholder,
-} from "./styled";
+import { Heart, Leaf, Minus, Plus, ShieldCheck, Star, Truck } from "lucide-react";
+import type { Product } from "@/src/data/products";
+import { ALL_PRODUCTS } from "@/src/data/products";
+import { PRODUCT_DETAILS } from "@/src/data/product-details";
+import { useProductActions } from "@/src/hooks/useProductActions";
+import { formatINR, FREE_SHIPPING_THRESHOLD } from "@/src/lib/pricing";
+import { Button, ProductCard } from "@/src/components/ui";
+import * as S from "./styled";
 
-import GppGoodTwoToneIcon from '@mui/icons-material/GppGoodTwoTone';
-import LocalShippingTwoToneIcon from '@mui/icons-material/LocalShippingTwoTone';
-import Snackbar from "@mui/material/Snackbar";
-
-type Tab = "story" | "taste" | "consume" | "nutrition" | "reviews";
+type Tab = "story" | "taste" | "consume" | "nutrition";
 
 const TABS: { key: Tab; label: string }[] = [
-  { key: "story", label: "Ingredient Story" },
-  { key: "taste", label: "Taste & Texture" },
-  { key: "consume", label: "How to Consume" },
-  { key: "nutrition", label: "Nutrition Facts" },
-  { key: "reviews", label: "Reviews" },
+  { key: "story", label: "The story" },
+  { key: "taste", label: "Taste & texture" },
+  { key: "consume", label: "How to enjoy" },
+  { key: "nutrition", label: "Nutrition" },
 ];
 
-interface Props {
-  product: Product;
-}
-
-export default function ProductDetail({ product }: Props) {
+export default function ProductDetail({ product }: { product: Product }) {
   const router = useRouter();
-  const { addItem } = useCart();
+  const tabsId = useId();
+  const { addToCart, toggleSaved, saved } = useProductActions(product);
   const detail = PRODUCT_DETAILS[product.id];
   const sizes = detail?.sizes ?? [{ label: "Standard", price: product.price }];
-  const cleanLabel = detail?.cleanLabelPromises ?? ["No Preservatives", "No Artificial Color", "No Refined Junk"];
-  const deliveryText = detail?.estimatedDelivery ?? "Estimated delivery in 3-5 days";
+  const cleanLabel = detail?.cleanLabelPromises ?? ["No preservatives", "No artificial colour", "No refined junk"];
 
-  const [selectedSize, setSelectedSize] = useState(0);
+  const [sizeIdx, setSizeIdx] = useState(0);
   const [qty, setQty] = useState(1);
-  const [activeTab, setActiveTab] = useState<Tab>("story");
-  const [isAdding, setIsAdding] = useState(false);
-  const [openAlert, setOpenAlert] = useState(false);
+  const [tab, setTab] = useState<Tab>("story");
+  const [added, setAdded] = useState(false);
 
-  const currentPrice = sizes[selectedSize].price;
+  const size = sizes[sizeIdx];
+  const [line, flavour] = product.name.split(" – ");
+  const related = ALL_PRODUCTS.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
-  const playClickSound = () => {
-    const audio = new Audio("/audio/click.mp3");
-    audio.play().catch((err) => console.log("Audio play failed:", err));
+  const add = () => {
+    addToCart({ quantity: qty, size: size.label, price: size.price });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1400);
   };
 
-  const handleAddToCart = () => {
-    playClickSound();
-    setIsAdding(true);
-    addItem({
-      productId: product.id,
-      slug: product.slug,
-      name: product.name,
-      price: currentPrice,
-      quantity: qty,
-      size: sizes[selectedSize].label,
-      image: product.image,
-    });
-    setOpenAlert(true);
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 1000);
-  };
-
-  const handleBuyNow = () => {
-    playClickSound();
-    addItem({
-      productId: product.id,
-      slug: product.slug,
-      name: product.name,
-      price: currentPrice,
-      quantity: qty,
-      size: sizes[selectedSize].label,
-      image: product.image,
-    });
+  const buyNow = () => {
+    addToCart({ quantity: qty, size: size.label, price: size.price });
     router.push("/cart");
   };
 
+  const onTabKey = (e: React.KeyboardEvent, i: number) => {
+    const dir = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+    if (!dir) return;
+    const next = TABS[(i + dir + TABS.length) % TABS.length];
+    setTab(next.key);
+    document.getElementById(`${tabsId}-${next.key}`)?.focus();
+  };
+
   return (
-    <DetailPageWrapper>
+    <S.Page>
+      <S.Crumbs aria-label="Breadcrumb">
+        <ol>
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/shop">Shop</Link>
+          </li>
+          <li aria-current="page">{product.name}</li>
+        </ol>
+      </S.Crumbs>
 
-      <Breadcrumb>
-        <Link href="/">Home</Link>
-        <span>›</span>
-        <Link href="/shop">Shop</Link>
-        <span>›</span>
-        <span style={{ color: "#5f320fff", fontWeight: 600 }}>{product.name}</span>
-      </Breadcrumb>
-
-      <TopSection>
-        <GalleryColumn>
-          <MainImage>
+      <S.Top>
+        <S.Gallery>
+          <S.MainImage>
             <Image
               src={product.image}
               alt={product.name}
               fill
-              style={{ objectFit: "cover" }}
-              sizes="(max-width: 960px) 100vw, 50vw"
               priority
+              placeholder="blur"
+              sizes="(max-width: 960px) 100vw, 55vw"
             />
-          </MainImage>
-          <ThumbnailRow>
-            {[0, 1, 2, 3].map((i) => (
-              <Thumbnail key={i} $active={i === 0}>
-                <Image
-                  src={product.image}
-                  alt={`${product.name} view ${i + 1}`}
-                  fill
-                  style={{ objectFit: "cover" }}
-                  sizes="72px"
-                />
-              </Thumbnail>
-            ))}
-          </ThumbnailRow>
-        </GalleryColumn>
+            {product.badge && <S.Badge>{product.badge}</S.Badge>}
+          </S.MainImage>
+        </S.Gallery>
 
-        <InfoColumn>
-          <ProductHeaderGroup>
-            <ProductName>{product.name}</ProductName>
-            <ShortDesc>{product.description}</ShortDesc>
-          </ProductHeaderGroup>
+        <S.Info>
+          <S.Kicker>
+            {product.category} · {product.ingredients.join(", ")}
+          </S.Kicker>
+          <S.Name>
+            {line}
+            {flavour && (
+              <>
+                <br />
+                <em>{flavour}</em>
+              </>
+            )}
+          </S.Name>
+          <S.Rating>
+            <Star size={16} fill="currentColor" strokeWidth={0} aria-hidden />
+            <strong>{product.rating.toFixed(1)}</strong>
+            <span>· {product.reviewCount} reviews</span>
+          </S.Rating>
+          <S.Desc>{product.description}</S.Desc>
 
-          <TagPills>
-            {product.tags.map((t) => (
-              <TagPill key={t}>{t}</TagPill>
-            ))}
-            {product.healthGoals.slice(0, 2).map((g) => (
-              <TagPill key={g}>{g}</TagPill>
-            ))}
-          </TagPills>
-
-          <PriceBlock>
-            <BigPrice>₹{currentPrice}</BigPrice>
-            {product.originalPrice && <OldPrice>₹{product.originalPrice}</OldPrice>}
-          </PriceBlock>
-
-          <Divider />
+          <S.Price>
+            {formatINR(size.price)}
+            {product.originalPrice && sizeIdx === 0 && <s>{formatINR(product.originalPrice)}</s>}
+            <small>incl. of all taxes</small>
+          </S.Price>
 
           {sizes.length > 1 && (
-            <SizeSelectorGroup>
-              <SizeLabel>Size</SizeLabel>
-              <SizeRow>
+            <S.Field>
+              <S.Label id={`${tabsId}-size`}>Pack size</S.Label>
+              <S.Sizes role="radiogroup" aria-labelledby={`${tabsId}-size`}>
                 {sizes.map((s, i) => (
-                  <SizeChip
+                  <S.Size
                     key={s.label}
-                    $active={i === selectedSize}
-                    onClick={() => {
-                      playClickSound();
-                      setSelectedSize(i);
-                    }}
+                    type="button"
+                    role="radio"
+                    aria-checked={i === sizeIdx}
+                    onClick={() => setSizeIdx(i)}
                   >
-                    {s.label}
-                  </SizeChip>
+                    <strong>{s.label}</strong>
+                    <span>{formatINR(s.price)}</span>
+                  </S.Size>
                 ))}
-              </SizeRow>
-            </SizeSelectorGroup>
+              </S.Sizes>
+            </S.Field>
           )}
 
-          <ActionRow>
-            <QtyBox>
-              <QtyBtn
-                onClick={() => {
-                  playClickSound();
-                  setQty((q) => Math.max(1, q - 1));
-                }}
-              >
-                −
-              </QtyBtn>
-              <QtyValue>{qty}</QtyValue>
-              <QtyBtn
-                onClick={() => {
-                  playClickSound();
-                  setQty((q) => q + 1);
-                }}
-              >
-                +
-              </QtyBtn>
-            </QtyBox>
-            <AddToCartBtn onClick={handleAddToCart} disabled={isAdding} style={{
-              background: isAdding ? "#7e7c2a" : "#5f320fff"
-            }}>
-              {isAdding ? "Added! ✓" : "Add to Cart"}
-            </AddToCartBtn>
-            <BuyNowBtn onClick={handleBuyNow}>Buy Now</BuyNowBtn>
-          </ActionRow>
+          <S.Buy>
+            <S.QtyBox>
+              <S.QtyBtn type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="Decrease quantity">
+                <Minus size={16} />
+              </S.QtyBtn>
+              <S.QtyValue aria-live="polite">{qty}</S.QtyValue>
+              <S.QtyBtn type="button" onClick={() => setQty((q) => Math.min(20, q + 1))} aria-label="Increase quantity">
+                <Plus size={16} />
+              </S.QtyBtn>
+            </S.QtyBox>
+            <Button type="button" $size="lg" onClick={add} style={{ flex: 1 }}>
+              {added ? "Added ✓" : `Add to cart · ${formatINR(size.price * qty)}`}
+            </Button>
+            <S.SaveBtn type="button" onClick={toggleSaved} aria-pressed={saved} aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}>
+              <Heart size={20} fill={saved ? "currentColor" : "none"} />
+            </S.SaveBtn>
+          </S.Buy>
+          <Button type="button" $variant="outline" $size="lg" $block onClick={buyNow}>
+            Buy it now
+          </Button>
 
+          <S.Perks>
+            <li>
+              <Truck aria-hidden />
+              <span>
+                <strong>{detail?.estimatedDelivery ?? "Delivered in 3–5 days"}</strong>
+                Free delivery over {formatINR(FREE_SHIPPING_THRESHOLD)}
+              </span>
+            </li>
+            <li>
+              <ShieldCheck aria-hidden />
+              <span>
+                <strong>Clean label promise</strong>
+                {cleanLabel.join(" · ")}
+              </span>
+            </li>
+            <li>
+              <Leaf aria-hidden />
+              <span>
+                <strong>{product.tags.join(" · ")}</strong>
+                {product.healthGoals.join(", ")}
+              </span>
+            </li>
+          </S.Perks>
+        </S.Info>
+      </S.Top>
 
-          <DeliveryNote>
-            <LocalShippingTwoToneIcon />
-            {deliveryText}
-          </DeliveryNote>
-
-          <Divider />
-
-          <CleanLabelSection>
-            <CleanLabelTitle>Clean Label Promise</CleanLabelTitle>
-            <CleanLabelGrid>
-              {cleanLabel.map((item) => (
-                <CleanLabelItem key={item}>
-                  <GppGoodTwoToneIcon />
-                  <CleanLabelText>{item}</CleanLabelText>
-                </CleanLabelItem>
-              ))}
-            </CleanLabelGrid>
-          </CleanLabelSection>
-        </InfoColumn>
-      </TopSection>
-
-      <TabsSection>
-        <TabBar>
-          {TABS.map((tab) => (
-            <TabButton
-              key={tab.key}
-              $active={activeTab === tab.key}
-              onClick={() => {
-                playClickSound();
-                setActiveTab(tab.key);
-              }}
+      <S.Tabs>
+        <S.TabList role="tablist" aria-label="Product details">
+          {TABS.map((t, i) => (
+            <S.TabBtn
+              key={t.key}
+              id={`${tabsId}-${t.key}`}
+              role="tab"
+              type="button"
+              aria-selected={tab === t.key}
+              aria-controls={`${tabsId}-panel`}
+              tabIndex={tab === t.key ? 0 : -1}
+              onClick={() => setTab(t.key)}
+              onKeyDown={(e) => onTabKey(e, i)}
             >
-              {tab.label}
-            </TabButton>
+              {t.label}
+            </S.TabBtn>
           ))}
-        </TabBar>
+        </S.TabList>
 
-        <TabContent>
-          {activeTab === "story" && detail?.ingredientStory && (
-            <StoryLayout>
-              <StoryImage>
-                <Image
-                  src={product.image}
-                  alt="Ingredient source"
-                  fill
-                  style={{ objectFit: "cover" }}
-                  sizes="(max-width: 768px) 100vw, 45vw"
-                />
-              </StoryImage>
-              <StoryText>
+        <S.Panel id={`${tabsId}-panel`} role="tabpanel" aria-labelledby={`${tabsId}-${tab}`}>
+          {tab === "story" &&
+            (detail?.ingredientStory ? (
+              <S.Story>
                 <h3>{detail.ingredientStory.title}</h3>
                 {detail.ingredientStory.paragraphs.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
-              </StoryText>
-            </StoryLayout>
-          )}
+              </S.Story>
+            ) : (
+              <S.Text>Details coming soon.</S.Text>
+            ))}
+          {tab === "taste" && <S.Text>{detail?.tasteTexture ?? "Details coming soon."}</S.Text>}
+          {tab === "consume" && <S.Text>{detail?.howToConsume ?? "Details coming soon."}</S.Text>}
+          {tab === "nutrition" &&
+            (detail?.nutritionFacts ? (
+              <S.Nutrition>
+                <caption>Typical values per 100 g</caption>
+                <tbody>
+                  {detail.nutritionFacts.map((row) => (
+                    <tr key={row.label}>
+                      <th scope="row">{row.label}</th>
+                      <td>{row.value}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </S.Nutrition>
+            ) : (
+              <S.Text>Details coming soon.</S.Text>
+            ))}
+        </S.Panel>
+      </S.Tabs>
 
-          {activeTab === "taste" && (
-            <TextBlock>{detail?.tasteTexture ?? "Details coming soon."}</TextBlock>
-          )}
-
-          {activeTab === "consume" && (
-            <TextBlock>{detail?.howToConsume ?? "Details coming soon."}</TextBlock>
-          )}
-
-          {activeTab === "nutrition" && detail?.nutritionFacts && (
-            <NutritionTable>
-              <tbody>
-                {detail.nutritionFacts.map((row) => (
-                  <tr key={row.label}>
-                    <td>{row.label}</td>
-                    <td>{row.value}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </NutritionTable>
-          )}
-
-          {activeTab === "reviews" && (
-            <ReviewsPlaceholder>
-              Reviews coming soon — be the first to share your experience!
-            </ReviewsPlaceholder>
-          )}
-        </TabContent>
-      </TabsSection>
-
-      {openAlert && typeof document !== "undefined" && createPortal(
-        <Snackbar
-          open={openAlert}
-          autoHideDuration={4000}
-          onClose={() => setOpenAlert(false)}
-          anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-          style={{ zIndex: 9999 }}
-        >
-          <div
-            style={{
-              background: "#fffffff5",
-              backdropFilter: "blur(12px)",
-              WebkitBackdropFilter: "blur(12px)",
-              border: "1px solid #549a2947",
-                   borderLeft: "4px solid #549a29ff",
-              borderRadius: "8px",
-              padding: "12px 18px",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-              boxShadow: "0 10px 25px rgba(58, 77, 43, 0.06)",
-              maxWidth: "420px",
-              fontFamily: "inherit",
-            }}
-          >
-            {/* Left Icon (SVG check badge) */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "#549a29ff",
-                fontSize: "18px",
-                flexShrink: 0,
-              }}
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <polyline points="22 4 12 14.01 9 11.01" />
-              </svg>
-            </div>
-
-            {/* Message Content */}
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "4px 6px" }}>
-              <span style={{ color: "#549a29ff", fontSize: "13px", fontWeight: 700 }}>
-                Success:
-              </span>
-              <span style={{ color: "#3e6e21ff", fontSize: "13px", fontWeight: 500 }}>
-                {qty}x {product.name} ({sizes[selectedSize].label}) added to cart.
-              </span>
-            </div>
-          </div>
-        </Snackbar>,
-        document.body
+      {related.length > 0 && (
+        <S.Related>
+          <h2>
+            More {product.category.toLowerCase()} <em>you&rsquo;ll like</em>
+          </h2>
+          <S.RelatedGrid>
+            {related.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </S.RelatedGrid>
+        </S.Related>
       )}
-    </DetailPageWrapper>
+    </S.Page>
   );
 }

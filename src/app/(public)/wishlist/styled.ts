@@ -9,26 +9,18 @@ const fadeIn = keyframes`
 
 
 export const WishlistPageWrapper = styled.div`
-  background: #ffffff;
-  width: 100%;
+  background: var(--paper);
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 `;
 
 export const PageContainer = styled.div`
-  width: 100%;
-  padding: 60px 24px;
-  background-color: #7e7d2a18; /* soft green/beige background overlay */
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
+  width: min(100% - 2 * var(--gutter), var(--max-w));
+  margin-inline: auto;
+  padding-block: clamp(2rem, 4vw, 3.5rem) var(--section-y);
 `;
 
 export const Container = styled.div`
-  max-width: 1200px;
   width: 100%;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;

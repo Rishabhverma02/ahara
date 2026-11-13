@@ -2,8 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
-import LocalShippingTwoToneIcon from "@mui/icons-material/LocalShippingTwoTone";
-import truckImg from "@/src/assets/images/illustration/Ahar_Truck-Left.png";
+import { Truck } from "lucide-react";
+import { formatINR } from "@/src/lib/pricing";
+import truckImg from "@/src/assets/images/illustration/Ahar_Truck-Left.webp";
 import { useCartPage, FREE_SHIPPING_THRESHOLD } from "../../useCartPage";
 import {
   ShippingProgressContainer,
@@ -27,15 +28,15 @@ export const CartProgress = () => {
   return (
     <ShippingProgressContainer>
       <ShippingProgressText>
-        <LocalShippingTwoToneIcon />
+        <Truck aria-hidden />
         {isFreeShipping ? (
           <span>
-            Congrats! You have unlocked <strong>Free Delivery</strong>! 🎉
+            You&rsquo;ve unlocked <strong>free delivery</strong>.
           </span>
         ) : (
           <>
-            Add <span>₹{FREE_SHIPPING_THRESHOLD - cartTotal}</span> more to unlock{" "}
-            <strong>Free Shipping</strong>
+            Add <span>{formatINR(FREE_SHIPPING_THRESHOLD - cartTotal)}</span> more for{" "}
+            <strong>free delivery</strong>
           </>
         )}
       </ShippingProgressText>
@@ -44,13 +45,13 @@ export const CartProgress = () => {
         <RewardCheckpoint $percent={animatedPercent} />
         <TruckProgressMarker $percent={animatedPercent}>
           {animatedPercent >= 50 && (
-            <FireRewardPopup onClick={handleCollectReward}>
+            <FireRewardPopup type="button" onClick={handleCollectReward}>
               {rewardCopied
-                ? "🔥 Copied!"
-                : "🔥 Unlock 10% Off: AHARA10"}
+                ? "Code applied ✓"
+                : "Tap to unlock 10% off"}
             </FireRewardPopup>
           )}
-          <Image src={truckImg} alt="Shipping Truck" fill />
+          <Image src={truckImg} alt="" fill sizes="64px" />
         </TruckProgressMarker>
       </ProgressBarWrapper>
     </ShippingProgressContainer>

@@ -1,411 +1,272 @@
-import styled, { css, keyframes } from "styled-components";
 import Link from "next/link";
+import styled, { css, keyframes } from "styled-components";
+import { container, mq } from "@/src/theme";
 
-const dropDown = keyframes`
-  from {
-    transform: translateY(-100%);
-  }
-  to {
-    transform: translateY(0);
+export const SkipLink = styled.a`
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--forest);
+  color: var(--paper);
+  font-weight: 600;
+  transform: translateY(-160%);
+  transition: transform 0.2s;
+  &:focus {
+    transform: none;
   }
 `;
 
-export const HeaderWrapper = styled.header.withConfig({
-  shouldForwardProp: (prop) => prop !== "animate",
-})<{ animate: boolean }>`
-  width: 100%;
+export const Bar = styled.header<{ $solid?: boolean }>`
   position: fixed;
-  top: 0;
-  padding: 10px 0;
+  inset: 0 0 auto;
+  z-index: 100;
+  height: var(--header-h);
   display: flex;
   align-items: center;
-  justify-content: center;
-  z-index: 10;
-
+  border-bottom: 1px solid transparent;
   transition:
-    background 0.3s ease,
-    backdrop-filter 0.3s ease,
-    box-shadow 0.3s ease;
+    background-color 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out);
 
-  ${({ animate }) =>
-    animate
-      ? css`
-          background: #fbfbfb23;
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-          animation: ${dropDown} 0.4s ease-out;
-        `
-      : css`
-          background: transparent;
-          backdrop-filter: none;
-          box-shadow: none;
-        `}
+  ${({ $solid }) =>
+    $solid &&
+    css`
+      background: rgb(246 241 230 / 0.88);
+      backdrop-filter: saturate(1.4) blur(14px);
+      -webkit-backdrop-filter: saturate(1.4) blur(14px);
+      border-bottom-color: var(--line);
+    `}
 `;
 
-export const HeaderInner = styled.div`
-  width: 92%;
-  max-width: 1400px;
+export const Inner = styled.div`
+  ${container};
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 2rem;
 `;
 
-export const LogoWrapper = styled.div`
+export const Nav = styled.nav`
   display: flex;
-  align-items: center;
-`;
+  gap: clamp(1.25rem, 2.5vw, 2.5rem);
 
-export const NavWrapper = styled.nav`
-  display: flex;
-  gap: 12px;
-  padding: 8px;
-  border-radius: 12px;
-  background: #ffffff;
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  border: 1px solid #9e9c2f51;
-
-  @media (max-width: 1080.98px) {
+  ${mq.md} {
     display: none;
   }
 `;
-    
-export const NavItem = styled(Link)<{ $active?: boolean }>`
+
+export const NavLink = styled(Link)`
+  position: relative;
+  padding: 0.4rem 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--ink-2);
   text-decoration: none;
-  border: none;
-  background: ${({ $active }) =>
-    $active ? "#9e9c2f4c" : "transparent"};
-  color: #9e9c2fff;
-  padding: 10px 18px;
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s ease;
+  transition: color 0.2s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1.5px;
+    background: var(--olive);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--ease-out);
+  }
+
+  &:hover,
+  &[aria-current="page"] {
+    color: var(--ink);
+  }
+  &:hover::after,
+  &[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+`;
+
+export const Actions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+`;
+
+export const IconLink = styled(Link)<{ $hideSm?: boolean }>`
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--ink);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgb(29 33 22 / 0.06);
+  }
+
+  ${({ $hideSm }) =>
+    $hideSm &&
+    css`
+      ${mq.sm} {
+        display: none;
+      }
+    `}
+`;
+
+export const Count = styled.span<{ $accent?: boolean }>`
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  line-height: 1;
+  background: ${({ $accent }) => ($accent ? "var(--saffron)" : "var(--ink)")};
+  color: ${({ $accent }) => ($accent ? "var(--forest)" : "var(--paper)")};
+`;
+
+export const MenuButton = styled.button`
+  display: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -8px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--ink);
+
+  ${mq.md} {
+    display: grid;
+  }
+`;
+
+/* ---------- checkout variant ---------- */
+export const CheckoutMeta = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  font-size: 0.875rem;
+`;
+
+export const BackLink = styled(Link)`
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid ${({$active})=>$active? "#9e9c2f49": "#fff"};
-
+  gap: 0.4rem;
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 500;
   &:hover {
-    background: #9e9c2f4c;
-    border:1px solid #9e9c2f49;
+    color: var(--ink);
   }
-`;
-
-export const ActionsWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-
-  @media (max-width: 1080.98px) {
-    gap: 12px;
-  }
-`;
-
-export const DesktopActions = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-
-  @media (max-width: 768px) {
+  ${mq.sm} {
     display: none;
   }
 `;
 
-export const ActionIcon = styled.button`
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #7E7C2A;
-  display: flex;
+export const Secure = styled.span`
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 999px;
+  background: var(--olive-tint);
+  color: var(--olive-600);
+  font-weight: 600;
+  font-size: 0.8125rem;
 `;
 
-export const CartBadge = styled.span`
-  position: absolute;
-  top: -5px;
-  right: -8px;
-  background: #7E7C2A;
-  color: white;
-  font-size: 10px;
-  font-weight: 700;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+/* ---------- mobile drawer ---------- */
+const fade = keyframes`from { opacity: 0 } to { opacity: 1 }`;
+const slide = keyframes`from { transform: translateX(100%) } to { transform: none }`;
+const rise = keyframes`from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none }`;
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-export const DrawerOverlay = styled.div`
+export const Overlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  display: flex;
-  justify-content: flex-end;
-  z-index: 999;
-  animation: ${fadeIn} 0.3s ease-out forwards;
+  inset: 0;
+  z-index: 300;
+  background: rgb(29 33 22 / 0.4);
+  animation: ${fade} 0.25s ease-out;
 `;
 
 export const Drawer = styled.div`
-  background: rgba(18, 18, 18, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.4);
-  width: 100%;
-  max-width: 380px;
-  height: 100%;
-  padding: 40px 30px;
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(420px, 100%);
   display: flex;
   flex-direction: column;
-  position: relative;
-  z-index: 1000;
-  animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-
-  @keyframes slideIn {
-    from {
-      transform: translateX(100%);
-    }
-    to {
-      transform: translateX(0%);
-    }
-  }
-
-  @media screen and (max-width: 480px) {
-    max-width: 100%;
-    padding: 30px 20px;
-  }
+  padding: 1.25rem var(--gutter) 2rem;
+  background: var(--paper);
+  animation: ${slide} 0.45s var(--ease-out);
 `;
 
-export const CloseButton = styled.button`
-  font-size: 22px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  width: 38px;
-  height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #fff;
-  transition: all 0.3s ease;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.18);
-    transform: rotate(90deg);
-  }
-`;
-
-export const DrawerHeader = styled.div`
+export const DrawerTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 30px;
-  width: 100%;
+  height: calc(var(--header-h) - 1.25rem);
 `;
 
-export const DrawerTitle = styled.h3`
-  color: #ffffff;
-  font-size: 20px;
-  font-weight: 700;
-  margin: 0;
-  letter-spacing: 1px;
+export const Close = styled.button`
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: -8px;
+  border: 0;
+  background: none;
+  color: var(--ink);
 `;
 
 export const DrawerNav = styled.nav`
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 30px;
-  width: 100%;
-  border-left: 2px solid rgba(255, 255, 255, 0.06);
-  padding-left: 16px;
-  position: relative;
+  margin-top: 2.5rem;
+  border-top: 1px solid var(--line);
 `;
 
-export const DrawerNavItem = styled(Link)<{ $active?: boolean }>`
-  font-size: 16px;
-  font-weight: 500;
-  color: ${({ $active }) => ($active ? "#e4e3ab" : "rgba(255, 255, 255, 0.55)")};
+export const DrawerLink = styled(Link)`
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--ink);
   text-decoration: none;
-  padding: 10px 16px;
-  border-radius: 10px;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  width: 100%;
-  display: flex;
-  align-items: center;
-  position: relative;
-  background: ${({ $active }) => ($active ? "rgba(255, 255, 255, 0.05)" : "transparent")};
-  border: 1px solid ${({ $active }) => ($active ? "rgba(255, 255, 255, 0.08)" : "transparent")};
-  box-shadow: ${({ $active }) => ($active ? "0 4px 12px rgba(0, 0, 0, 0.15)" : "none")};
+  animation: ${rise} 0.5s var(--ease-out) both;
 
-  &::before {
-    content: "";
-    position: absolute;
-    left: -19px;
-    top: 8px;
-    bottom: 8px;
-    width: 3px;
-    background: #e4e3ab;
-    border-radius: 2px;
-    opacity: ${({ $active }) => ($active ? 1 : 0)};
-    transition: opacity 0.25s ease;
-  }
-
-  &:hover {
-    color: #e4e3ab;
-    background: ${({ $active }) => ($active ? "rgba(255, 255, 255, 0.05)" : "rgba(255, 255, 255, 0.02)")};
+  span {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    color: var(--olive);
   }
 `;
 
-export const DrawerSearchWrapper = styled.div`
-  position: relative;
-  margin-bottom: 30px;
-  width: 100%;
-`;
-
-export const DrawerSearchInput = styled.input`
-  width: 100%;
-  padding: 10px 16px 10px 38px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-  transition: all 0.3s ease;
-
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.4);
-  }
-
-  &:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #7e7c2a;
-  }
-`;
-
-export const DrawerSearchIcon = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.4);
-  display: flex;
-  align-items: center;
-  pointer-events: none;
-  font-size: 16px;
-`;
-
-export const DrawerActions = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+export const DrawerFoot = styled.div`
   margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding-top: 24px;
-  width: 100%;
-`;
-
-export const DrawerActionLink = styled(Link)`
   display: flex;
-  align-items: center;
-  gap: 12px;
-  color: rgba(255, 255, 255, 0.8);
-  text-decoration: none;
-  font-size: 15px;
+  gap: 1.5rem;
+  font-size: 0.9375rem;
   font-weight: 500;
-  transition: all 0.25s ease;
 
-  svg {
-    font-size: 18px;
-    color: #e4e3ab;
-  }
-
-  &:hover {
-    color: #ffffff;
-    transform: translateX(4px);
-  }
-`;
-
-export const DrawerFooter = styled.div`
-  margin-top: 24px;
-  font-size: 11px;
-  color: rgba(255, 255, 255, 0.3);
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.04);
-  padding-top: 16px;
-  width: 100%;
-`;
-
-export const DrawerContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  flex-grow: 1;
-`;
-
-export const HamburgerButton = styled.button`
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  display: flex;
-  align-items: center;
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  border-radius: 50px;
-  padding: 10px 12px;
-  cursor: pointer;
-  z-index: 10;
-  color: #ccc;
-
-  @media screen and (min-width: 1080.98px) {
-    display: none;
-  }
-`;
-
-export const MobileCartButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 22px;
-  cursor: pointer;
-  color: #7E7C2A;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  @media screen and (min-width: 768.01px) {
-    display: none;
+  a {
+    color: var(--ink-2);
   }
 `;
