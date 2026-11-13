@@ -52,7 +52,7 @@ export const TimelineStep = styled.div<{
       ${({ $active, $completed }) =>
         $active ? "var(--olive)" : $completed ? "var(--success)" : "var(--muted-2)"};
     background: ${({ $active, $completed }) =>
-      $active ? "var(--olive)" : $completed ? "#eef5eb" : "transparent"};
+      $active ? "var(--olive)" : $completed ? "var(--olive-tint)" : "transparent"};
     color: ${({ $active, $completed }) =>
       $active ? "#ffffff" : $completed ? "var(--success)" : "var(--muted-2)"};
     box-shadow: ${({ $active }) =>

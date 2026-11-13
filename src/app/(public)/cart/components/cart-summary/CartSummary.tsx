@@ -21,6 +21,7 @@ import {
   CheckoutActionsGroup,
   CheckoutButton,
   SecureCheckoutText,
+  FreeTag,
 } from "./styled";
 
 export const CartSummary = () => {
@@ -59,7 +60,7 @@ export const CartSummary = () => {
           <span>Delivery Charge</span>
           <span>
             {shippingCharge === 0 ? (
-              <span style={{ color: "var(--success)", fontWeight: 700 }}>Free</span>
+              <FreeTag>Free</FreeTag>
             ) : (
               formatINR(shippingCharge)
             )}

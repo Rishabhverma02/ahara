@@ -141,7 +141,7 @@ export default function ProductDetail({ product }: { product: Product }) {
                 <Plus size={16} />
               </S.QtyBtn>
             </S.QtyBox>
-            <Button type="button" $size="lg" onClick={add} style={{ flex: 1 }}>
+            <Button type="button" $size="lg" onClick={add}>
               {added ? "Added ✓" : `Add to cart · ${formatINR(size.price * qty)}`}
             </Button>
             <S.SaveBtn type="button" onClick={toggleSaved} aria-pressed={saved} aria-label={saved ? "Remove from wishlist" : "Save to wishlist"}>

@@ -67,18 +67,18 @@ export const Hero = () => {
     <S.Wrap>
       <S.Grid>
         <S.Copy>
-          <S.Eyebrow style={{ animationDelay: "0.05s" }}>Superfoods from the Indian kitchen</S.Eyebrow>
+          <S.Eyebrow>Superfoods from the Indian kitchen</S.Eyebrow>
           <S.Title>
-            <S.Line style={{ animationDelay: "0.12s" }}>Ancient food,</S.Line>
-            <S.Line style={{ animationDelay: "0.22s" }}>
+            <S.Line>Ancient food,</S.Line>
+            <S.Line>
               <em>modern</em> life.
             </S.Line>
           </S.Title>
-          <S.Lead style={{ animationDelay: "0.34s" }}>
+          <S.Lead>
             Makhana, sattu, millets and moringa — the foods our grandparents swore by, roasted and
             flavoured for the way you snack now.
           </S.Lead>
-          <S.Actions style={{ animationDelay: "0.44s" }}>
+          <S.Actions>
             <ButtonLink href="/shop" $size="lg">
               Shop the range <ArrowRight aria-hidden />
             </ButtonLink>
@@ -86,7 +86,7 @@ export const Hero = () => {
               Why Ahara
             </ButtonLink>
           </S.Actions>
-          <S.Proof style={{ animationDelay: "0.54s" }}>
+          <S.Proof>
             <li>Roasted, never fried</li>
             <li>No preservatives</li>
             <li>Small-batch, from Bihar</li>

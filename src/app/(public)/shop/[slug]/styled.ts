@@ -203,6 +203,10 @@ export const Buy = styled.div`
   gap: 0.6rem;
   align-items: stretch;
   margin-top: 0.25rem;
+
+  > button:nth-child(2) {
+    flex: 1;
+  }
 `;
 
 export const QtyBox = styled.div`

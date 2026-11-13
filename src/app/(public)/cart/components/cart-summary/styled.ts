@@ -1,7 +1,12 @@
 import styled from "styled-components";
 
+export const FreeTag = styled.span`
+  color: var(--success);
+  font-weight: 700;
+`;
+
 export const OrderSummaryCard = styled.div`
-  background: #ffffff;
+  background: var(--surface);
   border-radius: 10px;
   padding: 32px;
   border: 1px solid rgb(var(--olive-rgb) / 0.1);
@@ -125,7 +130,7 @@ export const PromoInput = styled.input`
 
   &:focus {
     border-color: var(--olive);
-    background: #ffffff;
+    background: var(--surface);
     box-shadow: 0 0 0 4px rgb(var(--olive-rgb) / 0.08);
   }
 `;

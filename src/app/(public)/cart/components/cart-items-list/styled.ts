@@ -9,7 +9,7 @@ export const CartItemsSection = styled.div`
 `;
 
 export const CartItemCard = styled.div`
-  background: #ffffff;
+  background: var(--surface);
   border-radius: 10px;
   padding: 20px;
   display: grid;

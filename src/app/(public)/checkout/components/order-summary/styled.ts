@@ -189,7 +189,7 @@ export const FormInput = styled.input`
 
   &:focus {
     border-color: var(--olive);
-    background: #ffffff;
+    background: var(--surface);
     box-shadow: 0 0 0 4px rgb(var(--olive-rgb) / 0.1);
   }
 `;

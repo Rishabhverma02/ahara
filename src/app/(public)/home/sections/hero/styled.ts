@@ -28,7 +28,7 @@ export const Wrap = styled.section`
   align-items: center;
   padding: calc(var(--header-h) + 2rem) 0 4rem;
   background:
-    radial-gradient(60% 70% at 78% 45%, #fbf3df 0%, transparent 70%),
+    radial-gradient(60% 70% at 78% 45%, var(--glow) 0%, transparent 70%),
     var(--paper);
   overflow: hidden;
 
@@ -56,9 +56,14 @@ export const Copy = styled.div`
   align-items: flex-start;
   gap: 1.75rem;
 
+  /* staggered entrance: eyebrow, title, lead, actions, proof */
   > * {
     animation: ${rise} 0.9s var(--ease-out) both;
   }
+  > :nth-child(1) { animation-delay: 0.05s; }
+  > :nth-child(3) { animation-delay: 0.34s; }
+  > :nth-child(4) { animation-delay: 0.44s; }
+  > :nth-child(5) { animation-delay: 0.54s; }
 `;
 
 export const Eyebrow = styled.p`
@@ -91,7 +96,11 @@ export const Title = styled.h1`
 
 export const Line = styled.span`
   display: block;
-  animation: ${rise} 1s var(--ease-out) both;
+  animation: ${rise} 1s var(--ease-out) 0.12s both;
+
+  & + & {
+    animation-delay: 0.22s;
+  }
 `;
 
 export const Lead = styled.p`

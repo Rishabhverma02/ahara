@@ -169,7 +169,7 @@ export const FormInput = styled.input<{ $hasIcon?: boolean }>`
 
   &:focus {
     border-color: var(--olive);
-    background: #ffffff;
+    background: var(--surface);
     box-shadow: 0 0 0 4px rgb(var(--olive-rgb) / 0.1);
   }
 `;
@@ -197,7 +197,7 @@ export const FormSelect = styled.select`
 
   &:focus {
     border-color: var(--olive);
-    background-color: #ffffff;
+    background-color: var(--surface);
     box-shadow: 0 0 0 4px rgb(var(--olive-rgb) / 0.1);
   }
 `;

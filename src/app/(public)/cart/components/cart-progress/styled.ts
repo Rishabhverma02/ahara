@@ -84,15 +84,15 @@ export const RewardCheckpoint = styled.div<{ $percent: number }>`
 const firePulse = keyframes`
   0% {
     transform: translateX(-50%) scale(0.95);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3), 0 0 0 0 rgba(239, 68, 68, 0.5);
+    box-shadow: 0 4px 12px rgb(222 148 32 / 0.3), 0 0 0 0 rgb(222 148 32 / 0.5);
   }
   50% {
     transform: translateX(-50%) scale(1.05);
-    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.5), 0 0 0 8px rgba(249, 115, 22, 0);
+    box-shadow: 0 6px 16px rgb(222 148 32 / 0.5), 0 0 0 8px rgb(222 148 32 / 0);
   }
   100% {
     transform: translateX(-50%) scale(0.95);
-    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3), 0 0 0 0 rgba(239, 68, 68, 0);
+    box-shadow: 0 4px 12px rgb(222 148 32 / 0.3), 0 0 0 0 rgb(222 148 32 / 0);
   }
 `;
 
@@ -125,7 +125,7 @@ export const FireRewardPopup = styled.button`
     transform: translateX(-50%);
     border-width: 6px 6px 0;
     border-style: solid;
-    border-color: #f97316 transparent transparent;
+    border-color: var(--saffron) transparent transparent;
   }
 
   &:hover {

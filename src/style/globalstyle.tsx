@@ -32,6 +32,7 @@ export const GlobalStyle = createGlobalStyle`
     --olive-tint: #ECEBD5;
     --saffron: #DE9420;
     --saffron-tint: #F6E3BF;
+    --glow: #FAF0D6;
     --earth: #6B3A16;
     --earth-700: #4C280E;
 
