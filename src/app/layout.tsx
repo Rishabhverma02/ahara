@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Instrument_Sans } from "next/font/google";
 import { StyledComponentsRegistry } from "../style/registry";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "../lib/site";
 
 /**
  * Two families instead of three (Poppins ×7 weights, Monoton, Story Script):
@@ -23,20 +24,21 @@ const instrument = Instrument_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Ahara — Ancient food, modern life",
-    template: "%s · Ahara",
+    default: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    template: `%s · ${SITE_NAME}`,
   },
-  description:
-    "Roasted makhana, sattu, millet cookies and moringa — India's forgotten superfoods, made clean and snackable.",
+  description: SITE_DESCRIPTION,
+  applicationName: SITE_NAME,
   openGraph: {
     type: "website",
-    siteName: "Ahara",
-    title: "Ahara — Ancient food, modern life",
-    description:
-      "Roasted makhana, sattu, millet cookies and moringa — India's forgotten superfoods, made clean and snackable.",
+    locale: "en_IN",
+    siteName: SITE_NAME,
+    title: `${SITE_NAME} — ${SITE_TAGLINE}`,
+    description: SITE_DESCRIPTION,
   },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {
@@ -45,7 +47,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${instrument.variable}`}>
+    <html lang="en-IN" className={`${fraunces.variable} ${instrument.variable}`}>
       <body>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
