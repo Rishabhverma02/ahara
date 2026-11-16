@@ -1,329 +1,378 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { ChevronLeft, ChevronRight, Search, SlidersHorizontal, X } from "lucide-react";
-import makhanaBg from "@/src/assets/images/section-images/makhana-bg.webp";
-import { EmptyState, PageHero, ProductCard } from "@/src/components/ui";
-import { useShopQuery } from "@/src/hooks/useShopQuery";
-import { useDialog } from "@/src/hooks/useDialog";
+import React, { useMemo, useState } from "react";
+import { HiOutlineAdjustments, HiX, HiChevronDown, HiChevronUp } from "react-icons/hi";
+
 import {
   CATEGORIES,
   HEALTH_GOALS,
   INGREDIENTS,
   MAX_PRICE,
   SORT_OPTIONS,
-  getAllProducts,
   queryProducts,
+  type Category,
+  type HealthGoal,
+  type Ingredient,
   type SortOption,
 } from "@/src/services/catalog";
-import { formatINR } from "@/src/lib/pricing";
-import * as S from "./styled";
+import { useShopQuery } from "@/src/hooks/useShopQuery";
+import makhanaBg from "@/src/assets/images/section-images/makhana-bg.webp";
+import { PageHero, ProductCard } from "@/src/components/ui";
+import {
+  ShopPageWrapper,
+  PageContainer,
+  ActiveFiltersRow,
+  ActiveFilterLabel,
+  FilterChip,
+  ClearAllBtn,
+  ContentLayout,
+  SidebarWrapper,
+  SidebarScrollArea,
+  SidebarTitle,
+  FilterSection,
+  FilterSectionHeader,
+  FilterSectionTitle,
+  FilterChevron,
+  FilterBody,
+  CheckboxLabel,
+  PriceRangeWrapper,
+  RangeSlider,
+  PriceValues,
+  MainArea,
+  ResultsBar,
+  ResultsCount,
+  SortSelect,
+  ProductGrid,
+  EmptyState,
+  PaginationWrapper,
+  PageBtn,
+  MobileFilterToggle,
+  FilterDrawerOverlay,
+  FilterDrawer,
+  FilterDrawerHeader,
+  FilterDrawerClose,
+  FilterSectionTitle as FilterDrawerTitle,
+} from "./styled";
 
 const PER_PAGE = 9;
-const MIN_PRICE = 100;
 
-/** How many catalogue products carry each option — shown next to the checkbox. */
-const counts = (() => {
-  const all = getAllProducts();
-  const tally = (pick: (p: (typeof all)[number]) => string[]) =>
-    all.reduce<Record<string, number>>((acc, p) => {
-      pick(p).forEach((v) => (acc[v] = (acc[v] ?? 0) + 1));
-      return acc;
-    }, {});
-  return {
-    categories: tally((p) => [p.category]),
-    goals: tally((p) => p.healthGoals),
-    ingredients: tally((p) => p.ingredients),
-  };
-})();
-
-export default function Shop() {
-  const query = useShopQuery();
-  const { q, categories, goals, ingredients, maxPrice, sort, page, update, toggle, clear } = query;
-  const [drawer, setDrawer] = useState(false);
-  const [search, setSearch] = useState(q);
-
-  // keep the input in sync when the URL changes (e.g. Back button)
-  const [lastQ, setLastQ] = useState(q);
-  if (q !== lastQ) {
-    setLastQ(q);
-    setSearch(q);
-  }
-
-  // debounce typing into the URL
-  useEffect(() => {
-    if (search === q) return;
-    const t = setTimeout(() => update({ q: search }), 250);
-    return () => clearTimeout(t);
-  }, [search, q, update]);
-
-  const closeDrawer = useCallback(() => setDrawer(false), []);
-  useDialog(drawer, closeDrawer);
-
-  const results = useMemo(
-    () => queryProducts({ q, categories, goals, ingredients, maxPrice, sort }),
-    [q, categories, goals, ingredients, maxPrice, sort],
+/* ─── Collapsible filter section ────────────────────────────── */
+function CollapsibleSection({
+  title,
+  children,
+  defaultOpen = true,
+}: {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <FilterSection>
+      <FilterSectionHeader onClick={() => setOpen((v) => !v)}>
+        <FilterSectionTitle>{title}</FilterSectionTitle>
+        <FilterChevron $open={open}>{open ? <HiChevronUp /> : <HiChevronDown />}</FilterChevron>
+      </FilterSectionHeader>
+      {open && <FilterBody>{children}</FilterBody>}
+    </FilterSection>
   );
-  const totalPages = Math.max(1, Math.ceil(results.length / PER_PAGE));
-  const current = Math.min(page, totalPages);
-  const visible = results.slice((current - 1) * PER_PAGE, current * PER_PAGE);
+}
 
-  const chips = [
-    ...(q ? [{ label: `“${q}”`, remove: () => update({ q: "" }) }] : []),
-    ...categories.map((c) => ({ label: c, remove: () => toggle("categories", c) })),
-    ...goals.map((g) => ({ label: g, remove: () => toggle("goals", g) })),
-    ...ingredients.map((i) => ({ label: i, remove: () => toggle("ingredients", i) })),
-    ...(maxPrice < MAX_PRICE
-      ? [{ label: `Under ${formatINR(maxPrice)}`, remove: () => update({ maxPrice: MAX_PRICE }) }]
-      : []),
-  ];
-  const filterCount = chips.length - (q ? 1 : 0);
-
-  const goToPage = (p: number) => {
-    update({ page: p });
-    document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
-  const filters = (
-    <>
-      <FilterGroup title="Category">
-        {CATEGORIES.map((c) => (
-          <Check
-            key={c}
-            label={c}
-            count={counts.categories[c]}
-            checked={categories.includes(c)}
-            onChange={() => toggle("categories", c)}
-          />
-        ))}
-      </FilterGroup>
-      <FilterGroup title="Health goal">
-        {HEALTH_GOALS.map((g) => (
-          <Check
-            key={g}
-            label={g}
-            count={counts.goals[g]}
-            checked={goals.includes(g)}
-            onChange={() => toggle("goals", g)}
-          />
-        ))}
-      </FilterGroup>
-      <FilterGroup title="Ingredient">
-        {INGREDIENTS.map((i) => (
-          <Check
-            key={i}
-            label={i}
-            count={counts.ingredients[i]}
-            checked={ingredients.includes(i)}
-            onChange={() => toggle("ingredients", i)}
-          />
-        ))}
-      </FilterGroup>
-      <FilterGroup title="Max price">
-        <S.Range>
-          <label htmlFor="max-price" className="sr-only">
-            Maximum price
-          </label>
-          <input
-            id="max-price"
-            type="range"
-            min={MIN_PRICE}
-            max={MAX_PRICE}
-            step={10}
-            value={maxPrice}
-            onChange={(e) => update({ maxPrice: Number(e.target.value) })}
-            style={
-              {
-                "--pct": `${((maxPrice - MIN_PRICE) / (MAX_PRICE - MIN_PRICE)) * 100}%`,
-              } as React.CSSProperties
-            }
-          />
-          <S.RangeValues>
-            <span>{formatINR(MIN_PRICE)}</span>
-            <strong>{maxPrice < MAX_PRICE ? `up to ${formatINR(maxPrice)}` : "Any price"}</strong>
-          </S.RangeValues>
-        </S.Range>
-      </FilterGroup>
-    </>
-  );
+/* ─── Sidebar inner ─────────────────────────────────────────── */
+function SidebarContent({
+  selectedCategories,
+  toggleCategory,
+  selectedGoals,
+  toggleGoal,
+  selectedIngredients,
+  toggleIngredient,
+  maxPrice,
+  setMaxPrice,
+}: {
+  selectedCategories: Category[];
+  toggleCategory: (c: Category) => void;
+  selectedGoals: HealthGoal[];
+  toggleGoal: (g: HealthGoal) => void;
+  selectedIngredients: Ingredient[];
+  toggleIngredient: (i: Ingredient) => void;
+  maxPrice: number;
+  setMaxPrice: (v: number) => void;
+}) {
+  const pct = Math.round((maxPrice / MAX_PRICE) * 100);
 
   return (
-    <S.Wrapper>
+    <>
+      <CollapsibleSection title="Category">
+        {CATEGORIES.map((cat) => (
+          <CheckboxLabel key={cat}>
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes(cat)}
+              onChange={() => toggleCategory(cat)}
+            />
+            {cat}
+          </CheckboxLabel>
+        ))}
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Health Goal">
+        {HEALTH_GOALS.map((goal) => (
+          <CheckboxLabel key={goal}>
+            <input type="checkbox" checked={selectedGoals.includes(goal)} onChange={() => toggleGoal(goal)} />
+            {goal}
+          </CheckboxLabel>
+        ))}
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Price Range">
+        <PriceRangeWrapper>
+          <RangeSlider
+            type="range"
+            min={100}
+            max={MAX_PRICE}
+            value={maxPrice}
+            style={{ "--val": `${pct}%` } as React.CSSProperties}
+            onChange={(e) => setMaxPrice(Number(e.target.value))}
+          />
+          <PriceValues>
+            <span>₹0</span>
+            <span>Up to ₹{maxPrice}</span>
+          </PriceValues>
+        </PriceRangeWrapper>
+      </CollapsibleSection>
+
+      <CollapsibleSection title="Ingredients" defaultOpen={false}>
+        {INGREDIENTS.map((ing) => (
+          <CheckboxLabel key={ing}>
+            <input
+              type="checkbox"
+              checked={selectedIngredients.includes(ing)}
+              onChange={() => toggleIngredient(ing)}
+            />
+            {ing}
+          </CheckboxLabel>
+        ))}
+      </CollapsibleSection>
+    </>
+  );
+}
+
+/* ─── Main Shop component ───────────────────────────────────── */
+export default function Shop() {
+  // Filters, sort and page live in the URL (shareable, survive refresh / Back)
+  const {
+    q,
+    categories: selectedCategories,
+    goals: selectedGoals,
+    ingredients: selectedIngredients,
+    maxPrice,
+    sort,
+    page: urlPage,
+    update,
+    toggle,
+    clear,
+  } = useShopQuery();
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  const toggleCategory = (c: Category) => toggle("categories", c);
+  const toggleGoal = (g: HealthGoal) => toggle("goals", g);
+  const toggleIngredient = (i: Ingredient) => toggle("ingredients", i);
+  const setMaxPrice = (v: number) => update({ maxPrice: v });
+  const setSort = (s: SortOption) => update({ sort: s });
+  const setPage = (p: number | ((prev: number) => number)) =>
+    update({ page: typeof p === "function" ? p(urlPage) : p });
+  const clearAll = clear;
+
+  /* Filter + sort (shared, unit-tested logic in the catalog service) */
+  const filtered = useMemo(
+    () =>
+      queryProducts({
+        q,
+        categories: selectedCategories,
+        goals: selectedGoals,
+        ingredients: selectedIngredients,
+        maxPrice,
+        sort,
+      }),
+    [q, selectedCategories, selectedGoals, selectedIngredients, maxPrice, sort],
+  );
+
+  /* Pagination */
+  const totalPages = Math.ceil(filtered.length / PER_PAGE);
+  const page = Math.min(urlPage, Math.max(1, totalPages));
+  const pageProducts = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
+
+  /* Active filter chips */
+  const activeFilters: { label: string; remove: () => void }[] = [
+    ...selectedCategories.map((c) => ({
+      label: c,
+      remove: () => toggleCategory(c),
+    })),
+    ...selectedGoals.map((g) => ({
+      label: g,
+      remove: () => toggleGoal(g),
+    })),
+    ...selectedIngredients.map((i) => ({
+      label: i,
+      remove: () => toggleIngredient(i),
+    })),
+    ...(maxPrice < MAX_PRICE ? [{ label: `Under ₹${maxPrice}`, remove: () => setMaxPrice(MAX_PRICE) }] : []),
+  ];
+
+  /* Pagination buttons */
+  function getPageBtns(): (number | "...")[] {
+    if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
+    const result: (number | "...")[] = [1];
+    if (page > 3) result.push("...");
+    for (let p = Math.max(2, page - 1); p <= Math.min(totalPages - 1, page + 1); p++) {
+      result.push(p);
+    }
+    if (page < totalPages - 2) result.push("...");
+    result.push(totalPages);
+    return result;
+  }
+
+  const sidebarProps = {
+    selectedCategories,
+    toggleCategory,
+    selectedGoals,
+    toggleGoal,
+    selectedIngredients,
+    toggleIngredient,
+    maxPrice,
+    // update() already resets pagination; a second setPage(1) would race the URL write
+    setMaxPrice,
+  };
+
+  return (
+    <ShopPageWrapper>
+      {/* Hero */}
       <PageHero
-        image={makhanaBg}
+        bg={makhanaBg.src}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Shop" }]}
         title={
           <>
-            The whole <em>pantry</em>
+            <span className="line">
+              <span className="w1">Shop </span>
+              <span className="w2">All</span>
+            </span>
+
+            <span className="line">
+              <span className="w3">Products</span>
+            </span>
           </>
         }
-        subtitle="Makhana, sattu, millet cookies and moringa — every product roasted or stone-ground, never fried, and clean label."
+        subtitle="Discover our full range of traditional Indian superfoods, consciously sourced and clean label guaranteed."
       />
 
-      <S.Container>
-        <S.Toolbar>
-          <S.SearchBox>
-            <Search size={18} aria-hidden />
-            <label htmlFor="shop-search" className="sr-only">
-              Search products
-            </label>
-            <input
-              id="shop-search"
-              type="search"
-              placeholder="Search makhana, sattu, protein…"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </S.SearchBox>
-          <S.ToolbarEnd>
-            <S.FilterToggle type="button" onClick={() => setDrawer(true)} aria-haspopup="dialog">
-              <SlidersHorizontal size={16} aria-hidden /> Filters
-              {filterCount > 0 && <span>{filterCount}</span>}
-            </S.FilterToggle>
-            <S.Sort>
-              <label htmlFor="sort">Sort</label>
-              <select id="sort" value={sort} onChange={(e) => update({ sort: e.target.value as SortOption })}>
-                {SORT_OPTIONS.map((o) => (
-                  <option key={o.value} value={o.value}>
-                    {o.label}
+      <PageContainer>
+        {/* Active Filters */}
+        {activeFilters.length > 0 && (
+          <ActiveFiltersRow>
+            <ActiveFilterLabel>Active Filters:</ActiveFilterLabel>
+            {activeFilters.map((f) => (
+              <FilterChip key={f.label} onClick={f.remove}>
+                {f.label} <span>×</span>
+              </FilterChip>
+            ))}
+            <ClearAllBtn onClick={clearAll}>Clear All</ClearAllBtn>
+          </ActiveFiltersRow>
+        )}
+
+        {/* Mobile filter button */}
+        <MobileFilterToggle onClick={() => setMobileFilterOpen(true)}>
+          <HiOutlineAdjustments />
+          Filters
+          {activeFilters.length > 0 && ` (${activeFilters.length})`}
+        </MobileFilterToggle>
+
+        <ContentLayout>
+          {/* Desktop Sidebar */}
+          <SidebarWrapper>
+            <SidebarTitle>Filters</SidebarTitle>
+            <SidebarScrollArea>
+              <SidebarContent {...sidebarProps} />
+            </SidebarScrollArea>
+          </SidebarWrapper>
+
+          {/* Product Area */}
+          <MainArea>
+            <ResultsBar>
+              <ResultsCount>
+                Showing {Math.min((page - 1) * PER_PAGE + 1, filtered.length)}–
+                {Math.min(page * PER_PAGE, filtered.length)} of {filtered.length} results
+              </ResultsCount>
+              <SortSelect
+                value={sort}
+                onChange={(e) => {
+                  setSort(e.target.value as SortOption);
+                }}
+              >
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}>
+                    {opt.label}
                   </option>
                 ))}
-              </select>
-            </S.Sort>
-          </S.ToolbarEnd>
-        </S.Toolbar>
+              </SortSelect>
+            </ResultsBar>
 
-        <S.Layout>
-          <S.Sidebar aria-label="Filters">{filters}</S.Sidebar>
-
-          <S.Main id="results">
-            <S.ResultsHead>
-              <p aria-live="polite">
-                {results.length === 0
-                  ? "No products"
-                  : `${results.length} product${results.length === 1 ? "" : "s"}`}
-              </p>
-              {chips.length > 0 && (
-                <S.Chips>
-                  {chips.map((c) => (
-                    <S.Chip
-                      key={c.label}
-                      type="button"
-                      onClick={c.remove}
-                      aria-label={`Remove filter ${c.label}`}
-                    >
-                      {c.label} <X size={14} aria-hidden />
-                    </S.Chip>
-                  ))}
-                  <S.ClearAll type="button" onClick={clear}>
-                    Clear all
-                  </S.ClearAll>
-                </S.Chips>
-              )}
-            </S.ResultsHead>
-
-            {visible.length === 0 ? (
-              <EmptyState
-                pose="sideLeft"
-                kicker="No matches"
-                title="Kairo looked everywhere."
-                description="Nothing matches those filters. Try removing one, or browse the whole range."
-                btnText="Show all products"
-                btnHref="/shop"
-              />
+            {pageProducts.length === 0 ? (
+              <EmptyState>
+                <h3>No products found</h3>
+                <p>Try adjusting or clearing your filters.</p>
+              </EmptyState>
             ) : (
-              <S.Grid>
-                {visible.map((p, i) => (
-                  <ProductCard key={p.id} product={p} priority={current === 1 && i < 3} />
+              <ProductGrid>
+                {pageProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
                 ))}
-              </S.Grid>
+              </ProductGrid>
             )}
 
+            {/* Pagination */}
             {totalPages > 1 && (
-              <S.Pagination aria-label="Pagination">
-                <S.PageBtn
-                  type="button"
-                  onClick={() => goToPage(current - 1)}
-                  disabled={current === 1}
-                  aria-label="Previous page"
+              <PaginationWrapper>
+                <PageBtn $arrow onClick={() => setPage((p) => Math.max(1, p - 1))} disabled={page === 1}>
+                  ‹
+                </PageBtn>
+                {getPageBtns().map((btn, i) =>
+                  btn === "..." ? (
+                    <PageBtn key={`ellipsis-${i}`} disabled>
+                      …
+                    </PageBtn>
+                  ) : (
+                    <PageBtn key={btn} $active={page === btn} onClick={() => setPage(btn as number)}>
+                      {btn}
+                    </PageBtn>
+                  ),
+                )}
+                <PageBtn
+                  $arrow
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
                 >
-                  <ChevronLeft size={18} />
-                </S.PageBtn>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                  <S.PageBtn
-                    key={n}
-                    type="button"
-                    onClick={() => goToPage(n)}
-                    aria-current={n === current ? "page" : undefined}
-                    aria-label={`Page ${n}`}
-                  >
-                    {n}
-                  </S.PageBtn>
-                ))}
-                <S.PageBtn
-                  type="button"
-                  onClick={() => goToPage(current + 1)}
-                  disabled={current === totalPages}
-                  aria-label="Next page"
-                >
-                  <ChevronRight size={18} />
-                </S.PageBtn>
-              </S.Pagination>
+                  ›
+                </PageBtn>
+              </PaginationWrapper>
             )}
-          </S.Main>
-        </S.Layout>
-      </S.Container>
+          </MainArea>
+        </ContentLayout>
+      </PageContainer>
 
-      {drawer && (
-        <S.Overlay onClick={() => setDrawer(false)}>
-          <S.Sheet role="dialog" aria-modal="true" aria-label="Filters" onClick={(e) => e.stopPropagation()}>
-            <S.SheetHead>
-              <h2>Filters</h2>
-              <button type="button" onClick={() => setDrawer(false)} aria-label="Close filters" autoFocus>
-                <X size={22} />
-              </button>
-            </S.SheetHead>
-            <S.SheetBody>{filters}</S.SheetBody>
-            <S.SheetFoot>
-              <button type="button" onClick={clear}>
-                Clear all
-              </button>
-              <button type="button" onClick={() => setDrawer(false)}>
-                Show {results.length} result{results.length === 1 ? "" : "s"}
-              </button>
-            </S.SheetFoot>
-          </S.Sheet>
-        </S.Overlay>
+      {/* Mobile Filter Drawer */}
+      {mobileFilterOpen && (
+        <FilterDrawerOverlay onClick={() => setMobileFilterOpen(false)}>
+          <FilterDrawer onClick={(e) => e.stopPropagation()}>
+            <FilterDrawerHeader>
+              <FilterDrawerTitle>Filters</FilterDrawerTitle>
+              <FilterDrawerClose onClick={() => setMobileFilterOpen(false)}>
+                <HiX />
+              </FilterDrawerClose>
+            </FilterDrawerHeader>
+            <SidebarContent {...sidebarProps} />
+          </FilterDrawer>
+        </FilterDrawerOverlay>
       )}
-    </S.Wrapper>
-  );
-}
-
-function FilterGroup({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <S.Group>
-      <legend>{title}</legend>
-      {children}
-    </S.Group>
-  );
-}
-
-function Check({
-  label,
-  count,
-  checked,
-  onChange,
-}: {
-  label: string;
-  count?: number;
-  checked: boolean;
-  onChange: () => void;
-}) {
-  return (
-    <S.CheckRow>
-      <input type="checkbox" checked={checked} onChange={onChange} />
-      <span>{label}</span>
-      {count !== undefined && <small>{count}</small>}
-    </S.CheckRow>
+    </ShopPageWrapper>
   );
 }

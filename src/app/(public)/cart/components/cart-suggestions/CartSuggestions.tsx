@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useCartPage } from "../../useCartPage";
-import { ProductCard } from "@/src/components/ui";
+import { ProductCard } from "@/src/components/ui/cards/product-card/ProductCard";
 import { SuggestionsSection, SectionTitle, SuggestionsGrid } from "./styled";
 
 export const CartSuggestions = () => {
@@ -12,7 +12,7 @@ export const CartSuggestions = () => {
 
   return (
     <SuggestionsSection>
-      <SectionTitle>Pairs well with</SectionTitle>
+      <SectionTitle>You Might Also Like</SectionTitle>
       <SuggestionsGrid>
         {recommended.map((product) => (
           <ProductCard key={product.id} product={product} />

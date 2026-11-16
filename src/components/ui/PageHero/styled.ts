@@ -1,83 +1,133 @@
 import styled from "styled-components";
-import { container, display, lead, mq } from "@/src/theme";
+import Link from "next/link";
 
-export const Wrap = styled.section`
-  padding-top: calc(var(--header-h) + clamp(1.5rem, 4vw, 3.5rem));
-  padding-bottom: clamp(2rem, 4vw, 3.5rem);
-  border-bottom: 1px solid var(--line);
-`;
-
-export const Inner = styled.div<{ $hasImage: boolean }>`
-  ${container};
-  display: grid;
-  grid-template-columns: ${({ $hasImage }) => ($hasImage ? "1.1fr 0.9fr" : "1fr")};
-  align-items: end;
-  gap: clamp(1.5rem, 4vw, 4rem);
-
-  ${mq.md} {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const Copy = styled.div`
+export const HeroWrapper = styled.section<{ $bg?: string }>`
+  width: 100%;
+  padding: 170px 24px 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(126, 124, 42, 0.08);
+  background: #1e1b18; /* Dark elegant brown base to back the dimmed image */
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  padding-bottom: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: ${({ $bg }) =>
+      $bg ? `url(${$bg})` : "linear-gradient(180deg, #f6f8ef 0%, #fafafa 100%)"};
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    filter: brightness(0.65);
+    z-index: 1;
+    pointer-events: none;
+  }
 `;
 
-export const Crumbs = styled.nav`
-  ol {
+export const HeroBreadcrumb = styled.nav`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 13px;
+  position: relative;
+  background: rgba(126, 124, 42, 0.05);
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 2;
+`;
+
+export const BreadcrumbLink = styled(Link)`
+  color: #f4f6f0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+export const BreadcrumbSep = styled.span`
+  color: rgba(244, 246, 240, 0.6);
+  font-size: 10px;
+`;
+
+export const BreadcrumbCurrent = styled.span`
+  color: #ffffff;
+  font-weight: 600;
+`;
+
+export const HeroTitle = styled.h1`
+  font-size: clamp(2.25rem, 5vw, 3.6rem);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.8px;
+  position: relative;
+  font-family: inherit;
+  z-index: 2;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.15;
+
+  .line {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    list-style: none;
-    font-size: 0.8125rem;
-    color: var(--muted);
+    white-space: nowrap;
+    gap: 12px;
   }
-  li + li::before {
-    content: "/";
-    margin-right: 0.5rem;
-    color: var(--muted-2);
+
+  .w1 {
+    font-weight: 300;
+    color: #ffffff;
   }
-  a {
-    text-decoration: none;
-    &:hover {
-      color: var(--ink);
+
+  .w2 {
+    font-weight: 800;
+    color: #a09e1dff;
+  }
+
+  .w3 {
+    font-weight: 800;
+    background: linear-gradient(120deg, #a09e1dff, #ffffff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  @media (max-width: 1024px) {
+    align-items: center;
+    .line {
+      justify-content: center;
     }
   }
-  [aria-current] {
-    color: var(--ink);
+
+  @media (max-width: 768px) {
+    .line {
+      flex-direction: column;
+      gap: 0;
+      white-space: normal;
+    }
   }
 `;
 
-export const Title = styled.h1`
-  ${display};
-  font-size: clamp(2.5rem, 1.8rem + 3.4vw, 4.75rem);
-
-  em {
-    font-style: italic;
-    color: var(--olive);
-  }
-`;
-
-export const Sub = styled.p`
-  ${lead};
-  max-width: 34rem;
-`;
-
-export const Frame = styled.div`
+export const HeroSubtitle = styled.p`
+  font-size: clamp(0.95rem, 1.8vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.95);
+  max-width: 620px;
+  line-height: 1.75;
   position: relative;
-  aspect-ratio: 16 / 10;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--paper-2);
-
-  img {
-    object-fit: cover;
-  }
-
-  ${mq.md} {
-    aspect-ratio: 21 / 9;
-  }
+  font-weight: 500;
+  z-index: 2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 `;

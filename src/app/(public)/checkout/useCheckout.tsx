@@ -36,7 +36,13 @@ export interface CheckoutForm {
   phone: string;
   shippingMethod: ShippingMethod;
   paymentMethod: PaymentMethod;
+  /** which tile was picked for online payment — Razorpay opens on this method */
+  onlineMethod: OnlineMethod;
+  selectedUPIApp: string;
+  selectedBank: string;
 }
+
+export type OnlineMethod = "upi" | "card" | "netbanking";
 
 export interface PlacedOrder {
   orderId: string;
@@ -79,6 +85,9 @@ const initialForm: CheckoutForm = {
   phone: "",
   shippingMethod: "standard",
   paymentMethod: "online",
+  onlineMethod: "upi",
+  selectedUPIApp: "gpay",
+  selectedBank: "sbi",
 };
 
 const initialState: State = {
@@ -116,6 +125,15 @@ function reducer(s: State, a: Action): State {
 }
 
 const scrollTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
+
+/* Razorpay netbanking bank codes for the bank picker */
+const BANK_CODES: Record<string, string> = {
+  sbi: "SBIN",
+  hdfc: "HDFC",
+  icici: "ICIC",
+  axis: "UTIB",
+  kotak: "KKBK",
+};
 
 function useCheckoutState() {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -225,8 +243,12 @@ function useCheckoutState() {
           name: `${form.firstName} ${form.lastName}`.trim(),
           email: form.email,
           contact: form.phone,
+          method: form.onlineMethod,
+          ...(form.onlineMethod === "netbanking" && BANK_CODES[form.selectedBank]
+            ? { bank: BANK_CODES[form.selectedBank] }
+            : {}),
         },
-        theme: { color: "#66711F" },
+        theme: { color: "#7E7C2A" },
         handler: async (resp: Record<string, string>) => {
           const v = await fetch("/api/payments/verify", {
             method: "POST",
@@ -275,11 +297,13 @@ function useCheckoutState() {
 
   const removePromo = useCallback(() => setAppliedPromo(null), [setAppliedPromo]);
   const setPromoInput = useCallback((value: string) => dispatch({ type: "promoInput", value }), []);
+  const setErrors = useCallback((errors: Record<string, string>) => dispatch({ type: "errors", errors }), []);
 
   const formValue = useMemo(
     () => ({
       form,
       errors: state.errors,
+      setErrors,
       setField,
       goToPayment,
       backToDetails,
@@ -291,6 +315,7 @@ function useCheckoutState() {
     [
       form,
       state.errors,
+      setErrors,
       setField,
       goToPayment,
       backToDetails,
@@ -348,3 +373,119 @@ const use = <T,>(ctx: React.Context<T | null>, name: string) => {
 export const useCheckoutForm = () => use(FormContext, "useCheckoutForm");
 export const useCheckoutSummary = () => use(SummaryContext, "useCheckoutSummary");
 export const useCheckoutStatus = () => use(StatusContext, "useCheckoutStatus");
+
+/* ------------------------------------------------------------------------
+ * Compatibility layer for the original checkout components.
+ *
+ * The step forms keep their original markup and the API they were written
+ * against (setEmail, setErrors(prev => …), handleGoToPayment, …). These hooks
+ * map that API onto the reducer above. Summary and status components use the
+ * narrow hooks so typing in the form doesn't re-render them.
+ * ---------------------------------------------------------------------- */
+
+export {
+  STANDARD_SHIPPING_CHARGE,
+  EXPRESS_SHIPPING_CHARGE,
+  FREE_SHIPPING_THRESHOLD,
+} from "@/src/lib/pricing";
+
+type LegacyPayment = OnlineMethod | "cod";
+type ErrorsUpdate = Record<string, string> | ((prev: Record<string, string>) => Record<string, string>);
+
+/** Full legacy API — used by the two step forms. */
+export function useCheckout() {
+  const f = useCheckoutForm();
+  const { form, setField, errors } = f;
+  const setter =
+    <K extends keyof CheckoutForm>(name: K) =>
+    (value: CheckoutForm[K]) =>
+      setField(name, value);
+
+  const paymentMethod: LegacyPayment = form.paymentMethod === "cod" ? "cod" : form.onlineMethod;
+  const setPaymentMethod = (m: LegacyPayment) => {
+    if (m === "cod") setField("paymentMethod", "cod");
+    else {
+      setField("paymentMethod", "online");
+      setField("onlineMethod", m);
+    }
+  };
+
+  return {
+    ...form,
+    setEmail: setter("email"),
+    setMarketingOptIn: setter("marketingOptIn"),
+    setDeliveryMode: setter("deliveryMode"),
+    setFirstName: setter("firstName"),
+    setLastName: setter("lastName"),
+    setAddress: setter("address"),
+    setApartment: setter("apartment"),
+    setCity: setter("city"),
+    setState: setter("state"),
+    setPinCode: setter("pinCode"),
+    setPhone: setter("phone"),
+    setShippingMethod: setter("shippingMethod"),
+    setSelectedUPIApp: setter("selectedUPIApp"),
+    setSelectedBank: setter("selectedBank"),
+    paymentMethod,
+    setPaymentMethod,
+    errors,
+    setErrors: (u: ErrorsUpdate) => f.setErrors(typeof u === "function" ? u(errors) : u),
+    playClickSound: playClick,
+    handleGoToPayment: f.goToPayment,
+    handleBackToDetails: () => {
+      playClick();
+      f.backToDetails();
+    },
+    handlePlaceOrder: () => {
+      playClick();
+      void f.placeOrder();
+    },
+    submitting: f.submitting,
+    submitError: f.submitError,
+    finalTotal: f.totals.total,
+    isFreeShipping: f.totals.freeShipping,
+  };
+}
+
+/** Legacy names for the order summary, backed by the summary context only. */
+export function useCheckoutSummaryLegacy() {
+  const s = useCheckoutSummary();
+  return {
+    items: s.items,
+    cartTotal: s.totals.subtotal,
+    appliedPromo: s.appliedPromo,
+    promoCode: s.promoInput,
+    setPromoCode: s.setPromoInput,
+    promoError: s.promoError,
+    activeShippingCharge: s.totals.shipping,
+    discountAmount: s.totals.discount,
+    codFee: s.totals.codFee,
+    finalTotal: s.totals.total,
+    handleApplyPromo: () => {
+      playClick();
+      s.applyPromo();
+    },
+    handleRemovePromo: () => {
+      playClick();
+      s.removePromo();
+    },
+  };
+}
+
+/** Legacy names for the confirmation screen, from the placed-order snapshot. */
+export function useCheckoutConfirmation() {
+  const { placed } = useCheckoutStatus();
+  const f = placed?.form;
+  return {
+    email: f?.email ?? "",
+    orderId: placed?.orderId ?? "",
+    deliveryMode: f?.deliveryMode ?? "ship",
+    address: f?.address ?? "",
+    city: f?.city ?? "",
+    state: f?.state ?? "",
+    pinCode: f?.pinCode ?? "",
+    paymentMethod: f?.paymentMethod === "cod" ? "cod" : (f?.onlineMethod ?? "upi"),
+    completedOrderTotal: placed?.total ?? 0,
+    paymentMode: placed?.mode,
+  };
+}

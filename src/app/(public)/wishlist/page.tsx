@@ -1,45 +1,96 @@
 "use client";
 
-import { PageHero, EmptyState, ProductCard } from "@/src/components/ui";
+import { FavoriteTwoToneIcon } from "@/src/components/ui/MaterialIcons";
+import { PageHero, EmptyState } from "@/src/components/ui";
+import cartBg from "@/src/assets/images/section-images/wishlist.webp";
 import { useWishlist } from "@/src/hooks/useWishlist";
 import { getAllProducts } from "@/src/services/catalog";
+
+const ALL_PRODUCTS = getAllProducts();
+import { ProductCard } from "../../../components/ui/cards/product-card/ProductCard";
+
 import { WishlistPageWrapper, PageContainer, Container, WishlistGrid } from "./styled";
 
 export default function WishlistPage() {
   const { wishlistIds, isHydrated } = useWishlist();
-  const saved = getAllProducts().filter((p) => wishlistIds.includes(p.id));
+
+  const wishlistedProducts = ALL_PRODUCTS.filter((product) => wishlistIds.includes(product.id));
+
+  // Next.js Hydration Guard
+  if (!isHydrated) {
+    return (
+      <WishlistPageWrapper>
+        <PageHero
+          bg={cartBg.src}
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Wishlist" }]}
+          title={
+            <>
+              <span className="line">
+                <span className="w1">Your </span>
+                <span className="w2">Healthy</span>
+              </span>
+              <span className="line">
+                <span className="w3">Favorites</span>
+              </span>
+            </>
+          }
+          subtitle="Loading your favorite superfoods..."
+        />
+        <PageContainer>
+          <Container>
+            <div
+              style={{
+                textAlign: "center",
+                padding: "100px 0",
+                color: "#7e7c2a",
+                fontSize: "18px",
+                fontWeight: "600",
+              }}
+            >
+              Loading your favorites...
+            </div>
+          </Container>
+        </PageContainer>
+      </WishlistPageWrapper>
+    );
+  }
 
   return (
     <WishlistPageWrapper>
       <PageHero
+        bg={cartBg.src}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Wishlist" }]}
         title={
           <>
-            Saved <em>for later</em>
+            <span className="line">
+              <span className="w1">Your </span>
+              <span className="w2">Healthy</span>
+            </span>
+            <span className="line">
+              <span className="w3">Favorites</span>
+            </span>
           </>
         }
         subtitle={
-          !isHydrated
-            ? " "
-            : saved.length > 0
-              ? `${saved.length} favourite${saved.length === 1 ? "" : "s"}, waiting for you.`
-              : "Tap the heart on anything you love and it'll wait for you here."
+          wishlistedProducts.length > 0
+            ? `You have saved ${wishlistedProducts.length} clean label item${wishlistedProducts.length === 1 ? "" : "s"} for later.`
+            : "Keep track of the clean-label treats you love."
         }
       />
 
       <PageContainer>
         <Container>
-          {!isHydrated ? null : saved.length === 0 ? (
+          {wishlistedProducts.length === 0 ? (
             <EmptyState
-              pose="threeQuarter"
-              kicker="No favourites yet"
-              title="Kairo's still deciding too."
-              description="Browse the range and tap the heart on the snacks you want to come back to."
-              btnText="Explore the range"
+              icon={<FavoriteTwoToneIcon sx={{ fontSize: 44 }} className="main-icon" />}
+              badgeText="0 favorites • Empty list 🥺"
+              title="No favorites saved yet"
+              description="Looks like you haven't favorited any of our wholesome ingredients or high-protein treats yet. Tap the heart on products you love!"
+              btnText="Explore Wholesome Treats"
             />
           ) : (
             <WishlistGrid>
-              {saved.map((product) => (
+              {wishlistedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
             </WishlistGrid>

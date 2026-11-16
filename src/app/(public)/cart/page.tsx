@@ -1,7 +1,10 @@
 "use client";
 
+import { LocalMallTwoToneIcon } from "@/src/components/ui/MaterialIcons";
+import React from "react";
 import { CartPageProvider, useCartPage } from "./useCartPage";
 import { PageHero, EmptyState } from "@/src/components/ui";
+import cartBg from "@/src/assets/images/section-images/cart.webp";
 import {
   CartPageWrapper,
   PageContainer,
@@ -15,47 +18,85 @@ import { CartProgress, CartItemsList, CartSummary, CartSuggestions } from "./com
 function CartContent() {
   const { items, cartCount, isHydrated } = useCartPage();
 
-  const subtitle = !isHydrated
-    ? " "
-    : items.length > 0
-      ? `${cartCount} item${cartCount === 1 ? "" : "s"} ready to go. Free delivery on orders over ₹999.`
-      : "Nothing here yet — let's fix that.";
+  // Next.js Hydration Guard
+  if (!isHydrated) {
+    return (
+      <CartPageWrapper>
+        <PageHero
+          bg={cartBg.src}
+          breadcrumbs={[{ label: "Home", href: "/" }, { label: "Cart" }]}
+          title={
+            <>
+              <span className="line">
+                <span className="w1">Your </span>
+                <span className="w2">Shopping</span>
+              </span>
+              <span className="line">
+                <span className="w3">Cart</span>
+              </span>
+            </>
+          }
+          subtitle="Loading your healthy goodies..."
+        />
+        <PageContainer>
+          <Container>
+            <LoadingState>Loading your cart items...</LoadingState>
+          </Container>
+        </PageContainer>
+      </CartPageWrapper>
+    );
+  }
 
   return (
     <CartPageWrapper>
       <PageHero
+        bg={cartBg.src}
         breadcrumbs={[{ label: "Home", href: "/" }, { label: "Cart" }]}
         title={
           <>
-            Your <em>cart</em>
+            <span className="line">
+              <span className="w1">Your </span>
+              <span className="w2">Shopping</span>
+            </span>
+            <span className="line">
+              <span className="w3">Cart</span>
+            </span>
           </>
         }
-        subtitle={subtitle}
+        subtitle={
+          items.length > 0
+            ? `You have ${cartCount} clean label superfood item${cartCount === 1 ? "" : "s"} in your cart.`
+            : "Review your healthy goodies and proceed to checkout."
+        }
       />
       <PageContainer>
         <Container>
-          {!isHydrated ? (
-            <LoadingState aria-busy="true">Loading your cart…</LoadingState>
-          ) : items.length === 0 ? (
+          {items.length === 0 ? (
             <>
               <EmptyState
-                pose="parachute"
-                kicker="Your cart is empty"
-                title="Kairo's floating in, but your cart is empty."
-                description="Start with a best seller — roasted makhana, a sattu shake, or millet cookies. Delivery is free over ₹999."
-                btnText="Browse the shop"
+                icon={<LocalMallTwoToneIcon sx={{ fontSize: 44 }} className="main-icon" />}
+                badgeText="0 items • 100% empty 🥺"
+                title="Your cart is craving some fuel"
+                description="It's looking a bit empty here. Treat yourself to some clean-label, consciously sourced goodness. Your body will thank you!"
+                btnText="Start Nourishing"
               />
+
               <CartSuggestions />
             </>
           ) : (
             <>
               <CartLayout>
+                {/* Left Column: Items List & Free Shipping Progress */}
                 <CartMainColumn>
                   <CartProgress />
                   <CartItemsList />
                 </CartMainColumn>
+
+                {/* Right Column: Order Summary */}
                 <CartSummary />
               </CartLayout>
+
+              {/* Suggestions at bottom */}
               <CartSuggestions />
             </>
           )}

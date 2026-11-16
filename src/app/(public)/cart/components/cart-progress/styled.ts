@@ -1,10 +1,10 @@
 import styled, { keyframes } from "styled-components";
 
 export const ShippingProgressContainer = styled.div`
-  background: var(--surface);
+  background: #fdfaf5;
   border-radius: 10px;
   padding: 16px 20px;
-  border: 1px solid rgb(var(--olive-rgb) / 0.12);
+  border: 1px solid rgba(126, 124, 42, 0.12);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -14,18 +14,18 @@ export const ShippingProgressContainer = styled.div`
 export const ShippingProgressText = styled.div`
   font-size: 14px;
   font-weight: 500;
-  color: var(--ink);
+  color: #3a2f25;
   display: flex;
   align-items: center;
   gap: 8px;
 
   span {
     font-weight: 700;
-    color: var(--olive);
+    color: #7e7c2a;
   }
 
   svg {
-    color: var(--olive);
+    color: #7e7c2a;
     font-size: 16px;
   }
 `;
@@ -33,7 +33,7 @@ export const ShippingProgressText = styled.div`
 export const ProgressBarWrapper = styled.div`
   width: 100%;
   height: 4px;
-  background: var(--paper);
+  background: #e8e6df;
   border-radius: 2px;
   position: relative;
   margin: 64px 0 16px 0;
@@ -45,7 +45,7 @@ export const ProgressBarFill = styled.div<{ $percent: number }>`
     const pct = Math.min(100, $percent);
     return `calc(${pct}% + ${1.105 * (100 - pct)}px)`;
   }};
-  background: var(--olive);
+  background: #7e7c2a;
   border-radius: 2px;
   transition: width 3s cubic-bezier(0.22, 1, 0.36, 1);
   position: absolute;
@@ -61,10 +61,10 @@ export const RewardCheckpoint = styled.div<{ $percent: number }>`
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  background: ${({ $percent }) => ($percent >= 50 ? "var(--olive)" : "var(--paper)")};
-  border: 2px solid var(--surface);
+  background: ${({ $percent }) => ($percent >= 50 ? "#7e7c2a" : "#e8e6df")};
+  border: 2px solid #fdfaf5;
   box-shadow: 0 0 0 2px
-    ${({ $percent }) => ($percent >= 50 ? "rgb(var(--olive-rgb) / 0.4)" : "rgba(232, 230, 223, 0.4)")};
+    ${({ $percent }) => ($percent >= 50 ? "rgba(126, 124, 42, 0.4)" : "rgba(232, 230, 223, 0.4)")};
   z-index: 5;
   transition: all 0.5s ease;
 
@@ -83,28 +83,28 @@ export const RewardCheckpoint = styled.div<{ $percent: number }>`
 const firePulse = keyframes`
   0% {
     transform: translateX(-50%) scale(0.95);
-    box-shadow: 0 4px 12px rgb(222 148 32 / 0.3), 0 0 0 0 rgb(222 148 32 / 0.5);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3), 0 0 0 0 rgba(239, 68, 68, 0.5);
   }
   50% {
     transform: translateX(-50%) scale(1.05);
-    box-shadow: 0 6px 16px rgb(222 148 32 / 0.5), 0 0 0 8px rgb(222 148 32 / 0);
+    box-shadow: 0 6px 16px rgba(249, 115, 22, 0.5), 0 0 0 8px rgba(249, 115, 22, 0);
   }
   100% {
     transform: translateX(-50%) scale(0.95);
-    box-shadow: 0 4px 12px rgb(222 148 32 / 0.3), 0 0 0 0 rgb(222 148 32 / 0);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3), 0 0 0 0 rgba(239, 68, 68, 0);
   }
 `;
 
-export const FireRewardPopup = styled.button`
+export const FireRewardPopup = styled.div`
   position: absolute;
   top: -52px;
   left: 50%;
   transform: translateX(-50%);
-  background: var(--saffron);
-  color: var(--forest);
+  background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+  color: #ffffff;
   padding: 8px 14px;
   border-radius: 30px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   white-space: nowrap;
   display: flex;
@@ -124,7 +124,7 @@ export const FireRewardPopup = styled.button`
     transform: translateX(-50%);
     border-width: 6px 6px 0;
     border-style: solid;
-    border-color: var(--saffron) transparent transparent;
+    border-color: #f97316 transparent transparent;
   }
 
   &:hover {

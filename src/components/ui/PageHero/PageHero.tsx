@@ -1,9 +1,13 @@
-"use client";
-
 import React from "react";
-import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
-import { Wrap, Inner, Copy, Crumbs, Title, Sub, Frame } from "./styled";
+import {
+  HeroWrapper,
+  HeroBreadcrumb,
+  BreadcrumbLink,
+  BreadcrumbSep,
+  BreadcrumbCurrent,
+  HeroTitle,
+  HeroSubtitle,
+} from "./styled";
 
 export interface BreadcrumbItem {
   label: string;
@@ -11,47 +15,38 @@ export interface BreadcrumbItem {
 }
 
 export interface PageHeroProps {
-  image?: StaticImageData;
+  bg?: string;
   breadcrumbs?: BreadcrumbItem[];
   title: React.ReactNode;
   subtitle?: React.ReactNode;
 }
 
-/**
- * Inner-page header. Text sits on paper; the photo is a framed band to the
- * right instead of a full-bleed background (the old version loaded a 6000px
- * JPEG as a raw CSS background on every page).
- */
-export const PageHero = ({ image, breadcrumbs, title, subtitle }: PageHeroProps) => (
-  <Wrap>
-    <Inner $hasImage={!!image}>
-      <Copy>
-        {breadcrumbs && breadcrumbs.length > 0 && (
-          <Crumbs aria-label="Breadcrumb">
-            <ol>
-              {breadcrumbs.map((c, i) => {
-                const last = i === breadcrumbs.length - 1;
-                return (
-                  <li key={c.label}>
-                    {last || !c.href ? (
-                      <span aria-current={last ? "page" : undefined}>{c.label}</span>
-                    ) : (
-                      <Link href={c.href}>{c.label}</Link>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </Crumbs>
-        )}
-        <Title>{title}</Title>
-        {subtitle && <Sub>{subtitle}</Sub>}
-      </Copy>
-      {image && (
-        <Frame>
-          <Image src={image} alt="" fill priority sizes="(max-width: 900px) 100vw, 45vw" placeholder="blur" />
-        </Frame>
+export const PageHero: React.FC<PageHeroProps> = ({ bg, breadcrumbs, title, subtitle }) => {
+  return (
+    <HeroWrapper $bg={bg}>
+      {breadcrumbs && breadcrumbs.length > 0 && (
+        <HeroBreadcrumb>
+          {breadcrumbs.map((crumb, idx) => {
+            const isLast = idx === breadcrumbs.length - 1;
+            if (isLast) {
+              return (
+                <React.Fragment key={crumb.label}>
+                  {idx > 0 && <BreadcrumbSep>›</BreadcrumbSep>}
+                  <BreadcrumbCurrent>{crumb.label}</BreadcrumbCurrent>
+                </React.Fragment>
+              );
+            }
+            return (
+              <React.Fragment key={crumb.label}>
+                {idx > 0 && <BreadcrumbSep>›</BreadcrumbSep>}
+                <BreadcrumbLink href={crumb.href || "/"}>{crumb.label}</BreadcrumbLink>
+              </React.Fragment>
+            );
+          })}
+        </HeroBreadcrumb>
       )}
-    </Inner>
-  </Wrap>
-);
+      <HeroTitle>{title}</HeroTitle>
+      {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
+    </HeroWrapper>
+  );
+};

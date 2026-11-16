@@ -1,9 +1,8 @@
 "use client";
 
+import { LocalShippingTwoToneIcon } from "@/src/components/ui/MaterialIcons";
 import React from "react";
 import Image from "next/image";
-import { Truck } from "lucide-react";
-import { formatINR } from "@/src/lib/pricing";
 import truckImg from "@/src/assets/images/illustration/Ahar_Truck-Left.webp";
 import { useCartPage, FREE_SHIPPING_THRESHOLD } from "../../useCartPage";
 import {
@@ -22,15 +21,15 @@ export const CartProgress = () => {
   return (
     <ShippingProgressContainer>
       <ShippingProgressText>
-        <Truck aria-hidden />
+        <LocalShippingTwoToneIcon />
         {isFreeShipping ? (
           <span>
-            You&rsquo;ve unlocked <strong>free delivery</strong>.
+            Congrats! You have unlocked <strong>Free Delivery</strong>! 🎉
           </span>
         ) : (
           <>
-            Add <span>{formatINR(FREE_SHIPPING_THRESHOLD - cartTotal)}</span> more for{" "}
-            <strong>free delivery</strong>
+            Add <span>₹{FREE_SHIPPING_THRESHOLD - cartTotal}</span> more to unlock{" "}
+            <strong>Free Shipping</strong>
           </>
         )}
       </ShippingProgressText>
@@ -39,11 +38,11 @@ export const CartProgress = () => {
         <RewardCheckpoint $percent={animatedPercent} />
         <TruckProgressMarker $percent={animatedPercent}>
           {animatedPercent >= 50 && (
-            <FireRewardPopup type="button" onClick={handleCollectReward}>
-              {rewardCopied ? "Code applied ✓" : "Tap to unlock 10% off"}
+            <FireRewardPopup onClick={handleCollectReward}>
+              {rewardCopied ? "🔥 Copied!" : "🔥 Unlock 10% Off: AHARA10"}
             </FireRewardPopup>
           )}
-          <Image src={truckImg} alt="" fill sizes="64px" />
+          <Image src={truckImg} alt="Shipping Truck" fill />
         </TruckProgressMarker>
       </ProgressBarWrapper>
     </ShippingProgressContainer>

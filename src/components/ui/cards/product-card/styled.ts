@@ -1,199 +1,298 @@
-import styled from "styled-components";
-import { mq } from "@/src/theme";
+import Link from "next/link";
+import styled, { keyframes } from "styled-components";
 
-export const Card = styled.article`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  border-radius: var(--radius-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
-  overflow: hidden;
-  transition:
-    border-color 0.3s var(--ease-out),
-    box-shadow 0.3s var(--ease-out);
-
-  &:hover {
-    border-color: var(--line-strong);
-    box-shadow: var(--shadow);
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
-  &:hover img {
-    transform: scale(1.04);
-  }
-  &:focus-within {
-    border-color: var(--olive);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 `;
 
-export const Media = styled.div`
+export const CardContainer = styled.div`
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   position: relative;
-  aspect-ratio: 4 / 4.2;
-  background: var(--paper-2);
-  overflow: hidden;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(42, 36, 30, 0.02);
+  border: 1px solid #7e7d2a4e;
+  animation: ${fadeIn} 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  &:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(42, 36, 30, 0.08);
+    border-color: rgba(126, 124, 42, 0.2);
+  }
 
   img {
     object-fit: cover;
-    transition: transform 0.7s var(--ease-out);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  &:hover img {
+    transform: scale(1.06);
+  }
+`;
+
+/* Stretched link: the whole card is clickable without wrapping buttons in <a> */
+export const CardLink = styled(Link)`
+  color: inherit;
+  text-decoration: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+  }
+  &:focus-visible {
+    outline: none;
+  }
+`;
+
+export const ImageContainer = styled.div`
+  width: 100%;
+  aspect-ratio: 1.1 / 1;
+  background: #f4f6f0; // Soft cream/green background
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+
+  ${CardContainer}:hover & {
+    background: #ebeee2;
   }
 `;
 
 export const Badge = styled.span<{ $type: string }>`
   position: absolute;
-  top: 0.85rem;
-  left: 0.85rem;
-  padding: 0.3rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: ${({ $type }) => ($type === "New" ? "var(--saffron)" : $type === "Sale" ? "var(--danger)" : "var(--forest)")};
-  color: ${({ $type }) => ($type === "New" ? "var(--forest)" : "var(--paper)")};
-`;
-
-export const Save = styled.button`
-  position: absolute;
+  top: 10px;
+  right: 10px;
   z-index: 2;
-  top: 0.65rem;
-  right: 0.65rem;
-  display: grid;
-  place-items: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  border: 0;
-  background: rgb(255 252 246 / 0.9);
-  color: var(--ink);
-  transition:
-    color 0.2s,
-    transform 0.2s var(--ease-out);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 
-  &[aria-pressed="true"] {
-    color: var(--danger);
-  }
-  &:hover {
-    transform: scale(1.08);
-  }
+  ${({ $type }) =>
+    $type === "Bestseller" &&
+    `
+      background: #5f320fff;
+      color: #ecf3d4;
+    `}
+  ${({ $type }) =>
+    $type === "New" &&
+    `
+      background: #7e7c2a;
+      color: #ffffff;
+    `}
+  ${({ $type }) =>
+    $type === "Sale" &&
+    `
+      background: #c0392b;
+      color: #ffffff;
+    `}
 `;
 
-export const Body = styled.div`
+export const CardBody = styled.div`
+  padding: 12px 6px 4px;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  padding: 1rem 1.1rem 1.1rem;
-  flex: 1;
-`;
-
-export const Meta = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted);
-`;
-
-export const Rating = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  text-transform: none;
-  letter-spacing: 0;
-  color: var(--ink-2);
-  font-weight: 600;
-
-  svg {
-    color: var(--saffron);
-  }
-  small {
-    font-weight: 400;
-    color: var(--muted);
-  }
+  flex-grow: 1;
 `;
 
 export const Title = styled.h3`
-  font-family: var(--font-display);
-  font-variation-settings: "opsz" 36;
-  font-weight: 500;
-  font-size: 1.1875rem;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  font-size: 15px;
+  font-weight: 700;
+  color: #43230aff;
+  margin-bottom: 4px;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+  transition: color 0.2s ease;
 
-  a {
-    text-decoration: none;
-    color: var(--ink);
-
-    /* stretched link: the whole card is the hit area */
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-    &:focus-visible {
-      outline: none;
-    }
-  }
-
-  em {
-    font-style: italic;
-    color: var(--olive);
+  ${CardContainer}:hover & {
+    color: #7e7c2a;
   }
 `;
 
-export const Foot = styled.div`
-  margin-top: auto;
-  padding-top: 0.5rem;
+export const Description = styled.p`
+  font-size: 12px;
+  color: #6f8b5b;
+  line-height: 1.4;
+  margin-bottom: 12px;
+  flex-grow: 1;
+`;
+
+export const TagRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 10px;
+`;
+
+export const Tag = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  color: #7e7c2a;
+  background: rgba(126, 124, 42, 0.06);
+  border: 1px solid rgba(126, 124, 42, 0.08);
+  border-radius: 20px;
+  padding: 2px 8px;
+`;
+
+export const FooterRow = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-top: auto;
+  border-top: 1px solid rgba(126, 124, 42, 0.08);
+  padding-top: 10px;
 `;
 
-export const Price = styled.p`
+export const PriceInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+`;
+
+export const PriceLabel = styled.span`
+  font-size: 10px;
+  font-weight: 700;
+  color: #a7a48a;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+`;
+
+export const PriceRow = styled.div`
   display: flex;
   align-items: baseline;
-  gap: 0.5rem;
-  font-weight: 600;
-  font-size: 1.0625rem;
-  color: var(--ink);
+  gap: 6px;
+`;
 
-  s {
-    font-weight: 400;
-    font-size: 0.875rem;
-    color: var(--muted);
+export const Price = styled.span`
+  font-size: 16px;
+  font-weight: 800;
+  color: #5f320fff;
+`;
+
+export const OriginalPrice = styled.span`
+  font-size: 12px;
+  color: #b5b09e;
+  text-decoration: line-through;
+  font-weight: 500;
+`;
+
+export const AddToCartCircle = styled.button`
+  position: relative;
+  z-index: 2;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid #7e7c2a;
+  background: transparent;
+  color: #7e7c2a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  font-size: 16px;
+
+  &:hover {
+    background: #7e7c2a;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(126, 124, 42, 0.2);
+    transform: scale(1.05);
+  }
+
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
-export const Add = styled.button`
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
+export const WishlistButton = styled.button<{ $active: boolean }>`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 3;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(126, 124, 42, 0.15);
+  background: ${({ $active }) => ($active ? "#ffffff" : "rgba(255, 255, 255, 0.85)")};
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: ${({ $active }) => ($active ? "#c0392b" : "#7e7c2a")};
+  display: flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.55rem 0.85rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--line-strong);
-  background: transparent;
-  color: var(--ink);
-  font-size: 0.875rem;
-  font-weight: 600;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(42, 36, 30, 0.05);
 
   &:hover {
-    background: var(--olive);
-    border-color: var(--olive);
-    color: #fff;
+    transform: scale(1.1);
+    background: #ffffff;
+    color: #c0392b;
+    box-shadow: 0 6px 16px rgba(192, 57, 43, 0.15);
   }
 
-  ${mq.sm} {
-    span {
-      display: none;
-    }
-    padding: 0.55rem;
+  &:active {
+    transform: scale(0.9);
   }
+
+  svg {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  ${({ $active }) =>
+    $active &&
+    `
+      svg {
+        animation: heartBeat 0.4s ease-out;
+      }
+    `}
+
+  @keyframes heartBeat {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.3);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+`;
+
+export const RatingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: #a7a48a;
+  font-weight: 600;
+  margin-bottom: 8px;
+`;
+
+export const Stars = styled.div`
+  display: flex;
+  gap: 2px;
+  color: #d4af37;
+  font-size: 11px;
 `;

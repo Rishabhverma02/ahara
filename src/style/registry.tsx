@@ -3,15 +3,16 @@
 import { useState } from "react";
 import { useServerInsertedHTML } from "next/navigation";
 import { ServerStyleSheet, StyleSheetManager } from "styled-components";
-import { GlobalStyle } from "./globalstyle";
+import { ThemeProviders } from "./ThemeProviders";
+import { AppTokens } from "./tokens";
 
 /**
  * Collects styled-components CSS during SSR and flushes it into the HTML.
  *
- * Previously the client branch returned bare `children`, so <GlobalStyle /> and
- * the ThemeProvider existed only on the server: the tree differed between
- * server and client and the global styles were dropped after hydration.
- * GlobalStyle now renders in both environments.
+ * The theme providers (theme, global style, typography classes) render on both
+ * server and client. Previously the client branch returned bare `children`, so
+ * the ThemeProvider and global styles only existed on the server and were
+ * dropped after hydration.
  */
 export function StyledComponentsRegistry({ children }: { children: React.ReactNode }) {
   const [sheet] = useState(() => new ServerStyleSheet());
@@ -23,10 +24,10 @@ export function StyledComponentsRegistry({ children }: { children: React.ReactNo
   });
 
   const content = (
-    <>
-      <GlobalStyle />
+    <ThemeProviders>
+      <AppTokens />
       {children}
-    </>
+    </ThemeProviders>
   );
 
   if (typeof window !== "undefined") return content;

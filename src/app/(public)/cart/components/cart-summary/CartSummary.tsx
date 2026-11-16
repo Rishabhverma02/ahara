@@ -1,8 +1,11 @@
 "use client";
 
+import {
+  LocalOfferTwoToneIcon,
+  AutoAwesomeTwoToneIcon,
+  HttpsTwoToneIcon,
+} from "@/src/components/ui/MaterialIcons";
 import React from "react";
-import { Check, Lock, Tag } from "lucide-react";
-import { formatINR } from "@/src/lib/pricing";
 import { useCartPage } from "../../useCartPage";
 import {
   OrderSummaryCard,
@@ -21,7 +24,6 @@ import {
   CheckoutActionsGroup,
   CheckoutButton,
   SecureCheckoutText,
-  FreeTag,
 } from "./styled";
 
 export const CartSummary = () => {
@@ -41,47 +43,51 @@ export const CartSummary = () => {
 
   return (
     <OrderSummaryCard>
-      <SummaryTitle>Order summary</SummaryTitle>
+      <SummaryTitle>Order Summary</SummaryTitle>
 
       <SummaryRowsGroup>
         <SummaryRow>
           <span>Subtotal</span>
-          <span>{formatINR(cartTotal)}</span>
+          <span>₹{cartTotal}</span>
         </SummaryRow>
 
         {discountAmount > 0 && (
           <SummaryRow $isDiscount>
             <span>Discount (10% off)</span>
-            <span>−{formatINR(discountAmount)}</span>
+            <span>-₹{discountAmount}</span>
           </SummaryRow>
         )}
 
         <SummaryRow>
           <span>Delivery Charge</span>
-          <span>{shippingCharge === 0 ? <FreeTag>Free</FreeTag> : formatINR(shippingCharge)}</span>
+          <span>
+            {shippingCharge === 0 ? (
+              <span style={{ color: "#496a35", fontWeight: 800 }}>FREE</span>
+            ) : (
+              `₹${shippingCharge}`
+            )}
+          </span>
         </SummaryRow>
 
         <SummaryDivider />
 
         <SummaryRow $isTotal>
           <span>Total Amount</span>
-          <span>{formatINR(finalTotal)}</span>
+          <span>₹{finalTotal}</span>
         </SummaryRow>
       </SummaryRowsGroup>
 
       {/* Promo Code Input */}
       <PromoCodeContainer>
         <PromoLabel htmlFor="promo-input">
-          <Tag aria-hidden /> Promo code
+          <LocalOfferTwoToneIcon /> Have a Promo Code?
         </PromoLabel>
         {appliedPromo ? (
           <ActivePromoBox>
             <PromoSuccessText>
-              <Check aria-hidden /> Applied: {appliedPromo}
+              <AutoAwesomeTwoToneIcon /> Applied: {appliedPromo}
             </PromoSuccessText>
-            <button type="button" onClick={handleRemovePromo}>
-              Remove
-            </button>
+            <button onClick={handleRemovePromo}>Remove</button>
           </ActivePromoBox>
         ) : (
           <>
@@ -103,10 +109,10 @@ export const CartSummary = () => {
       </PromoCodeContainer>
 
       <CheckoutActionsGroup>
-        <CheckoutButton onClick={handleCheckout}>Proceed to checkout</CheckoutButton>
+        <CheckoutButton onClick={handleCheckout}>Proceed to Checkout</CheckoutButton>
 
         <SecureCheckoutText>
-          <Lock aria-hidden /> Secure, encrypted checkout
+          <HttpsTwoToneIcon /> Secure 256-bit SSL Checkout
         </SecureCheckoutText>
       </CheckoutActionsGroup>
     </OrderSummaryCard>

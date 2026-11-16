@@ -1,0 +1,47 @@
+import {
+  Border,
+  BORDER_RADIUS,
+  darkColor,
+  FONT_SIZE,
+  FONT_WEIGHT,
+  lightColor,
+  LINE_HEIGHT,
+  Shadow,
+  SIZE_PERCENT,
+  SIZE_PX,
+  SIZE_VIEWPORT,
+  SPACING,
+  TRANSITION,
+} from "./tokens";
+
+export const lightTheme = {
+  mode: "light",
+  color: lightColor,
+  border: Border(lightColor),
+  BORDER_RADIUS,
+  FONT_WEIGHT,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  SPACING,
+  SIZE_PERCENT,
+  SIZE_PX,
+  SIZE_VIEWPORT,
+  TRANSITION,
+  shadow: Shadow(lightColor),
+};
+
+export const darkTheme = {
+  mode: "dark",
+  color: darkColor,
+  border: Border(darkColor),
+  BORDER_RADIUS,
+  FONT_WEIGHT,
+  FONT_SIZE,
+  LINE_HEIGHT,
+  SPACING,
+  SIZE_PERCENT,
+  SIZE_PX,
+  SIZE_VIEWPORT,
+  TRANSITION,
+  shadow: Shadow(darkColor),
+};

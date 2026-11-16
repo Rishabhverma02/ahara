@@ -1,248 +1,393 @@
 import styled, { keyframes } from "styled-components";
-import { container, display, eyebrow, lead, mq } from "@/src/theme";
+import { text14, text16 } from "@/src/theme/Typography";
 
-const rise = keyframes`
-  from { opacity: 0; transform: translateY(28px); }
-  to { opacity: 1; transform: none; }
+const float = keyframes`
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+  100% { transform: translateY(0px); }
 `;
 
-const pop = keyframes`
-  from { opacity: 0; scale: 0.6; }
-  to { opacity: 1; scale: 1; }
+const float1 = keyframes`
+  0% { transform: translate(0, 0) rotate(0deg); }
+  33% { transform: translate(30px, -50px) rotate(120deg); }
+  66% { transform: translate(-20px, -100px) rotate(240deg); }
+  100% { transform: translate(0, 0) rotate(360deg); }
 `;
 
-const drift = keyframes`
-  0%, 100% { translate: 0 0; rotate: 0deg; }
-  50% { translate: 0 -12px; rotate: 3deg; }
+const float2 = keyframes`
+  0% { transform: translate(0, 0) rotate(0deg); }
+  50% { transform: translate(-40px, -30px) rotate(-180deg); }
+  100% { transform: translate(0, 0) rotate(-360deg); }
 `;
 
-const draw = keyframes`
-  from { stroke-dashoffset: 160; }
-  to { stroke-dashoffset: 0; }
+const float3 = keyframes`
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, 20px) scale(1.2); }
+  100% { transform: translate(0, 0) scale(1); }
 `;
 
-export const Wrap = styled.section`
-  position: relative;
-  min-height: min(100svh, 940px);
-  display: flex;
-  align-items: center;
-  padding: calc(var(--header-h) + 2rem) 0 4rem;
-  background: radial-gradient(60% 70% at 78% 45%, var(--glow) 0%, transparent 70%), var(--paper);
-  overflow: hidden;
-
-  ${mq.md} {
-    min-height: 0;
-    padding-bottom: 3rem;
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 `;
 
-export const Grid = styled.div`
-  ${container};
-  display: grid;
-  grid-template-columns: 1.05fr 1fr;
-  align-items: center;
-  gap: clamp(2rem, 4vw, 4rem);
-
-  ${mq.md} {
-    grid-template-columns: 1fr;
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 `;
 
-export const Copy = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1.75rem;
-
-  /* staggered entrance: eyebrow, title, lead, actions, proof */
-  > * {
-    animation: ${rise} 0.9s var(--ease-out) both;
-  }
-  > :nth-child(1) {
-    animation-delay: 0.05s;
-  }
-  > :nth-child(3) {
-    animation-delay: 0.34s;
-  }
-  > :nth-child(4) {
-    animation-delay: 0.44s;
-  }
-  > :nth-child(5) {
-    animation-delay: 0.54s;
-  }
-`;
-
-export const Eyebrow = styled.p`
-  ${eyebrow};
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  &::before {
-    content: "";
-    width: 28px;
-    height: 1px;
-    background: currentColor;
-  }
-`;
-
-export const Title = styled.h1`
-  ${display};
-  font-size: var(--fs-display);
-  display: flex;
-  flex-direction: column;
-  animation: none !important;
-
-  em {
-    font-style: italic;
-    font-variation-settings:
-      "opsz" 144,
-      "SOFT" 100;
-    color: var(--olive);
-  }
-`;
-
-export const Line = styled.span`
-  display: block;
-  animation: ${rise} 1s var(--ease-out) 0.12s both;
-
-  & + & {
-    animation-delay: 0.22s;
-  }
-`;
-
-export const Lead = styled.p`
-  ${lead};
-  max-width: 32rem;
-`;
-
-export const Actions = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 1.75rem;
-`;
-
-export const Proof = styled.ul`
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--line);
-  font-size: 0.875rem;
-  color: var(--muted);
-
-  li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  li::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--saffron);
-  }
-`;
-
-/* ---------- constellation ---------- */
-export const Stage = styled.div`
-  --mx: 0;
-  --my: 0;
-  position: relative;
-  aspect-ratio: 1;
+export const HeroWrapper = styled.section`
   width: 100%;
-  max-width: 600px;
-  justify-self: center;
+  height: 100vh;
+  background: #eacea7;
+  background: radial-gradient(circle at 70% 30%, #f3e5d1 0%, #eacea7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
 
-  ${mq.md} {
-    max-width: 460px;
-  }
-`;
-
-export const Plate = styled.div`
-  position: absolute;
-  inset: 14%;
-  border-radius: 50%;
-  background: var(--paper-2);
-  box-shadow: inset 0 0 0 1px var(--line);
-  transform: translate(calc(var(--mx) * -10px), calc(var(--my) * -10px));
-  transition: transform 0.6s var(--ease-out);
-  animation: ${pop} 1.2s var(--ease-out) both;
-`;
-
-export const Jar = styled.div`
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 56%;
-  translate: -50% -50%;
-  transform: translate(calc(var(--mx) * 14px), calc(var(--my) * 14px));
-  transition: transform 0.5s var(--ease-out);
-  animation: ${pop} 1s var(--ease-out) 0.1s both;
-  z-index: 2;
-
-  img {
-    width: 100%;
+  @media (max-width: 1024px) {
     height: auto;
-    filter: drop-shadow(0 30px 40px rgb(76 40 14 / 0.18));
+    min-height: 100vh;
+    padding-top: 120px;
+    padding-bottom: 60px;
   }
 `;
 
-export const Piece = styled.div`
-  position: absolute;
-  z-index: 3;
-  width: calc(var(--w) * var(--k, 1));
-  transform: translate(calc(var(--mx) * var(--depth) * 46px), calc(var(--my) * var(--depth) * 46px));
-  transition: transform 0.7s var(--ease-out);
-  animation: ${pop} 0.9s var(--ease-out) var(--delay) both;
+export const HeroGrid = styled.div`
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  padding: 80px 5%;
+  padding-top: 10%;
 
-  img {
-    width: 100%;
-    height: auto;
-    filter: drop-shadow(0 14px 18px rgb(76 40 14 / 0.14));
-    animation: ${drift} var(--float) ease-in-out var(--delay) infinite;
-  }
-
-  ${mq.md} {
-    --k: 0.72;
-  }
-  ${mq.sm} {
-    --k: 0.56;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+    gap: 50px;
+    padding-top: 40px;
+    padding-bottom: 40px;
   }
 `;
 
-export const Note = styled.div`
-  position: absolute;
-  z-index: 4;
-  right: -2%;
-  top: 30%;
+export const HeroContent = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  color: var(--earth);
-  animation: ${rise} 0.8s var(--ease-out) 1.3s both;
+  gap: 24px;
 
-  span {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: 1.0625rem;
-    transform: rotate(-4deg);
+  animation: ${fadeInLeft} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @media (max-width: 1024px) {
+    align-items: center;
+    text-align: center;
   }
+`;
+
+export const HeroTitle = styled.h1`
+  font-size: clamp(48px, 8vw, 84px);
+  font-weight: 800;
+  line-height: 1.1;
+  color: #3a2f25;
+  display: flex;
+  flex-direction: column;
+
+  .line {
+    display: flex;
+    white-space: nowrap;
+    gap: 20px;
+  }
+
+  .w1 {
+    font-weight: 300;
+  }
+
+  .w2 {
+    font-weight: 800;
+    color: #7e7c2a;
+  }
+
+  .w3 {
+    font-weight: 800;
+    background: linear-gradient(120deg, #7e7c2a, #a3a14d);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .w4 {
+    font-weight: 300;
+  }
+
+  @media (max-width: 1024px) {
+    align-items: center;
+    .line {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: clamp(36px, 10vw, 56px);
+    .line {
+      flex-direction: column;
+      gap: 0;
+      white-space: normal;
+    }
+  }
+`;
+
+export const HeroDescription = styled.p`
+  ${text16};
+  line-height: 1.8;
+  color: #4b3d32;
+  max-width: 560px;
+`;
+
+export const HeroButtonGroup = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-top: 10px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+  }
+`;
+
+export const HeroButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 50px;
+  border: none;
+  background: #7e7c2a;
+  color: #ffffff;
+  ${text16};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(126, 124, 42, 0.4);
+
+  &:hover {
+    background: #6a6823;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(126, 124, 42, 0.5);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+`;
+
+export const HeroSecondaryButton = styled.button`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  padding: 16px 32px;
+  border-radius: 50px;
+  border: 2px solid #7e7c2a;
+  background: transparent;
+  color: #7e7c2a;
+  ${text16};
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(126, 124, 42, 0.05);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+    max-width: 320px;
+    text-align: center;
+  }
+`;
+
+export const HeroImageWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation: ${fadeInRight} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+
+  @media (max-width: 1024px) {
+    height: 480px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 480px) {
+    height: 380px;
+  }
+`;
+
+export const FloatingImage = styled.div<{
+  $top?: string;
+  $left?: string;
+  $right?: string;
+  $bottom?: string;
+  $width?: string;
+  $delay?: string;
+  $zIndex?: number;
+}>`
+  position: absolute;
+  top: ${({ $top }) => $top || "auto"};
+  left: ${({ $left }) => $left || "auto"};
+  right: ${({ $right }) => $right || "auto"};
+  bottom: ${({ $bottom }) => $bottom || "auto"};
+  width: ${({ $width }) => $width || "200px"};
+  z-index: ${({ $zIndex }) => $zIndex || 1};
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform;
+  cursor: pointer;
+
+  img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    animation: ${float} 6s ease-in-out infinite;
+    animation-delay: ${({ $delay }) => $delay || "0s"};
+    filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.1));
+    transition: all 0.5s ease;
+  }
+
+  &:hover {
+    transform: scale(1.08) rotate(3deg);
+    z-index: 10;
+
+    img {
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+    }
+  }
+
+  @media (max-width: 1024px) {
+    width: ${({ $width }) => ($width ? `calc(${$width} * 0.75)` : "150px")};
+    left: ${({ $left }) => $left && ($left.startsWith("-") ? "0%" : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith("-") ? "0%" : $right)};
+  }
+
+  @media (max-width: 768px) {
+    width: ${({ $width }) => ($width ? `calc(${$width} * 0.55)` : "110px")};
+    left: ${({ $left }) => $left && ($left.startsWith("-") ? "10px" : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith("-") ? "10px" : $right)};
+  }
+`;
+
+export const FloatingBadge = styled.div<{
+  $top?: string;
+  $left?: string;
+  $right?: string;
+  $bottom?: string;
+  $delay?: string;
+}>`
+  position: absolute;
+  top: ${({ $top }) => $top || "auto"};
+  left: ${({ $left }) => $left || "auto"};
+  right: ${({ $right }) => $right || "auto"};
+  bottom: ${({ $bottom }) => $bottom || "auto"};
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  ${text14};
+  font-weight: 700;
+  color: #3a2f25;
+  z-index: 6;
+  animation: ${float} 5s ease-in-out infinite;
+  animation-delay: ${({ $delay }) => $delay || "0s"};
 
   svg {
-    width: 92px;
-    margin-right: 40px;
-    transform: scaleX(-1);
-  }
-  path {
-    stroke-dasharray: 160;
-    animation: ${draw} 1.2s var(--ease-out) 1.5s both;
+    color: #7e7c2a;
+    font-size: 20px;
   }
 
-  ${mq.lg} {
-    display: none;
+  &:hover {
+    transform: scale(1.1);
+    background: #fff;
+  }
+
+  @media (max-width: 1024px) {
+    padding: 8px 14px;
+    font-size: 12px;
+    left: ${({ $left }) => $left && ($left.startsWith("-") ? "0%" : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith("-") ? "0%" : $right)};
+  }
+
+  @media (max-width: 768px) {
+    padding: 6px 12px;
+    font-size: 11px;
+    left: ${({ $left }) => $left && ($left.startsWith("-") ? "5px" : $left)};
+    right: ${({ $right }) => $right && ($right.startsWith("-") ? "5px" : $right)};
+  }
+`;
+
+export const DecorativeLeaf = styled.div<{
+  $top?: string;
+  $left?: string;
+  $right?: string;
+  $bottom?: string;
+  $size?: string;
+  $rotate?: string;
+  $color?: string;
+  $opacity?: number;
+  $duration?: string;
+  $animType?: number;
+}>`
+  position: absolute;
+  top: ${({ $top }) => $top || "auto"};
+  left: ${({ $left }) => $left || "auto"};
+  right: ${({ $right }) => $right || "auto"};
+  bottom: ${({ $bottom }) => $bottom || "auto"};
+  width: ${({ $size }) => $size || "100px"};
+  height: ${({ $size }) => $size || "100px"};
+  opacity: ${({ $opacity }) => $opacity || 0.1};
+  color: ${({ $color }) => $color || "inherit"};
+  transform: rotate(${({ $rotate }) => $rotate || "0deg"});
+  pointer-events: none;
+  z-index: 1;
+  animation: ${({ $animType }) => {
+      if ($animType === 1) return float1;
+      if ($animType === 2) return float2;
+      return float3;
+    }}
+    ${({ $duration }) => $duration || "20s"} ease-in-out infinite;
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    width: ${({ $size }) => ($size ? `calc(${$size} * 0.5)` : "50px")};
+    height: ${({ $size }) => ($size ? `calc(${$size} * 0.5)` : "50px")};
+    opacity: ${({ $opacity }) => ($opacity ? $opacity * 0.5 : 0.05)};
   }
 `;

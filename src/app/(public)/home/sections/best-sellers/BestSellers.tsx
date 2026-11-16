@@ -1,45 +1,98 @@
 "use client";
 
-import { ArrowRight } from "lucide-react";
-import { ButtonLink, ProductCard, SectionHeading } from "@/src/components/ui";
-import { getBestSellers } from "@/src/services/catalog";
+import React from "react";
+import {
+  BestSellersWrapper,
+  BestSellersContainer,
+  SectionHeader,
+  ShopAllLink,
+  ProductGrid,
+  SlideWrapper,
+  DotsContainer,
+  Dot,
+} from "./styled";
+import { HiArrowRight } from "react-icons/hi";
+import { SectionHeading, BestSellerCard } from "@/src/components";
+import { products } from "./data/bestProducts";
 import { useInView } from "@/src/hooks/useInView";
-import { useSnapCarousel } from "@/src/hooks/useSnapCarousel";
-import { Dots } from "../shared";
-import { Section, Head, Row, Cell, MobileOnly } from "./styled";
-
-const BEST_SELLERS = getBestSellers();
 
 export const BestSellers = () => {
-  const { ref, inView } = useInView<HTMLElement>();
-  const { ref: rowRef, index, goTo } = useSnapCarousel(BEST_SELLERS.length);
+  const [activeIndex, setActiveIndex] = React.useState(0);
+  const gridRef = React.useRef<HTMLDivElement>(null);
+
+  const { ref: sectionRef, inView: isVisible } = useInView<HTMLDivElement>({ threshold: 0.1 });
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleAutoSwipe = () => {
+      if (window.innerWidth > 768) return;
+
+      setActiveIndex((prevIndex) => {
+        const nextIndex = (prevIndex + 1) % products.length;
+        if (gridRef.current) {
+          const cardWidth = gridRef.current.clientWidth;
+          gridRef.current.scrollTo({
+            left: nextIndex * cardWidth,
+            behavior: "smooth",
+          });
+        }
+        return nextIndex;
+      });
+    };
+
+    const interval = setInterval(handleAutoSwipe, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleScroll = () => {
+    if (gridRef.current) {
+      const cardWidth = gridRef.current.clientWidth;
+      if (cardWidth > 0) {
+        const newIndex = Math.round(gridRef.current.scrollLeft / cardWidth);
+        setActiveIndex(newIndex);
+      }
+    }
+  };
 
   return (
-    <Section ref={ref} aria-labelledby="bestsellers-title">
-      <Head $in={inView}>
-        <SectionHeading
-          eyebrow="01 — Best sellers"
-          title={
-            <span id="bestsellers-title">
-              Pantry favourites, <em>by popular demand.</em>
-            </span>
-          }
-        />
-        <ButtonLink href="/shop" $variant="outline">
-          Shop all <ArrowRight aria-hidden />
-        </ButtonLink>
-      </Head>
+    <BestSellersWrapper>
+      <BestSellersContainer ref={sectionRef}>
+        <SectionHeader $animate={isVisible}>
+          <SectionHeading title="Best Sellers" subHeading="Curated Favorites" align="left" />
+          <ShopAllLink href="/shop">
+            Shop All <HiArrowRight size={20} />
+          </ShopAllLink>
+        </SectionHeader>
 
-      <Row ref={rowRef}>
-        {BEST_SELLERS.map((p, i) => (
-          <Cell key={p.id} $in={inView} $i={i}>
-            <ProductCard product={p} image={p.cardImage} />
-          </Cell>
-        ))}
-      </Row>
-      <MobileOnly>
-        <Dots count={BEST_SELLERS.length} index={index} onSelect={goTo} label="Best sellers" />
-      </MobileOnly>
-    </Section>
+        <ProductGrid ref={gridRef} onScroll={handleScroll}>
+          {products.map((product) => (
+            <SlideWrapper key={product.id}>
+              <BestSellerCard product={product} $animate={isVisible} />
+            </SlideWrapper>
+          ))}
+        </ProductGrid>
+
+        <DotsContainer>
+          {products.map((_, index) => (
+            <Dot
+              key={index}
+              $active={index === activeIndex}
+              onClick={() => {
+                if (gridRef.current) {
+                  const cardWidth = gridRef.current.clientWidth;
+                  gridRef.current.scrollTo({
+                    left: index * cardWidth,
+                    behavior: "smooth",
+                  });
+                  setActiveIndex(index);
+                }
+              }}
+            />
+          ))}
+        </DotsContainer>
+      </BestSellersContainer>
+    </BestSellersWrapper>
   );
 };

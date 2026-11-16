@@ -8,10 +8,10 @@ export const Timeline = () => {
   const { step } = useCheckoutStatus();
 
   return (
-    <StepsTimeline aria-label={`Checkout progress: step ${step} of 3`}>
+    <StepsTimeline>
       <TimelineStep $active={step === 1} $completed={step > 1}>
         <span className="circle">1</span>
-        <span className="text">Details</span>
+        <span className="text">Shipping</span>
       </TimelineStep>
       <TimelineDivider $completed={step > 1} />
       <TimelineStep $active={step === 2} $completed={step > 2}>

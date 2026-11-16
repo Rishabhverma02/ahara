@@ -1,34 +1,30 @@
 import {
+  AncientIngredients,
+  AssistantIntro,
   BestSellers,
   Community,
-  Featured,
+  FeaturedSection,
   Hero,
-  Ingredients,
   Journal,
-  Kairo,
-  Marquee,
-  Story,
   Testimonials,
+  TrustBar,
+  WhyWeExist,
 } from "./sections";
+// import { InteractiveCharacter } from "@/src/components";
 
-/**
- * Page rhythm: each "attraction point" gets one deliberate home —
- * constellation (Hero) → one ticker (Marquee) → products → editorial ingredients
- * → manifesto → full-bleed feature → reviews → Kairo's live chat → journal →
- * Kairo peeking over the newsletter.
- */
 export default function Home() {
   return (
     <>
+      {/* <InteractiveCharacter /> */}
       <Hero />
-      <Marquee />
+      <TrustBar />
       <BestSellers />
-      <Ingredients />
-      <Story />
-      <Featured />
+      <AncientIngredients />
+      <WhyWeExist />
+      <FeaturedSection />
       <Testimonials />
-      <Kairo />
       <Journal />
+      <AssistantIntro />
       <Community />
     </>
   );

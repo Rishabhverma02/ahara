@@ -25,15 +25,13 @@ export const sectionY = css`
 `;
 
 /* ---------- Type roles ---------- */
+/* Poppins headings, matching the main-branch design */
 export const display = css`
   font-family: var(--font-display);
-  font-weight: 400;
-  font-variation-settings:
-    "opsz" 144,
-    "SOFT" 50;
-  letter-spacing: -0.02em;
-  line-height: 1.02;
-  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.12;
+  color: var(--earth);
 `;
 
 export const h2 = css`
@@ -44,10 +42,7 @@ export const h2 = css`
 
 export const h3 = css`
   font-family: var(--font-display);
-  font-variation-settings:
-    "opsz" 48,
-    "SOFT" 30;
-  font-weight: 500;
+  font-weight: 600;
   font-size: var(--fs-h3);
   line-height: 1.15;
   letter-spacing: -0.01em;

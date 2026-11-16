@@ -1,14 +1,16 @@
 "use client";
 
+import React from "react";
 import { CheckoutProvider, useCheckoutStatus } from "./useCheckout";
 import {
   CheckoutWrapper,
+  BackgroundBlob,
   PageContainer,
   CheckoutLayout,
   FormColumn,
   CheckoutLoadingState,
-  Container,
   EmptyContainer,
+  ShoppingBagIcon,
   ConfirmationContainer,
 } from "./styled";
 import { EmptyState } from "@/src/components/ui";
@@ -17,26 +19,35 @@ import { Timeline, Step1Form, Step2Form, OrderSummary, OrderConfirmation } from 
 function CheckoutContent() {
   const { isHydrated, itemCount, step } = useCheckoutStatus();
 
-  // cart lives in localStorage, so wait for hydration before deciding what to show
+  // Next.js Hydration Guard
   if (!isHydrated) {
     return (
       <CheckoutWrapper>
-        <CheckoutLoadingState aria-busy="true">Loading secure checkout…</CheckoutLoadingState>
+        <CheckoutLoadingState>Initializing secure checkout...</CheckoutLoadingState>
       </CheckoutWrapper>
     );
   }
 
+  // Redirect to cart if empty
   if (itemCount === 0 && step !== 3) {
     return (
       <CheckoutWrapper>
+        <BackgroundBlob $color="rgba(126, 124, 42, 0.35)" $top="10%" $left="5%" $size="450px" />
+        <BackgroundBlob
+          $color="rgba(221, 199, 161, 0.45)"
+          $top="50%"
+          $right="8%"
+          $size="500px"
+          $delay="-5s"
+        />
         <PageContainer>
           <EmptyContainer>
             <EmptyState
-              pose="back"
-              kicker="Nothing to check out"
-              title="Your cart is empty."
-              description="Add something to your cart first — Kairo will be right here when you're ready."
-              btnText="Browse the shop"
+              icon={<ShoppingBagIcon size={44} />}
+              badgeText="Empty Checkout"
+              title="Your Checkout is Empty"
+              description="Please add items to your shopping cart before attempting to checkout."
+              btnText="Browse Shop"
             />
           </EmptyContainer>
         </PageContainer>
@@ -44,9 +55,18 @@ function CheckoutContent() {
     );
   }
 
+  // If order complete (Step 3), render Confirmation page
   if (step === 3) {
     return (
       <CheckoutWrapper>
+        <BackgroundBlob $color="rgba(126, 124, 42, 0.35)" $top="10%" $left="5%" $size="450px" />
+        <BackgroundBlob
+          $color="rgba(221, 199, 161, 0.45)"
+          $top="50%"
+          $right="8%"
+          $size="500px"
+          $delay="-5s"
+        />
         <PageContainer>
           <ConfirmationContainer>
             <OrderConfirmation />
@@ -58,13 +78,20 @@ function CheckoutContent() {
 
   return (
     <CheckoutWrapper>
+      <BackgroundBlob $color="rgba(126, 124, 42, 0.35)" $top="10%" $left="5%" $size="450px" />
+      <BackgroundBlob $color="rgba(221, 199, 161, 0.45)" $top="50%" $right="8%" $size="500px" $delay="-5s" />
+      <BackgroundBlob $color="rgba(73, 106, 53, 0.25)" $top="30%" $right="15%" $size="400px" $delay="-10s" />
+      <BackgroundBlob $color="rgba(164, 180, 114, 0.35)" $top="75%" $left="10%" $size="400px" $delay="-15s" />
       <PageContainer>
         <Container>
+          {/* timeline step tracker */}
           <Timeline />
 
           <CheckoutLayout>
+            {/* Left Column Forms */}
             <FormColumn>{step === 1 ? <Step1Form /> : <Step2Form />}</FormColumn>
 
+            {/* Right Column Order Summary */}
             <OrderSummary />
           </CheckoutLayout>
         </Container>
@@ -72,6 +99,9 @@ function CheckoutContent() {
     </CheckoutWrapper>
   );
 }
+
+// Import Container inside the component's scope or styled layout
+import { Container } from "./styled";
 
 export default function CheckoutPage() {
   return (

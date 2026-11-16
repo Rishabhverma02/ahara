@@ -1,8 +1,7 @@
 "use client";
 
-import { Mascot } from "@/src/components/ui";
-import { formatINR } from "@/src/lib/pricing";
-import { useCheckoutStatus } from "../../useCheckout";
+import React from "react";
+import { Check } from "lucide-react";
 import {
   ConfirmationCard,
   SuccessIconWrapper,
@@ -14,70 +13,62 @@ import {
   ShopLink,
   ContinueButton,
 } from "./styled";
-
-const PAYMENT_LABEL = {
-  razorpay: "Paid online",
-  demo: "Paid online (demo mode — no money was taken)",
-  cod: "Cash on delivery",
-} as const;
+import { useCheckoutConfirmation } from "../../useCheckout";
 
 export const OrderConfirmation = () => {
-  const { placed } = useCheckoutStatus();
-  if (!placed) return null;
-  const { form, orderId, total, mode } = placed;
+  const { email, orderId, deliveryMode, address, city, state, pinCode, paymentMethod, completedOrderTotal } =
+    useCheckoutConfirmation();
 
   return (
     <ConfirmationCard>
       <SuccessIconWrapper>
-        <Mascot pose="front" width={110} motion="bob" alt="Kairo waving" />
+        <Check size={32} strokeWidth={3} />
       </SuccessIconWrapper>
 
-      <ConfirmationTitle>Thank you — your order is in.</ConfirmationTitle>
+      <ConfirmationTitle>Order Placed Successfully!</ConfirmationTitle>
 
       <ConfirmationMessage>
-        Keep your order number handy — we&rsquo;ll send delivery updates to <strong>{form.email}</strong>.
+        Thank you for choosing AHARA. Your order has been registered and is being processed. We&apos;ll send
+        order updates to <strong>{email}</strong>.
       </ConfirmationMessage>
 
       <OrderDetailsCard>
         <OrderDetailRow>
-          <span className="label">Order number</span>
+          <span className="label">Order Reference:</span>
           <span className="value value-uppercase">{orderId}</span>
         </OrderDetailRow>
 
         <OrderDetailRow>
-          <span className="label">Delivery</span>
-          <span className="value">
-            {form.deliveryMode === "pickup"
-              ? "Store pickup, Jaora"
-              : `${form.shippingMethod === "express" ? "Express" : "Standard"} delivery`}
-          </span>
+          <span className="label">Delivery Type:</span>
+          <span className="value">{deliveryMode === "pickup" ? "Store Pickup" : "Home Delivery"}</span>
         </OrderDetailRow>
 
-        {form.deliveryMode === "ship" && (
+        {deliveryMode === "ship" && (
           <OrderDetailRow>
-            <span className="label">Ship to</span>
+            <span className="label">Shipping Address:</span>
             <span className="value">
-              {form.firstName} {form.lastName}, {form.address}
-              {form.apartment && `, ${form.apartment}`}, {form.city}, {form.state} {form.pinCode}
+              {address}, {city}, {state} - {pinCode}
             </span>
           </OrderDetailRow>
         )}
 
         <OrderDetailRow>
-          <span className="label">Payment</span>
-          <span className="value">{PAYMENT_LABEL[mode]}</span>
+          <span className="label">Payment Mode:</span>
+          <span className="value value-uppercase">{paymentMethod}</span>
         </OrderDetailRow>
 
         <DetailsDivider />
 
         <OrderDetailRow $isTotal>
-          <span className="label">{mode === "cod" ? "To pay on delivery" : "Total paid"}</span>
-          <span className="value">{formatINR(total)}</span>
+          <span className="label">
+            {paymentMethod === "cod" ? "Amount Due on Delivery:" : "Paid Amount:"}
+          </span>
+          <span className="value">₹{completedOrderTotal}</span>
         </OrderDetailRow>
       </OrderDetailsCard>
 
       <ShopLink href="/shop">
-        <ContinueButton>Continue shopping</ContinueButton>
+        <ContinueButton>Continue Shopping</ContinueButton>
       </ShopLink>
     </ConfirmationCard>
   );

@@ -1,25 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Instrument_Sans } from "next/font/google";
+import { Poppins, Monoton, Story_Script } from "next/font/google";
 import { StyledComponentsRegistry } from "../style/registry";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_TAGLINE, SITE_URL } from "../lib/site";
 
-/**
- * Two families instead of three (Poppins ×7 weights, Monoton, Story Script):
- * Fraunces — a warm, slightly soft old-style serif for display — and
- * Instrument Sans for UI and body. Both are variable fonts, so each is a
- * single file regardless of weights used.
- */
-const fraunces = Fraunces({
+/* Brand fonts from the main-branch design: Poppins (UI), Monoton (section
+ * titles) and Story Script (sub-headings / signatures). */
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-fraunces",
-  axes: ["opsz", "SOFT"],
-  style: ["normal", "italic"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
   display: "swap",
 });
 
-const instrument = Instrument_Sans({
+const monoton = Monoton({
   subsets: ["latin"],
-  variable: "--font-instrument",
+  weight: ["400"],
+  variable: "--font-monoton",
+  display: "swap",
+});
+
+const storyScript = Story_Script({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-story-script",
   display: "swap",
 });
 
@@ -42,13 +45,13 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F6F1E6",
+  themeColor: "#EACEA7",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN" className={`${fraunces.variable} ${instrument.variable}`}>
-      <body>
+    <html lang="en-IN" className={`${poppins.variable} ${monoton.variable} ${storyScript.variable}`}>
+      <body className={poppins.className}>
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>
     </html>

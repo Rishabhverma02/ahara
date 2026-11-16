@@ -1,12 +1,13 @@
 "use client";
 
-import { Check, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useToastStore } from "@/src/store/useToastStore";
 import { Region, Item, Icon, Body, Action, Close } from "./styled";
 
 /**
- * App-wide toast region. Replaces two copies of an MUI <Snackbar> portal with
- * ~40 lines of inline styles each (and the whole MUI + Emotion runtime).
+ * App-wide toast region, styled after the original design's success snackbar
+ * (white card, green left border, "Success:" label). One shared component
+ * instead of an MUI <Snackbar> portal copied into each product surface.
  */
 export const Toaster = () => {
   const toasts = useToastStore((s) => s.toasts);
@@ -17,10 +18,22 @@ export const Toaster = () => {
       {toasts.map((t) => (
         <Item key={t.id}>
           <Icon aria-hidden>
-            <Check size={14} strokeWidth={3} />
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
           </Icon>
           <Body>
-            <strong>{t.title}</strong>
+            <strong>{t.title}:</strong>
             {t.body && <span>{t.body}</span>}
             {t.action && (
               <Action

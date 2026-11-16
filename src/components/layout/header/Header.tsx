@@ -2,144 +2,322 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
-import { ArrowLeft, Heart, Lock, Menu, Search, ShoppingBag, X } from "lucide-react";
 import Logo from "@/src/assets/images/Logo.webp";
+import {
+  HeaderWrapper,
+  HeaderInner,
+  LogoWrapper,
+  NavWrapper,
+  NavItem,
+  ActionsWrapper,
+  DesktopActions,
+  ActionIcon,
+  CartBadge,
+  DrawerOverlay,
+  Drawer,
+  CloseButton,
+  DrawerContent,
+  HamburgerButton,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerNav,
+  DrawerNavItem,
+  DrawerSearchWrapper,
+  DrawerSearchInput,
+  DrawerSearchIcon,
+  DrawerActions,
+  DrawerActionLink,
+  DrawerFooter,
+  MobileCartButton,
+} from "./styled";
+
 import { useCart } from "@/src/hooks/useCart";
 import { useWishlist } from "@/src/hooks/useWishlist";
+import { NavItemTypes } from "./types";
+import { usePathname, useRouter } from "next/navigation";
 import { useDialog } from "@/src/hooks/useDialog";
 import { useUiStore } from "@/src/store/useUiStore";
-import * as S from "./styled";
+import {
+  HiMenuAlt3,
+  HiX,
+  HiOutlineSearch,
+  HiOutlineHeart,
+  HiOutlineUser,
+  HiOutlineShoppingBag,
+} from "react-icons/hi";
 
-const NAV = [
-  { label: "Shop", href: "/shop" },
-  { label: "Ingredients", href: "/#ingredients" },
-  { label: "Our story", href: "/#story" },
-  { label: "Journal", href: "/#journal" },
+const navItems: NavItemTypes[] = [
+  { label: "Home", link: "/" },
+  { label: "Shop", link: "/shop" },
+  { label: "Ingredients", link: "/#ingredients" },
+  { label: "About", link: "/#about" },
+  { label: "Journal", link: "/#journal" },
 ];
 
+// anchors (/#…) are never the "current page"
+const isActive = (pathname: string | null, link: string) =>
+  !link.includes("#") && (pathname === link || (link !== "/" && !!pathname?.startsWith(link)));
+
 export const Header = () => {
+  const [animate, setAnimate] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const [open, setOpen] = useState(false);
   const { cartCount } = useCart();
   const { wishlistIds } = useWishlist();
+  const wishlistCount = wishlistIds.length;
+
+  const router = useRouter();
   const openCart = useUiStore((s) => s.openCart);
   const openSearch = useUiStore((s) => s.openSearch);
-  const closeMenu = useCallback(() => setOpen(false), []);
-  useDialog(open, closeMenu);
+  const [drawerQuery, setDrawerQuery] = useState("");
 
-  // close the drawer on navigation (adjust-state-during-render pattern)
-  const [lastPath, setLastPath] = useState(pathname);
-  if (pathname !== lastPath) {
-    setLastPath(pathname);
-    setOpen(false);
-  }
+  const openDrawer = () => setIsOpen(true);
+  const closeDrawer = useCallback(() => setIsOpen(false), []);
+  useDialog(isOpen, closeDrawer); // Escape closes, page scroll locked while open
 
   useEffect(() => {
-    // only re-render when the boolean actually flips
-    const onScroll = () => setScrolled((prev) => (window.scrollY > 12 !== prev ? !prev : prev));
+    // passive listener; React skips the re-render when the value doesn't change
+    const onScroll = () => setAnimate(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (href: string) => !href.includes("#") && pathname.startsWith(href);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  if (pathname !== prevPathname) {
+    setPrevPathname(pathname);
+    setIsOpen(false);
+  }
 
   if (pathname === "/checkout") {
     return (
-      <S.Bar $solid>
-        <S.Inner>
-          <Link href="/" aria-label="Ahara home">
-            <Image src={Logo} alt="Ahara" height={34} style={{ width: "auto" }} priority />
-          </Link>
-          <S.CheckoutMeta>
-            <S.BackLink href="/cart">
-              <ArrowLeft size={16} aria-hidden /> Back to cart
-            </S.BackLink>
-            <S.Secure>
-              <Lock size={14} aria-hidden /> Secure checkout
-            </S.Secure>
-          </S.CheckoutMeta>
-        </S.Inner>
-      </S.Bar>
+      <HeaderWrapper
+        animate={animate}
+        style={{
+          borderBottom: "1px solid rgba(126, 124, 42, 0.08)",
+          background: "rgba(255, 255, 255, 0.88)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          position: "sticky",
+          top: 0,
+          zIndex: 1000,
+          boxShadow: "0 10px 30px -10px rgba(126, 124, 42, 0.08)",
+        }}
+      >
+        {/* Inject dynamic CSS for pulse and arrow slide animations */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+          @keyframes secure-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(73, 106, 53, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(73, 106, 53, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(73, 106, 53, 0); }
+          }
+          @keyframes arrow-slide {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-4px); }
+          }
+          .back-link {
+            transition: all 0.2s ease;
+          }
+          .back-link:hover .back-arrow {
+            animation: arrow-slide 0.8s infinite ease-in-out;
+          }
+        `,
+          }}
+        />
+
+        <HeaderInner style={{ justifyContent: "space-between", height: "80px" }}>
+          <LogoWrapper
+            style={{ transition: "transform 0.3s ease" }}
+            onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.03)")}
+            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+          >
+            <Link href="/">
+              <Image src={Logo} alt="Ahara Logo" width={130} priority />
+            </Link>
+          </LogoWrapper>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <Link
+              href="/cart"
+              className="back-link"
+              style={{
+                fontSize: "13px",
+                fontWeight: "700",
+                color: "#8a8775",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+              }}
+              onMouseOver={(e) => (e.currentTarget.style.color = "#7e7c2a")}
+              onMouseOut={(e) => (e.currentTarget.style.color = "#8a8775")}
+            >
+              <span className="back-arrow" style={{ display: "inline-block" }}>
+                ←
+              </span>
+              <span>Back to Cart</span>
+            </Link>
+
+            <span style={{ color: "rgba(126, 124, 42, 0.15)", fontSize: "14px" }}>|</span>
+
+            <div
+              style={{
+                background: "linear-gradient(135deg, #57a8243b 0%, #57a8241d 100%)",
+                border: "1.5px solid #57a8243d",
+                padding: "6px 14px",
+                borderRadius: "50px",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                fontSize: "11px",
+                fontWeight: "800",
+                letterSpacing: "0.5px",
+                color: "#56a824ff",
+                textTransform: "uppercase",
+                boxShadow: "0 2px 8px rgba(73, 106, 53, 0.05)",
+              }}
+            >
+              <span
+                style={{
+                  display: "inline-flex",
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "#56a824ff",
+                  animation: "secure-pulse 1.8s infinite ease-in-out",
+                }}
+              ></span>
+              <span>Secure Checkout</span>
+            </div>
+          </div>
+        </HeaderInner>
+      </HeaderWrapper>
     );
   }
 
   return (
     <>
-      <S.SkipLink href="#main">Skip to content</S.SkipLink>
-      <S.Bar $solid={scrolled}>
-        <S.Inner>
-          <Link href="/" aria-label="Ahara home">
-            <Image src={Logo} alt="Ahara" height={38} style={{ width: "auto" }} priority />
-          </Link>
+      <HeaderWrapper animate={animate}>
+        <HeaderInner>
+          <LogoWrapper>
+            <Link href="/">
+              <Image src={Logo} alt="Ahara Logo" width={160} priority />
+            </Link>
+          </LogoWrapper>
 
-          <S.Nav aria-label="Primary">
-            {NAV.map((item) => (
-              <S.NavLink
-                key={item.href}
-                href={item.href}
-                aria-current={isActive(item.href) ? "page" : undefined}
-              >
+          <NavWrapper>
+            {navItems.map((item) => (
+              <NavItem key={item.label} href={item.link} $active={isActive(pathname, item.link)}>
                 {item.label}
-              </S.NavLink>
+              </NavItem>
             ))}
-          </S.Nav>
+          </NavWrapper>
 
-          <S.Actions>
-            <S.IconButton type="button" onClick={openSearch} aria-label="Search products">
-              <Search size={20} />
-            </S.IconButton>
-            <S.IconLink href="/wishlist" aria-label={`Wishlist, ${wishlistIds.length} items`} $hideSm>
-              <Heart size={20} />
-              {wishlistIds.length > 0 && <S.Count>{wishlistIds.length}</S.Count>}
-            </S.IconLink>
-            <S.IconButton
-              type="button"
-              onClick={openCart}
-              aria-label={`Open cart, ${cartCount} items`}
-              aria-haspopup="dialog"
-            >
-              <ShoppingBag size={20} />
-              {cartCount > 0 && <S.Count $accent>{cartCount}</S.Count>}
-            </S.IconButton>
-            <S.MenuButton onClick={() => setOpen(true)} aria-label="Open menu" aria-expanded={open}>
-              <Menu size={22} />
-            </S.MenuButton>
-          </S.Actions>
-        </S.Inner>
-      </S.Bar>
+          <ActionsWrapper>
+            <DesktopActions>
+              <ActionIcon type="button" aria-label="Search products" onClick={openSearch}>
+                <HiOutlineSearch />
+              </ActionIcon>
+              <Link href="/wishlist" style={{ textDecoration: "none" }}>
+                <ActionIcon as="div" aria-label="Wishlist">
+                  <HiOutlineHeart />
+                  {wishlistCount > 0 && (
+                    <CartBadge style={{ background: "#c0392b" }}>{wishlistCount}</CartBadge>
+                  )}
+                </ActionIcon>
+              </Link>
+              <ActionIcon type="button" aria-label={`Open cart, ${cartCount} items`} onClick={openCart}>
+                <HiOutlineShoppingBag />
+                <CartBadge>{cartCount}</CartBadge>
+              </ActionIcon>
+              <Link href="/signin" style={{ textDecoration: "none" }}>
+                <ActionIcon as="div" aria-label="Account">
+                  <HiOutlineUser />
+                </ActionIcon>
+              </Link>
+            </DesktopActions>
 
-      {open && (
-        <S.Overlay onClick={() => setOpen(false)}>
-          <S.Drawer role="dialog" aria-modal="true" aria-label="Menu" onClick={(e) => e.stopPropagation()}>
-            <S.DrawerTop>
-              <Image src={Logo} alt="Ahara" height={32} style={{ width: "auto" }} />
-              <S.Close onClick={() => setOpen(false)} aria-label="Close menu" autoFocus>
-                <X size={22} />
-              </S.Close>
-            </S.DrawerTop>
-            <S.DrawerNav aria-label="Mobile">
-              {NAV.map((item, i) => (
-                <S.DrawerLink
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  style={{ animationDelay: `${60 + i * 50}ms` }}
-                >
-                  <span>0{i + 1}</span>
-                  {item.label}
-                </S.DrawerLink>
-              ))}
-            </S.DrawerNav>
-            <S.DrawerFoot>
-              <Link href="/wishlist">Wishlist ({wishlistIds.length})</Link>
-              <Link href="/cart">Cart ({cartCount})</Link>
-            </S.DrawerFoot>
-          </S.Drawer>
-        </S.Overlay>
+            <MobileCartButton type="button" aria-label={`Open cart, ${cartCount} items`} onClick={openCart}>
+              <HiOutlineShoppingBag />
+              <CartBadge>{cartCount}</CartBadge>
+            </MobileCartButton>
+
+            <HamburgerButton onClick={openDrawer} aria-label="Open Menu">
+              <HiMenuAlt3 />
+            </HamburgerButton>
+          </ActionsWrapper>
+        </HeaderInner>
+      </HeaderWrapper>
+
+      {isOpen && (
+        <DrawerOverlay onClick={closeDrawer}>
+          <Drawer onClick={(e) => e.stopPropagation()}>
+            <DrawerHeader>
+              <DrawerTitle>MENU</DrawerTitle>
+              <CloseButton onClick={closeDrawer} aria-label="Close Menu">
+                <HiX />
+              </CloseButton>
+            </DrawerHeader>
+
+            <DrawerContent>
+              <DrawerSearchWrapper
+                as="form"
+                role="search"
+                onSubmit={(e: React.FormEvent) => {
+                  e.preventDefault();
+                  if (!drawerQuery.trim()) return;
+                  closeDrawer();
+                  router.push(`/shop?q=${encodeURIComponent(drawerQuery.trim())}`);
+                }}
+              >
+                <DrawerSearchIcon>
+                  <HiOutlineSearch />
+                </DrawerSearchIcon>
+                <DrawerSearchInput
+                  type="search"
+                  aria-label="Search products"
+                  placeholder="Search ingredients..."
+                  value={drawerQuery}
+                  onChange={(e) => setDrawerQuery(e.target.value)}
+                />
+              </DrawerSearchWrapper>
+
+              <DrawerNav>
+                {navItems.map((item) => (
+                  <DrawerNavItem
+                    key={item.label}
+                    href={item.link}
+                    $active={isActive(pathname, item.link)}
+                    onClick={closeDrawer}
+                  >
+                    {item.label}
+                  </DrawerNavItem>
+                ))}
+              </DrawerNav>
+
+              <DrawerActions>
+                <DrawerActionLink href="/wishlist" onClick={closeDrawer}>
+                  <HiOutlineHeart />
+                  <span>Wishlist ({wishlistCount})</span>
+                </DrawerActionLink>
+                <DrawerActionLink href="/cart" onClick={closeDrawer}>
+                  <HiOutlineShoppingBag />
+                  <span>Cart ({cartCount})</span>
+                </DrawerActionLink>
+                <DrawerActionLink href="/signin" onClick={closeDrawer}>
+                  <HiOutlineUser />
+                  <span>Profile / Account</span>
+                </DrawerActionLink>
+              </DrawerActions>
+
+              <DrawerFooter>© {new Date().getFullYear()} Ahara. All rights reserved.</DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        </DrawerOverlay>
       )}
     </>
   );

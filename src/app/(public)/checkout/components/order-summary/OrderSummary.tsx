@@ -1,10 +1,10 @@
 "use client";
 
+import { LockTwoToneIcon, GppGoodTwoToneIcon } from "@/src/components/ui/MaterialIcons";
 import React from "react";
 import Image from "next/image";
-import { Lock, ShieldCheck, Ticket } from "lucide-react";
-import { useCheckoutSummary } from "../../useCheckout";
-import { formatINR } from "@/src/lib/pricing";
+import { Ticket } from "lucide-react";
+import { useCheckoutSummaryLegacy } from "../../useCheckout";
 import {
   SummaryColumn,
   StickySummaryCard,
@@ -30,14 +30,26 @@ import {
 } from "./styled";
 
 export const OrderSummary = () => {
-  const { items, totals, appliedPromo, promoInput, setPromoInput, promoError, applyPromo, removePromo } =
-    useCheckoutSummary();
+  const {
+    items,
+    cartTotal,
+    appliedPromo,
+    promoCode,
+    setPromoCode,
+    promoError,
+    activeShippingCharge,
+    discountAmount,
+    codFee,
+    finalTotal,
+    handleApplyPromo,
+    handleRemovePromo,
+  } = useCheckoutSummaryLegacy();
 
   return (
     <SummaryColumn>
       <StickySummaryCard>
         <SummarySectionTitle>
-          <span>Order summary</span>
+          <span>Order Summary</span>
           <span className="item-count">{items.length} items</span>
         </SummarySectionTitle>
 
@@ -47,15 +59,15 @@ export const OrderSummary = () => {
             <MiniItemRow key={item.id}>
               <MiniItemImage>
                 <MiniItemImageInner>
-                  <Image src={item.image} alt="" fill sizes="48px" />
+                  <Image src={item.image} alt={item.name} fill sizes="48px" />
                 </MiniItemImageInner>
                 <span className="badge">{item.quantity}</span>
               </MiniItemImage>
               <MiniItemDetails>
                 <span className="name">{item.name}</span>
-                <span className="variant">{item.size}</span>
+                <span className="variant">Variant: {item.size}</span>
               </MiniItemDetails>
-              <MiniItemPrice>{formatINR(item.price * item.quantity)}</MiniItemPrice>
+              <MiniItemPrice>₹{item.price * item.quantity}</MiniItemPrice>
             </MiniItemRow>
           ))}
         </MiniItemList>
@@ -63,14 +75,12 @@ export const OrderSummary = () => {
         {/* Promo Code Fields */}
         <PromoCodeBox>
           <PromoFieldLabel htmlFor="promo-input">
-            <Ticket size={12} aria-hidden /> Promo code
+            <Ticket size={12} /> Promo Code
           </PromoFieldLabel>
           {appliedPromo ? (
             <ActivePromoContainer>
               <span>Active: {appliedPromo}</span>
-              <button type="button" onClick={removePromo}>
-                Remove
-              </button>
+              <button onClick={handleRemovePromo}>Remove</button>
             </ActivePromoContainer>
           ) : (
             <PromoInputWrapper>
@@ -78,72 +88,60 @@ export const OrderSummary = () => {
                 id="promo-input"
                 type="text"
                 placeholder="e.g. AHARA10"
-                value={promoInput}
-                onChange={(e) => setPromoInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    e.preventDefault();
-                    applyPromo();
-                  }
-                }}
-                aria-invalid={!!promoError}
-                aria-describedby={promoError ? "promo-error" : undefined}
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
               />
-              <PromoButton type="button" onClick={applyPromo} disabled={!promoInput}>
+              <PromoButton type="button" onClick={handleApplyPromo} disabled={!promoCode}>
                 Apply
               </PromoButton>
             </PromoInputWrapper>
           )}
-          {promoError && (
-            <PromoErrorText id="promo-error" role="alert">
-              {promoError}
-            </PromoErrorText>
-          )}
+          {promoError && <PromoErrorText>{promoError}</PromoErrorText>}
         </PromoCodeBox>
 
         {/* Subtotals & Costs */}
         <CostsSection>
           <CostSummaryRow>
             <span>Subtotal</span>
-            <span className="value">{formatINR(totals.subtotal)}</span>
+            <span className="value">₹{cartTotal}</span>
           </CostSummaryRow>
 
-          {totals.discount > 0 && (
+          {discountAmount > 0 && (
             <CostSummaryRow $isDiscount>
               <span>Discount (10% off)</span>
-              <span className="value">−{formatINR(totals.discount)}</span>
+              <span className="value">-₹{discountAmount}</span>
             </CostSummaryRow>
           )}
 
           <CostSummaryRow>
             <span>Shipping</span>
             <span className="value">
-              {totals.shipping === 0 ? <FreeText>Free</FreeText> : formatINR(totals.shipping)}
+              {activeShippingCharge === 0 ? <FreeText>FREE</FreeText> : `₹${activeShippingCharge}`}
             </span>
           </CostSummaryRow>
 
-          {totals.codFee > 0 && (
+          {codFee > 0 && (
             <CostSummaryRow>
-              <span>Cash on delivery fee</span>
-              <span className="value">{formatINR(totals.codFee)}</span>
+              <span>CoD Handling Fee</span>
+              <span className="value">₹{codFee}</span>
             </CostSummaryRow>
           )}
 
           <CostSummaryRow $isTotal>
-            <span>Total</span>
-            <span className="value">{formatINR(totals.total)}</span>
+            <span>Total Amount</span>
+            <span className="value">₹{finalTotal}</span>
           </CostSummaryRow>
         </CostsSection>
 
         {/* Trust and secure badges */}
         <TrustBadgeWrapper>
           <TrustBadge>
-            <Lock aria-hidden />
-            Encrypted, secure payment
+            <LockTwoToneIcon />
+            Secure 256-Bit SSL Connection
           </TrustBadge>
           <TrustBadge>
-            <ShieldCheck aria-hidden />
-            Freshness guaranteed
+            <GppGoodTwoToneIcon />
+            Guaranteed Wellness Quality
           </TrustBadge>
         </TrustBadgeWrapper>
       </StickySummaryCard>

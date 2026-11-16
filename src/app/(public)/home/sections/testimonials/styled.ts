@@ -1,167 +1,532 @@
-import styled from "styled-components";
-import { container, mq, reveal, sectionY } from "@/src/theme";
+import styled, { keyframes, css } from "styled-components";
+import { text14 } from "@/src/theme/Typography";
 
-export const Section = styled.section`
-  ${container};
-  ${sectionY};
-`;
-
-export const Top = styled.div`
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: clamp(2rem, 5vw, 5rem);
-  align-items: end;
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
-
-  ${mq.md} {
-    grid-template-columns: 1fr;
+export const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 `;
 
-export const Head = styled.div<{ $in: boolean }>`
+export const TestimonialsWrapper = styled.section`
+  width: 100%;
+  padding: 100px 0;
+  background: #fbf8f3;
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  ${({ $in }) => reveal($in)};
-`;
-
-export const Score = styled.div`
-  display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 1rem;
-
-  strong {
-    font-family: var(--font-display);
-    font-size: 3.5rem;
-    font-weight: 400;
-    line-height: 1;
-  }
-  span {
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-    color: var(--muted);
-  }
-`;
-
-export const StarRow = styled.div`
-  display: flex;
-  gap: 2px;
-  color: var(--saffron);
-`;
-
-export const Feature = styled.div<{ $in: boolean }>`
-  display: grid;
-  grid-template-columns: minmax(140px, 220px) 1fr;
-  gap: clamp(1.25rem, 3vw, 2.5rem);
-  align-items: center;
-  padding: clamp(1.25rem, 3vw, 2rem);
-  border-radius: var(--radius-lg);
-  background: var(--forest);
-  color: var(--paper);
-  ${({ $in }) => reveal($in, 150)};
-
-  blockquote {
-    font-family: var(--font-display);
-    font-style: italic;
-    font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
-    line-height: 1.3;
-  }
-  figcaption {
-    margin-top: 1.25rem;
-    font-size: 0.875rem;
-    color: rgb(246 241 230 / 0.7);
-  }
-  strong {
-    color: var(--saffron);
-    font-weight: 600;
-  }
-
-  ${mq.sm} {
-    grid-template-columns: 1fr;
-  }
-`;
-
-export const Portrait = styled.div`
   position: relative;
-  aspect-ratio: 4 / 5;
-  border-radius: var(--radius);
   overflow: hidden;
 
-  img {
-    object-fit: cover;
-  }
-
-  ${mq.sm} {
-    aspect-ratio: 16 / 10;
+  @media (max-width: 768px) {
+    padding: 60px 0;
   }
 `;
 
-export const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
+export const DecLeafTopLeft = styled.div`
+  position: absolute;
+  top: -70px;
+  left: -150px;
+  width: 500px;
+  height: 500px;
+  opacity: 0.1;
+  pointer-events: none;
+  z-index: 0;
 
-  ${mq.md} {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(280px, 70%);
+  @media (max-width: 768px) {
+    width: 200px;
+    height: 200px;
+    left: -50px;
+  }
+`;
+
+export const DecLeafBottomRight = styled.div`
+  position: absolute;
+  bottom: -90px;
+  right: -90px;
+  width: 400px;
+  height: 400px;
+  opacity: 0.2;
+  pointer-events: none;
+  z-index: 0;
+
+  @media (max-width: 768px) {
+    width: 220px;
+    height: 220px;
+  }
+`;
+
+export const TestimonialsContainer = styled.div<{ $animate?: boolean }>`
+  width: 90%;
+  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 50px;
+
+  opacity: 0;
+  ${({ $animate }) =>
+    $animate &&
+    css`
+      animation: ${fadeInUp} 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    `}
+
+  @media (max-width: 768px) {
+    gap: 30px;
+  }
+`;
+
+export const TestimonialGrid = styled.div`
+  column-count: 4;
+  column-gap: 24px;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    column-count: 3;
+  }
+
+  @media (max-width: 968px) {
+    column-count: 2;
+  }
+
+  @media (max-width: 768px) {
+    display: flex;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-    scroll-padding-inline: var(--gutter);
+    gap: 0;
+    padding: 10px 0;
+    margin: 0;
+    column-count: auto;
+    scroll-behavior: smooth;
+
     &::-webkit-scrollbar {
       display: none;
     }
-  }
-  ${mq.sm} {
-    grid-auto-columns: 85%;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    & > * {
+      flex: 0 0 100%;
+      scroll-snap-align: center;
+    }
   }
 `;
 
-export const Card = styled.figure<{ $in: boolean; $i: number }>`
+// Base card container with masonry behavior
+export const BaseCard = styled.div`
+  break-inside: avoid;
+  margin-bottom: 24px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #f0e6d2;
+  box-shadow: 0 4px 20px rgba(126, 125, 42, 0.03);
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 1.5rem;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-  background: var(--surface);
-  scroll-snap-align: start;
-  ${({ $in, $i }) => reveal($in, 200 + $i * 80)};
+  transition: all 0.3s ease;
+  gap: 14px;
+  text-align: center;
 
-  blockquote {
-    flex: 1;
-    color: var(--ink-2);
-    line-height: 1.6;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(126, 125, 42, 0.08);
   }
-  figcaption {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding-top: 1rem;
-    border-top: 1px solid var(--line);
-    font-size: 0.8125rem;
-    color: var(--muted);
+
+  &.style-a {
+    padding: 30px;
+    @media (max-width: 768px) {
+      padding: 20px;
+    }
   }
-  img {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    object-fit: cover;
+
+  &.style-b {
+    padding: 50px 30px 30px;
+    margin-top: 34px;
+    @media (max-width: 768px) {
+      padding: 40px 20px 20px;
+    }
   }
-  strong {
-    display: block;
-    font-size: 0.9375rem;
-    color: var(--ink);
+
+  &.style-c {
+    padding: 0;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  &.style-d {
+    padding: 0;
+    flex-direction: row;
+    align-items: stretch;
+    overflow: hidden;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+    }
+  }
+
+  &.style-g {
+    padding: 20px;
+    margin-top: 50px;
+
+    .author-row-g {
+      padding: 5px;
+      border-top: 1px solid #f9f5ed;
+    }
+  }
+
+  &.style-h {
+    padding: 30px;
+    @media (max-width: 768px) {
+      padding: 20px;
+    }
   }
 `;
 
-export const MobileOnly = styled.div`
-  display: none;
-  ${mq.md} {
-    display: block;
+// Speech Bubble wrapper (needed to group bubble card + its pointer/elements)
+export const SpeechBubbleWrapper = styled.div`
+  break-inside: avoid;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
   }
+
+  &.style-e {
+    margin-bottom: 34px;
+  }
+`;
+
+export const SpeechBubbleCard = styled.div`
+  padding: 30px;
+  border-radius: 20px;
+  background: #ffffff;
+  border: 1px solid #f0e6d2;
+  box-shadow: 0 4px 20px rgba(126, 125, 42, 0.03);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+`;
+
+// Specific Card type styling & Subcomponents
+export const QuoteIcon = styled.div`
+  font-size: 48px;
+  font-family: Georgia, serif;
+  line-height: 1;
+  color: #7e7c2a2b;
+  position: absolute;
+  user-select: none;
+`;
+
+export const QuoteIconTopLeft = styled(QuoteIcon)`
+  top: 15px;
+  left: 20px;
+`;
+
+export const QuoteIconBottomRight = styled(QuoteIcon)`
+  bottom: 10px;
+  right: 20px;
+`;
+
+export const QuoteText = styled.p`
+  ${text14};
+  color: #4a4a4a;
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+`;
+
+export const QuoteTextCentered = styled(QuoteText)`
+  text-align: center;
+`;
+
+export const QuoteTextCenteredItalic = styled(QuoteTextCentered)`
+  font-style: italic;
+`;
+
+export const AuthorRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+  border-top: 1px solid #f9f5ed;
+  padding-top: 15px;
+`;
+
+export const AuthorDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+
+export const AuthorDetailsCentered = styled(AuthorDetails)`
+  align-items: center;
+`;
+
+export const AuthorName = styled.span`
+  ${text14};
+  font-weight: 700;
+  color: #5f320fff;
+`;
+
+export const AuthorRole = styled.span`
+  font-size: 11px;
+  color: #888;
+`;
+
+export const AuthorAvatar = styled.img`
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+
+  background: #eee;
+  border: 1px solid #f0e6d2;
+`;
+
+export const SmallAvatar = styled(AuthorAvatar)`
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+`;
+
+// Overlapping Avatar Card
+export const OverlappingAvatar = styled.img`
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #eee;
+`;
+
+export const StarRating = styled.div`
+  color: #ffb800;
+  display: flex;
+  gap: 3px;
+  font-size: 14px;
+  margin-top: 18px;
+`;
+
+export const StarRatingCentered = styled(StarRating)`
+  justify-content: center;
+`;
+
+export const CardHeadingCentered = styled.h4`
+  font-size: 16px;
+  font-weight: 700;
+  color: #5f320fff;
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
+`;
+
+// Tall card layout
+export const TallCardImage = styled.img`
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-top-left-radius: 19px;
+  border-top-right-radius: 19px;
+  background: #eee;
+
+  @media (max-width: 768px) {
+    height: 180px;
+  }
+`;
+
+export const CardContentSection = styled.div`
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+`;
+
+export const SignatureText = styled.span`
+  font-family: var(--font-story-script), cursive;
+  font-size: 28px;
+  color: #7e7c2a;
+  text-align: right;
+  margin-top: 10px;
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+`;
+
+// Split Horizontal Layout
+export const SplitImage = styled.img`
+  width: 35%;
+  object-fit: cover;
+  border-top-left-radius: 19px;
+  border-bottom-left-radius: 19px;
+  background: #eee;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    height: 180px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 19px;
+  }
+`;
+
+export const SplitContent = styled.div`
+  width: 65%;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+// Speech Bubble Tails
+export const BubblePointerCentred = styled.div`
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #f0e6d2;
+  border-right: 1px solid #f0e6d2;
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
+  z-index: 1;
+`;
+
+export const BubblePointerLeft = styled.div`
+  width: 20px;
+  height: 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #f0e6d2;
+  border-right: 1px solid #f0e6d2;
+  position: absolute;
+  bottom: -10px;
+  left: 40px;
+  transform: rotate(45deg);
+  z-index: 1;
+`;
+
+export const AvatarGroupRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  z-index: 2;
+`;
+
+export const GroupAvatar = styled.img<{ $active?: boolean }>`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid ${(props) => (props.$active ? "#7e7c2a" : "#ffffff")};
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  transform: ${(props) => (props.$active ? "scale(1.15)" : "scale(1)")};
+  background: #eee;
+`;
+
+// Split Row (Variant G)
+export const SplitRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+`;
+
+export const SplitLeft = styled.div`
+  flex: 1;
+`;
+
+export const SplitRight = styled.div`
+  flex-shrink: 0;
+`;
+
+export const LargeCircleAvatar = styled.img`
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid #ffffff;
+  background: #eee;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  margin-top: -60px;
+  align-self: center;
+`;
+
+export const CenteredAvatarContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+`;
+
+export const SlideWrapper = styled.div`
+  display: contents;
+
+  @media (max-width: 768px) {
+    display: block;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    padding: 0 16px;
+    box-sizing: border-box;
+
+    & > * {
+      margin-bottom: 10px !important;
+    }
+  }
+`;
+
+export const DotsContainer = styled.div`
+  display: none;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+
+  @media (max-width: 768px) {
+    display: flex;
+  }
+`;
+
+export const Dot = styled.button<{ $active: boolean }>`
+  width: ${({ $active }) => ($active ? "20px" : "8px")};
+  height: 8px;
+  border-radius: 4px;
+  border: none;
+  background: ${({ $active }) => ($active ? "#7E7C2A" : "#DDC7A1")};
+  transition: all 0.3s ease;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
 `;

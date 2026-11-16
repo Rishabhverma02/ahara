@@ -15,7 +15,7 @@ export function useProductActions(product: Product) {
   const saved = isInWishlist(product.id);
 
   const addToCart = useCallback(
-    (opts?: { quantity?: number; size?: string; price?: number }) => {
+    (opts?: { quantity?: number; size?: string; price?: number; silent?: boolean }) => {
       const quantity = opts?.quantity ?? 1;
       const size = opts?.size ?? "Standard";
       playClick();
@@ -28,10 +28,12 @@ export function useProductActions(product: Product) {
         size,
         image: product.image,
       });
-      toast("Added to cart", `${quantity} × ${product.name}${size !== "Standard" ? ` (${size})` : ""}`, {
-        label: "View cart",
-        onClick: useUiStore.getState().openCart,
-      });
+      if (opts?.silent) return;
+      toast(
+        "Success",
+        `${quantity}x ${product.name}${size !== "Standard" ? ` (${size})` : ""} added to cart.`,
+        { label: "View cart", onClick: useUiStore.getState().openCart },
+      );
     },
     [addItem, product],
   );
@@ -39,7 +41,7 @@ export function useProductActions(product: Product) {
   const toggleSaved = useCallback(() => {
     playClick();
     toggleWishlist(product.id);
-    if (!saved) toast("Saved to wishlist", product.name);
+    if (!saved) toast("Success", `${product.name} saved to your wishlist.`);
   }, [toggleWishlist, product, saved]);
 
   return { addToCart, toggleSaved, saved };

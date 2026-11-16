@@ -12,7 +12,7 @@ export const StepsTimeline = styled.div`
   -webkit-backdrop-filter: blur(10px);
   padding: 12px 28px;
   border-radius: 100px;
-  border: 1px solid rgb(var(--olive-rgb) / 0.08);
+  border: 1px solid rgba(126, 124, 42, 0.08);
   box-shadow: 0 10px 30px rgba(58, 47, 37, 0.03);
   max-width: fit-content;
 
@@ -31,11 +31,10 @@ export const TimelineStep = styled.div<{
   align-items: center;
   gap: 10px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: ${({ $active, $completed }) =>
-    $active ? "var(--olive)" : $completed ? "var(--success)" : "var(--muted-2)"};
+  color: ${({ $active, $completed }) => ($active ? "#7e7c2a" : $completed ? "#63a33cff" : "#a7a48a")};
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   transform: ${({ $active }) => ($active ? "scale(1.05)" : "scale(1)")};
 
@@ -47,15 +46,13 @@ export const TimelineStep = styled.div<{
     align-items: center;
     justify-content: center;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 800;
     border: 2px solid
-      ${({ $active, $completed }) =>
-        $active ? "var(--olive)" : $completed ? "var(--success)" : "var(--muted-2)"};
+      ${({ $active, $completed }) => ($active ? "#7e7c2a" : $completed ? "#63a33cff" : "#c5c1b0")};
     background: ${({ $active, $completed }) =>
-      $active ? "var(--olive)" : $completed ? "var(--olive-tint)" : "transparent"};
-    color: ${({ $active, $completed }) =>
-      $active ? "#ffffff" : $completed ? "var(--success)" : "var(--muted-2)"};
-    box-shadow: ${({ $active }) => ($active ? "0 0 12px rgb(var(--olive-rgb) / 0.3)" : "none")};
+      $active ? "#7e7c2a" : $completed ? "#eef5eb" : "transparent"};
+    color: ${({ $active, $completed }) => ($active ? "#ffffff" : $completed ? "#63a33cff" : "#a7a48a")};
+    box-shadow: ${({ $active }) => ($active ? "0 0 12px rgba(126, 124, 42, 0.3)" : "none")};
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
@@ -70,7 +67,7 @@ export const TimelineStep = styled.div<{
 export const TimelineDivider = styled.div<{ $completed: boolean }>`
   height: 2px;
   width: 60px;
-  background: ${({ $completed }) => ($completed ? "var(--success)" : "rgb(var(--olive-rgb) / 0.15)")};
+  background: ${({ $completed }) => ($completed ? "#496a35" : "rgba(126, 124, 42, 0.15)")};
   transition: all 0.4s ease;
 
   @media (max-width: 600px) {
